@@ -23,9 +23,6 @@ with open(csv_file, 'r') as file:
         positie = map(int, row[0].split(','))
         
         capaciteit = row[1]
-        
-        #print(positie)
-        #print(capaciteit)
 
         data_district1[tuple(positie)] = capaciteit
 

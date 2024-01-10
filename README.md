@@ -76,7 +76,7 @@ python smart_grid.py
 
 ## License ![License Badge](https://example.com/license-badge.png)
 
-This project is licensed under the UVA License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the UvA License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
