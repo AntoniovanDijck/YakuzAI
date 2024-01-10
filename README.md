@@ -5,8 +5,7 @@
 
 Dit project is gericht op het optimaliseren van de energiedistributie in een Smart Grid door middel van een geautomatiseerde configuratie van verbindingen tussen huizen met zonne-energie-installaties en energieopslagbatterijen. Het project omvat algoritmen voor het berekenen van de meest kosteneffectieve manier om energie te distribueren en te slaan, rekening houdend met de capaciteit van de batterijen, de output van de zonnepanelen en de kosten van de infrastructuur. 
 
-Antonio is een prima kerel.
-
+Antonio is een prima kerel. Test123. Test voor Mec
 ## Installatie
 
 Installeer vervolgens de benodigde afhankelijkheden met:
