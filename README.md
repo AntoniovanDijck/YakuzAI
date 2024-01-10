@@ -1,37 +1,83 @@
-# YakuzAI
-# Smart Grid Project
 
-## Overzicht
+# YakuzAI Smart Grid Project ![YakuzAI Logo](smart_grids1.png)
 
-Dit project is gericht op het optimaliseren van de energiedistributie in een Smart Grid door middel van een geautomatiseerde configuratie van verbindingen tussen huizen met zonne-energie-installaties en energieopslagbatterijen. Het project omvat algoritmen voor het berekenen van de meest kosteneffectieve manier om energie te distribueren en te slaan, rekening houdend met de capaciteit van de batterijen, de output van de zonnepanelen en de kosten van de infrastructuur. 
 
-Antonio is een prima kerel. Test123. Test voor Mec
-## Installatie
+## Overview
 
-Installeer vervolgens de benodigde afhankelijkheden met:
-pip install -r requirements.txt
+YakuzAI's Smart Grid 
 
-Om dit project te gebruiken, clone de repository naar uw lokale machine met:
+## Key Features
+
+- **Reading the data**: Intelligently reading the data from the data sets.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.6+
+- Advanced understanding of Python
+- Advanced knowledge of algorithms and machine learning
+- New to Python? Check out [this guide](https://www.proglab.nl) to get started.
+
+### Installation
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/AntoniovanDijck/YakuzAI.git
+   cd YakuzAI
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Detailed Usage
+
+### Running the Script
+
+```bash
 python smart_grid.py
+```
 
-## Gebruik
+## Project Structure 
 
-Om het Smart Grid configuratie script te starten, run het volgende commando in de hoofdmap van het project:
+- `/Huizen&Batterijen`: Data sets for positions and battery capacities per district.
+- `requirements.txt`: Dependencies.
+- `smart_grid.py`: Main script.
 
-Volg de instructies op het scherm om de parameters voor uw specifieke case in te voeren.
+## Customization Guide
 
-## Structuur van het Project
+| Variables              | Description                              |
+| ---------------------- | ---------------------------------------- |
+| Houses                 | Grid size, connections, etc.             | 
+| Battery                | Battery capacities, Battery types.       | 
+| Cables                 | length, types, Manhattan distance.       | 
 
-- `/src`: Bevat alle broncodebestanden voor het project.
-- `/data`: Bevat voorbeelden van data bestanden met informatie over huizen, batterijen en het grid.
-- `/docs`: Bevat de projectdocumentatie, inclusief de ontwerp specificaties en gebruikshandleidingen.
-- `requirements.txt`: Bevat alle externe afhankelijkheden die nodig zijn voor het project.
-- `smart_grid.py`: Het hoofdscript dat de gebruikersinterface biedt voor het configuratieproces.
+## How to Contribute
 
-## Bijdragen
+### Contributing Steps
 
-We staan open voor bijdragen! Als u een fout vindt, een feature wilt aanvragen of uw eigen verbeteringen wilt indienen, voel u vrij om een issue of pull request te openen.
+1. **Clone the Repository**
+2. **Add Your Changes**
+3. **Commit Your Changes**
+4. **Push to the Branch**
 
-## Licentie
+### Guidelines
 
-Dit project is gelicenseerd onder de MIT License - zie het `LICENSE` bestand voor details.
+- Code must follow the project's style and standards.
+- Clear, commented, and testable code is essential.
+- Documentation updates are appreciated.
+
+## Community & Support
+
+- **Forum**: [Join discussions](https://student.uva.nl)
+- **FAQs**: [Common questions](https://www.uva.nl/onderwijs/bachelor/inschrijven/doe-mee-aan-uva-matching/veelgestelde-vragen/veelgestelde-vragen.html)
+
+## License ![License Badge](https://example.com/license-badge.png)
+
+This project is licensed under the UVA License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Special thanks to all our contributors and the open-source community. 
