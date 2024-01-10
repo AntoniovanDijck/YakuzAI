@@ -1,10 +1,10 @@
 
-# YakuzAI Smart Grid Project ![YakuzAI Logo](smart_grids1.png)
+# YakuzAI Smart Grids![YakuzAI Logo](smart_grids1.png)
 
 
 ## Overview
 
-YakuzAI's Smart Grid 
+YakuzAI's Smart Grid project
 
 ## Key Features
 
@@ -74,9 +74,9 @@ python smart_grid.py
 - **Forum**: [Join discussions](https://student.uva.nl)
 - **FAQs**: [Common questions](https://www.uva.nl/onderwijs/bachelor/inschrijven/doe-mee-aan-uva-matching/veelgestelde-vragen/veelgestelde-vragen.html)
 
-## License ![License Badge](https://example.com/license-badge.png)
+## License ![License Badge](https://img.shields.io/badge/License-Hippocratic_3.0-lightgrey.svg)
 
-This project is licensed under the UvA License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the UvA License - see the [LICENSE](https://uba.uva.nl/en/support/open-data/licences/licences.html) page for details.
 
 ## Acknowledgments
 
