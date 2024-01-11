@@ -6,6 +6,8 @@ import csv
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
 
 def load_battery_data(filename):
     '''
@@ -77,8 +79,27 @@ def show_district(houses_data, battery_data):
         x2.append(battery[0])
         y2.append(battery[1])
 
-    # plot data
-    plt.scatter(x1, y1, color='red')
-    plt.scatter(x2, y2, color='blue')
-    plt.show()
+    # Grid van 50 bij 50 met dunne lijnen
+    fig, ax = plt.subplots()
+    ax.set_xticks(np.arange(0, 51, 1))
+    ax.set_yticks(np.arange(0, 51, 1))
 
+    # Dun maken, in de achtergrond zetten en opaak maken
+    ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder = 0)
+
+
+    # Iedere 10e lijn dikker maken, ook in achtergrond zetten en niet opaak maken
+    for i in range(0, 51, 10):
+        ax.axvline(x=i, color='grey', linestyle='-', linewidth = 1.5, alpha=0.25, zorder = 0)
+        ax.axhline(y=i, color='grey', linestyle='-', linewidth = 1.5, alpha = 0.25, zorder = 0)
+        
+    # Alleen de 10e lijnen een label geven
+    ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
+    ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
+
+    # Huizen en batterijen plotten
+    ax.scatter(x1, y1, c='b', zorder = 1)
+    ax.scatter(x2, y2, c='y', marker='s', zorder = 2)
+
+    # Show de plot
+    plt.show()
