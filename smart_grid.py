@@ -85,13 +85,13 @@ def show_district(houses_data, battery_data):
     ax.set_yticks(np.arange(0, 51, 1))
 
     # Dun maken, in de achtergrond zetten en opaak maken
-    ax.grid(linestyle='-', linewidth='0.5', alpha=0.5, color='grey', zorder = 0)
+    ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder = 0)
 
 
     # Iedere 10e lijn dikker maken, ook in achtergrond zetten en niet opaak maken
     for i in range(0, 51, 10):
-        ax.axvline(x=i, color='grey', linestyle='-', linewidth = 2, alpha=1, zorder = 0)
-        ax.axhline(y=i, color='grey', linestyle='-', linewidth = 2, alpha = 1, zorder = 0)
+        ax.axvline(x=i, color='grey', linestyle='-', linewidth = 1.5, alpha=0.25, zorder = 0)
+        ax.axhline(y=i, color='grey', linestyle='-', linewidth = 1.5, alpha = 0.25, zorder = 0)
         
     # Alleen de 10e lijnen een label geven
     ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
