@@ -5,7 +5,7 @@
 import numpy as np
 import csv
 
-from smart_grid import load_battery_data, load_house_data, show_district
+from code.smart_grid import load_battery_data, load_house_data, show_district
 
 class Battery():
     def __init__(self, x, y, capacity):
@@ -16,6 +16,10 @@ class Battery():
 
         # de capaciteit en de maximale output
         self.capacity = capacity
+
+        # Connect huizen met batterij
+        self.connected = []
+        
 
 class House():
     def __init__(self, x, y, maxoutput):
