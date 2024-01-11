@@ -99,7 +99,7 @@ def show_district(houses_data, battery_data):
 
     # Huizen en batterijen plotten
     ax.scatter(x1, y1, c='b', zorder = 1)
-    ax.scatter(x2, y2, c='y', marker='s', zorder = 1)
+    ax.scatter(x2, y2, c='y', marker='s', zorder = 2)
 
     # Show de plot
     plt.show()
