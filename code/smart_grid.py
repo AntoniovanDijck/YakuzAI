@@ -15,23 +15,23 @@ def load_battery_data(filename):
 
     '''
 
-    # # new dictionary maken
+    # # create new dict
     battery_data = {}
 
     with open(filename, 'r') as f:
 
         csv_reader = csv.reader(f)
 
-        # Overslaan header
+        # skip the header
         next(csv_reader)
         
         for row in csv_reader:
 
             positie = map(int, row[0].split(','))
             
-            capaciteit = row[1]
+            capacity = row[1]
 
-            battery_data[tuple(positie)] = float(capaciteit)
+            battery_data[tuple(positie)] = float(capacity)
 
     return battery_data
 
@@ -48,7 +48,7 @@ def load_house_data(house_data):
             
             reader = csv.reader(file)
     
-            # Overslaan header
+            # skip the header
             next(reader)
             
             for row in reader:
@@ -67,39 +67,59 @@ def show_district(houses_data, battery_data):
     houses = load_house_data(houses_data)
     batteries = load_battery_data(battery_data)
 
-    x1 = []
-    y1 = []
-    for house in houses:
-        x1.append(house[0])
-        y1.append(house[1])
-
-    x2 = []
-    y2 = []
-    for battery in batteries:
-        x2.append(battery[0])
-        y2.append(battery[1])
-
-    # Grid van 50 bij 50 met dunne lijnen
+    # grid of 50 x 50 with small lines
     fig, ax = plt.subplots()
     ax.set_xticks(np.arange(0, 51, 1))
     ax.set_yticks(np.arange(0, 51, 1))
 
-    # Dun maken, in de achtergrond zetten en opaak maken
+    # Design of the grid (thin lines and in background)
     ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder = 0)
 
 
-    # Iedere 10e lijn dikker maken, ook in achtergrond zetten en niet opaak maken
+    # thicken every 10th line for overview
     for i in range(0, 51, 10):
         ax.axvline(x=i, color='grey', linestyle='-', linewidth = 1.5, alpha=0.25, zorder = 0)
         ax.axhline(y=i, color='grey', linestyle='-', linewidth = 1.5, alpha = 0.25, zorder = 0)
         
-    # Alleen de 10e lijnen een label geven
+    # label every 10th line for overview
     ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
     ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
 
-    # Huizen en batterijen plotten
-    ax.scatter(x1, y1, c='b', zorder = 1)
-    ax.scatter(x2, y2, c='y', marker='s', zorder = 2)
+   
+    #plotting houses and batteries
+    for house in houses.values():
+        ax.scatter(house.x, house.y, color="blue", label="house")
+    
+    for battery in batteries.values():
+        ax.scatter(battery.x, battery.y, color="red", marker="s", label="battery")
+    
+    #label every 10th line 
+    ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in range(0, 51)])
+    ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in range(0, 51)])
 
-    # Show de plot
+    # Show the plot
     plt.show()
+
+
+def get_50_total_length(batteries):
+    total_cable_length = 0
+
+    for battery in batteries:
+        #get first 50 batteries
+        for cable in battery.cables[:50]:
+            total_cable_length += cable.length
+    
+    return total_cable_length
+
+
+#running for testing on district 1
+
+#Load data for district 1 
+houses = load_house_data("Huizen&Batterijen/district_1/district-1_houses.csv")
+batteries = load_battery_data("Huizen&Batterijen/district_1/district-1_batteries.csv")
+
+#get total length of 50 first batteries
+total_length = get_50_total_length(batteries)
+print(total_length)
+
+show_district(houses, batteries)

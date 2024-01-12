@@ -14,3 +14,7 @@ class Cable():
 
         # het huis
         self.house = house
+        self.length = self.calculate_length()
+
+    def calculate_length(self):
+        return abs(self.house.x - self.battery.x)+(self.house.y - self.battery.y)
