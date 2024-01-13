@@ -27,11 +27,11 @@ def load_battery_data(filename):
         
         for row in csv_reader:
 
-            positie = map(int, row[0].split(','))
+            position = map(int, row[0].split(','))
             
             capacity = row[1]
 
-            battery_data[tuple(positie)] = float(capacity)
+            battery_data[tuple(position)] = float(capacity)
 
     return battery_data
 
@@ -103,10 +103,11 @@ def show_district(houses_data, battery_data):
 
 def get_50_total_length(batteries):
     total_cable_length = 0
-
-    for battery in batteries:
+    
+    battery_list = list(batteries.values())[:50]
+    for battery in battery_list:
         #get first 50 batteries
-        for cable in battery.cables[:50]:
+        for cable in battery.cables:
             total_cable_length += cable.length
     
     return total_cable_length
@@ -114,12 +115,12 @@ def get_50_total_length(batteries):
 
 #running for testing on district 1
 
-#Load data for district 1 
-houses = load_house_data("Huizen&Batterijen/district_1/district-1_houses.csv")
-batteries = load_battery_data("Huizen&Batterijen/district_1/district-1_batteries.csv")
+# #Load data for district 1 
+# houses = load_house_data("Huizen&Batterijen/district_1/district-1_houses.csv")
+# batteries = load_battery_data("Huizen&Batterijen/district_1/district-1_batteries.csv")
 
-#get total length of 50 first batteries
-total_length = get_50_total_length(batteries)
-print(total_length)
+# #get total length of 50 first batteries
+# total_length = get_50_total_length(batteries)
+# print(total_length)
 
-show_district(houses, batteries)
+# show_district(houses, batteries)

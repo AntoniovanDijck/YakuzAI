@@ -21,7 +21,7 @@ class Battery():
         self.cables = []
 
     def connect_house(self, house, cable):
-        if house not in self.connect_houses:
+        if house not in self.connected_houses:
             self.connected_houses.append(house)
             self.cables.append(cable)
 
