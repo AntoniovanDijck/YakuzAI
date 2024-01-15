@@ -1,30 +1,32 @@
 import numpy as np
 import csv
-from code.house import House, Cable
+from code.house import House
+from code.cable import Cable
 from code.battery import Battery
+from code.cable import Cable
 from code.smart_grid import load_battery_data, load_house_data
+
 
 class Experiment:
     """
-    Class the runs a single district as an experiment. 
+    This class represents an experiment with a district and a set of batteries
     """
-    def __init__(self, houses_file, batteries_file):
-        """
-        Creates a dictionary and loads in houses and batteries in a dictionary and creates a list of houses and batteries
-        """
 
-        # load data and save them in a dictionary
+    # Sets the initial state of the experiment, with the houses and batteries as input
+    def __init__(self, houses_file, batteries_file):
+
+        # Load houses and batteries
         house_dict = load_house_data(houses_file)
         battery_dict = load_battery_data(batteries_file)
 
-        # create lists of houses and batteries and save them as attributes
+        # Create houses and batteries using the data
         self.houses = [House(x, y, maxoutput) for (x, y), maxoutput in house_dict.items()]
         self.batteries = [Battery(x, y, capacity) for (x, y), capacity in battery_dict.items()]
 
-        # create a list for the cables
+        # Create empty list for cables
         self.cables = []
 
-        # connect houses to batteries
+        # Connect houses to batteries
         self.connect_houses_to_batteries()
 
 
@@ -63,32 +65,49 @@ class Experiment:
 
     def connect_houses_to_batteries(self):
         """
-        method that connects houses to batteries
+        This method connects houses to batteries
         """
-        # create empty set for cables to make sure there are no duplicates
-        unique_cables = set()
 
-        # loop over houses
+        # Create a set of cables to prevent duplicates
+        unique_cables_ids = set()
+
+        # Loop over houses
         for house in self.houses:
-            
-            # Find the nearest battery
+
+            # Find nearest battery
             nearest_battery = min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
-            
-            # Generate individual cable pieces for the x axis and add them to the set
+
+            # Generate cable segments using the house and battery x coordinates    
             for x in range(min(house.x, nearest_battery.x), max(house.x, nearest_battery.x)):
+
+                # Create a cable segments and add it to the list of cables
                 cable = Cable(x, house.y, x+1, house.y)
-                unique_cables.add(cable)
 
-            # Generate individual cable pieces for the y axis and add them to the set
+                # Check if the cable is not already in the list of cables
+                if cable.id not in unique_cables_ids:
+
+                    # Add the cable to the list of cables
+                    unique_cables_ids.add(cable.id)
+
+                    # Add the cable to the list of cables
+                    self.cables.append(cable)
+
+            # Generate cable segments using the house and battery y coordinates
             for y in range(min(house.y, nearest_battery.y), max(house.y, nearest_battery.y)):
-                cable = Cable(nearest_battery.x, y, nearest_battery.x, y+1)
-                unique_cables.add(cable)
 
-            # Connect the house to the battery
+                # Create a cable segments and add it to the list of cables
+                cable = Cable(nearest_battery.x, y, nearest_battery.x, y+1)
+
+                # Check if the cable is not already in the list of cables
+                if cable.id not in unique_cables_ids:
+
+                    # Add the cable to the list of cables
+                    unique_cables_ids.add(cable.id)
+
+                    # Add the cable to the list of cables
+                    self.cables.append(cable)
+
             nearest_battery.connect_house(house)
-        
-        # Save the cables as a list
-        self.cables = list(unique_cables)
 
     """
     This method returns a set of cables that are part of the route from a house to a battery
@@ -113,7 +132,7 @@ class Experiment:
         """
         This method checks if a cable is connected to a battery
         """
-        
+
         # Check if a cable end point is at the battery location
         return ((cable.end_x, cable.end_y) == (battery.x, battery.y) or
                 (cable.start_x, cable.start_y) == (battery.x, battery.y))
@@ -126,18 +145,25 @@ class Experiment:
         # Loop over batteries
         for battery in self.batteries:
 
-            # Calculate total output for this battery
+            # Calculate total output as a sum of the max output of the connected houses
             total_output = sum(house.maxoutput for house in battery.connected_houses)
 
-            # Count unique cables for this battery
+            # Create a set of cables to prevent duplicates
             battery_cables = set()
 
+            # Loop over houses connected to the battery
             for house in battery.connected_houses:
 
-                # Add all cables that are part of the route from this house to the battery
-                battery_cables.update(self.get_cables_for_route(house, battery))
+                # Loop over cables
+                for cable in self.get_cables_for_route(house, battery):
 
+                    # Check if the cable is connected to the battery
+                    battery_cables.add(cable.id)
+
+            # Calculate the total cables used
             total_cables = len(battery_cables)
+
+            # Print the results
             print(f'Battery at ({battery.x}, {battery.y}):')
             print(f'  Total output connected: {total_output}')
             print(f'  Total cables used: {total_cables}')

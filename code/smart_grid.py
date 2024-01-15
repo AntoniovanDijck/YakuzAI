@@ -99,28 +99,3 @@ def show_district(houses_data, battery_data):
 
     # Show the plot
     plt.show()
-
-
-def get_50_total_length(batteries):
-    total_cable_length = 0
-    
-    battery_list = list(batteries.values())[:50]
-    for battery in battery_list:
-        #get first 50 batteries
-        for cable in battery.cables:
-            total_cable_length += cable.length
-    
-    return total_cable_length
-
-
-#running for testing on district 1
-
-# #Load data for district 1 
-# houses = load_house_data("Huizen&Batterijen/district_1/district-1_houses.csv")
-# batteries = load_battery_data("Huizen&Batterijen/district_1/district-1_batteries.csv")
-
-# #get total length of 50 first batteries
-# total_length = get_50_total_length(batteries)
-# print(total_length)
-
-# show_district(houses, batteries)
