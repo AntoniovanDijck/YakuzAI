@@ -1,4 +1,5 @@
 import numpy as np
+import json
 import csv
 from code.house import House
 from code.cable import Cable
@@ -178,7 +179,8 @@ class Experiment:
             print(f'  Total cables used: {total_cables}')
            
         print(f'  Total cost: {total_cost}')
-        
+
+
     def random_connections(self):
         connections = {}
 
@@ -197,6 +199,29 @@ class Experiment:
                 connected_battery
 
         return connections
+    
+    def check_50(batteries, house): 
+        output_data = []
+
+        for battery in batteries:
+            battery_data = {"position": f"{battery.x}, {battery.y}", f"capacity": battery.capacity, "houses": [] 
+            }
+
+
+            for house in battery.connected_houses:
+                cables = [f"{cable.start_x},{cable.start_y}" for cable in house.cables]
+                house_data = {
+                    "location": f"{house.x}, {house.y}", "output": house.maxoutput, "cables": cables
+                }
+
+                battery_data.append(house_data)
+            
+            output_data.append(battery_data)
+
+        cost_shared = calculate_totals(batteries, houses)
+        output_data.insert(0, {"district":1, "cost-shared": cost_shared})
+
+        return output_data
 
 battery_district1_link = 'Huizen&Batterijen/district_1/district-1_batteries.csv'
 house_district1_link = 'Huizen&Batterijen/district_1/district-1_houses.csv'
