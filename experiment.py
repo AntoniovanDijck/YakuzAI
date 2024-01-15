@@ -178,6 +178,26 @@ class Experiment:
             print(f'  Total cables used: {total_cables}')
            
         print(f'  Total cost: {total_cost}')
+        
+    def random_connections(self):
+        connections = {}
+
+        for house in self.houses:
+            posssible_batteries = [battery for battery in self.batteries if battery['capacity'] >= house['maxoutput']]
+
+            if posssible_batteries == True:
+
+                #randomly assign a battery to a house
+                connected_battery = random.choice(posssible_batteries)
+                
+                #update connections dict
+                connections[house['position']] = connected_battery['position']
+
+                #update the batteries capacity after connecting to a new house
+                connected_battery
+
+        return connections
+
 battery_district1_link = 'Huizen&Batterijen/district_1/district-1_batteries.csv'
 house_district1_link = 'Huizen&Batterijen/district_1/district-1_houses.csv'
 experiment = Experiment(house_district1_link, battery_district1_link)
