@@ -108,11 +108,12 @@ class Experiment:
                     self.cables.append(cable)
 
             nearest_battery.connect_house(house)
-
-    """
-    This method returns a set of cables that are part of the route from a house to a battery
-    """
+    
+    
     def get_cables_for_route(self, house, battery):
+        """
+        This method returns a set of cables that are part of the route from a house to a battery
+        """
         route_cables = set()
 
         # Generate horizontal cable segments
