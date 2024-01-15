@@ -161,9 +161,10 @@ class Experiment:
 
                 # Loop over cables
                 for cable in self.get_cables_for_route(house, battery):
-
+                    
                     # Check if the cable is connected to the battery
                     battery_cables.add(cable.id)
+
 
             # Calculate the total cables used
             total_cables = len(battery_cables)
@@ -175,6 +176,7 @@ class Experiment:
             print(f'Battery at ({battery.x}, {battery.y}):')
             print(f'  Total output connected: {total_output}')
             print(f'  Total cables used: {total_cables}')
+           
         print(f'  Total cost: {total_cost}')
 battery_district1_link = 'Huizen&Batterijen/district_1/district-1_batteries.csv'
 house_district1_link = 'Huizen&Batterijen/district_1/district-1_houses.csv'
