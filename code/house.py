@@ -3,44 +3,73 @@ import csv
 
 from code.smart_grid import load_battery_data, load_house_data, show_district
 
-class Cable():
-    def __init__(self, house, battery):
+class Cable:
+    def __init__(self, start_x, start_y, end_x, end_y):
+        self.start_x = start_x
+        self.start_y = start_y
+        self.end_x = end_x
+        self.end_y = end_y
 
-        # de batterij
-        self.battery = battery
+    def identifier(self):
+        """
+        Returns a unique identifier for the cable to prevent duplicates
+        """
+        return f"{self.start_x}-{self.start_y}-{self.end_x}-{self.end_y}"
 
-        # het huis
-        self.house = house
-        self.length = self.calculate_length()
 
-    def calculate_length(self):
-        return abs(self.house.x - self.battery.x)+(self.house.y - self.battery.y)
 
 class House():
+    """
+    Class that creates a house with coordinates and max output
+    """
     def __init__(self, x, y, maxoutput):
         self.x = x
         self.y = y
+
         #houses output
         self.maxoutput = maxoutput
-        self.connected_battery = None
-        self.cable = None
+
 
     #attribute that tracks connections for houses
-    def connect_house_to_battery(self, battery, ):
+def connect_houses_to_batteries(self):
+    """
+    Connects houses to batteries
+    """
 
-        if self.connected_battery != None:
-            print("Connected")  
-            return 
-        
-        cable = Cable(self, battery)
-        self.connected_battery = battery
-        self.cable = cable
-        battery.connect_house(self, cable)
+    # create a list for the cables to prevent duplicates
+    unique_cables_identifiers = set()
 
-    def disconnect_house_from_battery(self, house):
-        if self.connected_battery == None:
-            print("House is not connected")
-            return 
-        self.connected_battery.disconnect_house(self)
-        self.connected_battery = None
-        self.cable = None
+    # loop over houses
+    for house in self.houses:
+
+        # find nearest battery
+        nearest_battery = min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
+
+        # Create horizontal cables
+        start_x, end_x = sorted([house.x, nearest_battery.x])
+
+        # creates a cable for every x coordinate between the house and the battery
+        for x in range(start_x, end_x):
+            cable = Cable(x, house.y, x+1, house.y)
+
+            # checks if the cable is already in the set
+            cable_id = cable.identifier()
+            if cable_id not in unique_cables_identifiers:
+                unique_cables_identifiers.add(cable_id)
+                self.cables.append(cable)
+
+        # Generate vertical cables
+        start_y, end_y = sorted([house.y, nearest_battery.y])
+
+        # creates a cable for every y coordinate between the house and the battery
+        for y in range(start_y, end_y):
+            cable = Cable(nearest_battery.x, y, nearest_battery.x, y+1)
+
+            # checks if the cable is already in the set
+            cable_id = cable.identifier()
+            if cable_id not in unique_cables_identifiers:
+                unique_cables_identifiers.add(cable_id)
+                self.cables.append(cable)
+
+        # Connect the house to the battery
+        nearest_battery.connect_house(house)
