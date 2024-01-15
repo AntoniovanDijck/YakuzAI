@@ -182,6 +182,8 @@ class Experiment:
 
 
     def random_connections(self):
+        """randomly connects a house to a battery"""
+
         connections = {}
 
         for house in self.houses:
@@ -200,30 +202,45 @@ class Experiment:
 
         return connections
     
-    def check_50(batteries, house): 
+    def check_50(self): 
+        """"""
         output_data = []
 
-        for battery in batteries:
-            battery_data = {"position": f"{battery.x}, {battery.y}", f"capacity": battery.capacity, "houses": [] 
+        for battery in self.batteries:
+            battery_data = {
+                "position": f"{battery.x},{battery.y}",
+                "capacity": battery.capacity,
+                "houses": [] 
             }
 
 
             for house in battery.connected_houses:
-                cables = [f"{cable.start_x},{cable.start_y}" for cable in house.cables]
+                #generate cables for each house
+                cables = self.get_cables_for_route(house, battery)
+
+                cable_data = [f"{cable.start_x},{cable.start_y}" for cable in cables]
                 house_data = {
-                    "location": f"{house.x}, {house.y}", "output": house.maxoutput, "cables": cables
+                    "location": f"{house.x}, {house.y}", "output": house.maxoutput, "cables": cable_data
                 }
 
-                battery_data.append(house_data)
+                battery_data['houses'].append(house_data)
             
             output_data.append(battery_data)
 
-        cost_shared = calculate_totals(batteries, houses)
+        cost_shared = self.calculate_totals()
         output_data.insert(0, {"district":1, "cost-shared": cost_shared})
 
         return output_data
+    
+
 
 battery_district1_link = 'Huizen&Batterijen/district_1/district-1_batteries.csv'
 house_district1_link = 'Huizen&Batterijen/district_1/district-1_houses.csv'
 experiment = Experiment(house_district1_link, battery_district1_link)
 experiment.calculate_totals()
+
+
+output_data = experiment.check_50()
+#to json file
+with open('output.json','w') as outfile:
+    json.dump(output_data, outfile)
