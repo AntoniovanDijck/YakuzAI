@@ -179,6 +179,8 @@ class Experiment:
             print(f'  Total cables used: {total_cables}')
            
         print(f'  Total cost: {total_cost}')
+        
+        return total_cost
 
 
     def random_connections(self):
