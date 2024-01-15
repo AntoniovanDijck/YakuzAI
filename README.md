@@ -6,7 +6,6 @@
 
 YakuzAI's Smart Grid project
 
-test
 
 ## Key Features
 
