@@ -179,7 +179,7 @@ class Experiment:
             print(f'  Total cables used: {total_cables}')
            
         print(f'  Total cost: {total_cost}')
-        
+
         return total_cost
 
 
@@ -229,8 +229,8 @@ class Experiment:
             
             output_data.append(battery_data)
 
-        cost_shared = self.calculate_totals()
-        output_data.insert(0, {"district":1, "cost-shared": cost_shared})
+        cost_own = self.calculate_totals()
+        output_data.insert(0, {"district":1, "cost-own": cost_own})
 
         return output_data
     
