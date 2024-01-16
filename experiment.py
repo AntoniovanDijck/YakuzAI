@@ -130,6 +130,13 @@ class Experiment:
 
         return route_cables
 
+    def shared_cables(self):
+        """This method checks if a cable segment is already existing"""
+
+        used_cables = {}
+        
+        for house in self.houses:
+            return None
 
     def is_cable_connected_to_battery(self, cable, battery):
         """
@@ -231,6 +238,7 @@ class Experiment:
             output_data.append(battery_data)
 
         cost_own = self.calculate_totals()
+        cost_shared = 0 # for now zero but here should be the cost of the grid when houses can use the same cables to be connected
         output_data.insert(0, {"district":1, "cost-own": cost_own})
 
         return output_data
