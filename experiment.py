@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import csv
+import random
 from code.house import House
 from code.cable import Cable
 from code.battery import Battery
