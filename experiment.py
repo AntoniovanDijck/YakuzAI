@@ -65,6 +65,8 @@ class Experiment:
                 batteries.append(battery)
         return batteries
 
+
+    ###dit is al greedy algoritme moet in greedy class
     def connect_houses_to_batteries(self):
         """
         This method connects houses to batteries
@@ -75,6 +77,8 @@ class Experiment:
 
         # Loop over houses
         for house in self.houses:
+            
+            ###kabels leggen en dichtsbijzijnste batterij moet los van elkaar als functie. 
 
             # Find nearest battery
             nearest_battery = min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
