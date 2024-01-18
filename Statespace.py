@@ -22,3 +22,4 @@ def simple_state_space(houses, batteries, max_connections_per_battery):
 state_space = simple_state_space(150, 5, 50)
 print(state_space)
         
+# 
