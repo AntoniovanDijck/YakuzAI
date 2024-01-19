@@ -18,6 +18,7 @@ class Battery():
         # list of cables connecxted to battery per battery is stored here
         self.cables = []
 
+
     def connect_house(self, house):
         """
         If a house is not connected to a battery yet, it is added to the list of connected houses
