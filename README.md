@@ -1,5 +1,5 @@
 
-# YakuzAI Smart Grids![YakuzAI Logo](smart_grids1.png)
+# YakuzAI Smart Grids![YakuzAI Logo](data/assets/smart_grids1.png)
 
 
 ## Overview

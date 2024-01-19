@@ -9,3 +9,4 @@ class House():
 
         #houses output
         self.maxoutput = maxoutput
+        
