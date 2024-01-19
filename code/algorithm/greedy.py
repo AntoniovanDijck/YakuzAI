@@ -1,3 +1,7 @@
+class Greedy:
+    """
+    Greedy algorithm to connect houses to batteries.
+    """     
     def __init__(self, experiment):
         self.experiment = experiment
 

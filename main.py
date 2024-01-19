@@ -3,7 +3,7 @@ import code.classes.house
 import code.classes.cable 
 import code.classes.battery
 import code.helpers.smart_grid 
-from code.algorithm.experiment import Experiment
+from code.classes.district import District
 import json
 import csv
 import random
@@ -18,7 +18,7 @@ def main():
     for i in range(0, 3):
         print(f'District {i+1}')
         # set up experiment
-        experiment = Experiment(districts_houses[i], districts_batteries[i])
+        experiment = District(districts_houses[i], districts_batteries[i])
         experiment.calculate_totals()
 
         # check experiment

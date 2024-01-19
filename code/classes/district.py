@@ -5,7 +5,7 @@ from code.classes.cable import Cable
 from code.helpers.smart_grid import load_battery_data, load_house_data
 import random
 
-class Experiment:
+class District:
     def __init__(self, houses_file, batteries_file):
         # Load houses and batteries
         house_dict = load_house_data(houses_file)
