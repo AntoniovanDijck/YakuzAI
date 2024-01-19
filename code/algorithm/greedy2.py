@@ -1,0 +1,162 @@
+import csv
+from code.classes.house import House
+from code.classes.battery import Battery
+from code.classes.cable import Cable
+from code.helpers.smart_grid import load_battery_data, load_house_data
+import random
+
+class Greedy2:
+    """
+    Greedy algorithm to connect houses to batteries.
+    """     
+    def __init__(self, district):
+        self.experiment = district
+        self.houses = district.houses
+        self.batteries = district.batteries
+        self.cables = []
+
+    def find_nearest_battery(self, house):
+        return min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
+
+    def place_cables(self, start_x, start_y, end_x, end_y):
+        new_cable = Cable(start_x, start_y, end_x, end_y)
+
+        # Check for duplicate cables
+        for cable in self.cables:
+            if cable.id == new_cable.id:
+                return  # Cable already exists, no need to add again
+        
+        self.cables.append(new_cable)
+
+    
+    def get_cables_for_route(self, house, battery):
+        """
+        This method returns a set of cables that are part of the route from a house to a battery
+        """
+        route_cables = set()
+
+        # Generate horizontal cable segments
+        for x in range(min(house.x, battery.x), max(house.x, battery.x)):
+            cable = Cable(x, house.y, x + 1, house.y)
+            route_cables.add(cable)
+
+        # Generate vertical cable segments
+        for y in range(min(house.y, battery.y), max(house.y, battery.y)):
+            cable = Cable(battery.x, y, battery.x, y + 1)
+            route_cables.add(cable)
+
+        return route_cables
+
+    def shared_cables(self):
+        """This method checks if a cable segment is already existing"""
+
+        used_cables = {}
+        
+        for house in self.houses:
+            return None
+
+    def is_cable_connected_to_battery(self, cable, battery):
+        """
+        This method checks if a cable is connected to a battery
+        """
+
+        # Check if a cable end point is at the battery location
+        return ((cable.end_x, cable.end_y) == (battery.x, battery.y) or
+                (cable.start_x, cable.start_y) == (battery.x, battery.y))
+    
+    def calculate_totals(self):
+        """
+        Calculates the total output and total cables used per battery
+        """
+
+        total_cost = 0
+
+        # Loop over batteries
+        for battery in self.batteries:
+
+            total_cost += 5000
+
+            # Calculate total output as a sum of the max output of the connected houses
+            total_output = sum(house.maxoutput for house in battery.connected_houses)
+
+            # Create a set of cables to prevent duplicates
+            battery_cables = set()
+
+            # Loop over houses connected to the battery
+            for house in battery.connected_houses:
+
+                # Loop over cables
+                for cable in self.get_cables_for_route(house, battery):
+                    
+                    # Check if the cable is connected to the battery
+                    battery_cables.add(cable.id)
+
+
+            # Calculate the total cables used
+            total_cables = len(battery_cables)
+
+            # Add a cost of 9 per cabkle
+            total_cost += total_cables * 9
+
+            # Print the results
+            print(f'Battery at ({battery.x}, {battery.y}):')
+            print(f'  Total output connected: {total_output}')
+            print(f'  Total cables used: {total_cables}')
+           
+        print(f'  Total cost: {total_cost}')
+
+        return total_cost
+
+
+    def random_connections(self):
+        """randomly connects a house to a battery"""
+
+        connections = {}
+
+        for house in self.houses:
+            posssible_batteries = [battery for battery in self.batteries if battery['capacity'] >= house['maxoutput']]
+
+            if posssible_batteries == True:
+
+                #randomly assign a battery to a house
+                connected_battery = random.choice(posssible_batteries)
+                
+                #update connections dict
+                connections[house['position']] = connected_battery['position']
+
+                #update the batteries capacity after connecting to a new house
+                connected_battery
+
+        return connections
+    
+    def check_50(self): 
+        """"""
+        output_data = []
+
+        for battery in self.batteries:
+            battery_data = {
+                "position": f"{battery.x},{battery.y}",
+                "capacity": battery.capacity,
+                "houses": [] 
+            }
+
+
+            for house in battery.connected_houses:
+                #generate cables for each house
+                cables = self.get_cables_for_route(house, battery)
+
+                cable_data = [f"{cable.start_x},{cable.start_y}" for cable in cables]
+                house_data = {
+                    "location": f"{house.x}, {house.y}", "output": house.maxoutput, "cables": cable_data
+                }
+
+                battery_data['houses'].append(house_data)
+            
+            output_data.append(battery_data)
+
+        cost_own = self.calculate_totals()
+        cost_shared = 0 # for now zero but here should be the cost of the grid when houses can use the same cables to be connected
+        output_data.insert(0, {"district":1, "cost-own": cost_own})
+
+        return output_data
+    
