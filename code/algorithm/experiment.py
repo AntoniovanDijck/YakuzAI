@@ -197,13 +197,13 @@ class Experiment:
     
 
 
-battery_district1_link = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-house_district1_link = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-experiment = Experiment(house_district1_link, battery_district1_link)
-experiment.calculate_totals()
+# battery_district1_link = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+# house_district1_link = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
+# experiment = Experiment(house_district1_link, battery_district1_link)
+# experiment.calculate_totals()
 
 
-output_data = experiment.check_50()
+# output_data = experiment.check_50()
 
 # #to json file
 # with open(f'data/output_data/output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
