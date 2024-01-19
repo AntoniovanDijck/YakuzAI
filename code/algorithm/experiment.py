@@ -1,23 +1,11 @@
-import numpy as np
-import json
 import csv
-import random
-import datetime
 from code.classes.house import House
-from code.classes.cable import Cable
 from code.classes.battery import Battery
 from code.classes.cable import Cable
 from code.helpers.smart_grid import load_battery_data, load_house_data
 
-
 class Experiment:
-    """
-    This class represents an experiment with a district and a set of batteries
-    """
-
-    # Sets the initial state of the experiment, with the houses and batteries as input
     def __init__(self, houses_file, batteries_file):
-
         # Load houses and batteries
         house_dict = load_house_data(houses_file)
         battery_dict = load_battery_data(batteries_file)
@@ -25,12 +13,7 @@ class Experiment:
         # Create houses and batteries using the data
         self.houses = [House(x, y, maxoutput) for (x, y), maxoutput in house_dict.items()]
         self.batteries = [Battery(x, y, capacity) for (x, y), capacity in battery_dict.items()]
-
-        # Create empty list for cables
         self.cables = []
-
-        # Connect houses to batteries
-        self.connect_houses_to_batteries()
 
 
     def load_houses(self, file_path):
@@ -67,55 +50,19 @@ class Experiment:
         return batteries
 
 
-    ###dit is al greedy algoritme moet in greedy class
-    def connect_houses_to_batteries(self):
-        """
-        This method connects houses to batteries
-        """
+    def find_nearest_battery(self, house):
+        return min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
 
-        # Create a set of cables to prevent duplicates
-        unique_cables_ids = set()
+    def place_cables(self, start_x, start_y, end_x, end_y):
+        new_cable = Cable(start_x, start_y, end_x, end_y)
 
-        # Loop over houses
-        for house in self.houses:
-            
-            ###kabels leggen en dichtsbijzijnste batterij moet los van elkaar als functie. 
+        # Check for duplicate cables
+        for cable in self.cables:
+            if cable.id == new_cable.id:
+                return  # Cable already exists, no need to add again
+        
+        self.cables.append(new_cable)
 
-            # Find nearest battery
-            nearest_battery = min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
-
-            # Generate cable segments using the house and battery x coordinates    
-            for x in range(min(house.x, nearest_battery.x), max(house.x, nearest_battery.x)):
-
-                # Create a cable segments and add it to the list of cables
-                cable = Cable(x, house.y, x+1, house.y)
-
-                # Check if the cable is not already in the list of cables
-                if cable.id not in unique_cables_ids:
-
-                    # Add the cable to the list of cables
-                    unique_cables_ids.add(cable.id)
-
-                    # Add the cable to the list of cables
-                    self.cables.append(cable)
-
-            # Generate cable segments using the house and battery y coordinates
-            for y in range(min(house.y, nearest_battery.y), max(house.y, nearest_battery.y)):
-
-                # Create a cable segments and add it to the list of cables
-                cable = Cable(nearest_battery.x, y, nearest_battery.x, y+1)
-
-                # Check if the cable is not already in the list of cables
-                if cable.id not in unique_cables_ids:
-
-                    # Add the cable to the list of cables
-                    unique_cables_ids.add(cable.id)
-
-                    # Add the cable to the list of cables
-                    self.cables.append(cable)
-
-            nearest_battery.connect_house(house)
-    
     
     def get_cables_for_route(self, house, battery):
         """
@@ -258,6 +205,6 @@ experiment.calculate_totals()
 
 output_data = experiment.check_50()
 
-#to json file
-with open(f'data/output_data/output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
-    json.dump(output_data, outfile)
+# #to json file
+# with open(f'data/output_data/output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
+#     json.dump(output_data, outfile)
