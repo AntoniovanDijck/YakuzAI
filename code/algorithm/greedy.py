@@ -18,3 +18,4 @@ class Greedy:
                 self.experiment.place_cables(nearest_battery.x, y, nearest_battery.x, y+1)
 
             nearest_battery.connect_house(house)
+
