@@ -21,7 +21,7 @@
 
 ## Overview
 
-YakuzAI's Smart Grid project
+YakuzAI's Smart Grid project is a project that aims to connect houses to batteries in a smart way. The project is part of the course Algorithms & Heuristics at the University of Amsterdam. The goal of the project is to connect houses to batteries in a smart way, so that the costs of the connections are as low as possible. This is done by using different algorithms and heuristics to test which one is the most efficient for connecting the houses to the batteries.
 
 
 ## Key Features
