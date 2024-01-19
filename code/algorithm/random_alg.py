@@ -29,7 +29,7 @@ class RandomAlgorithm:
                     tried_batteries.add(selected_battery)
 
                     # Check if the battery has enough capacity
-                    if selected_battery.can_connect(house):  
+                    if selected_battery.can_connect(house) == True:  
 
                         # Connect the house to the battery
                         selected_battery.connect_house(house)
