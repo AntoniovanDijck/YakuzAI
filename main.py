@@ -1,13 +1,15 @@
+import json
+import csv
 import numpy as np
+import random
+import datetime
 import code.classes.house
 import code.classes.cable 
 import code.classes.battery
 import code.helpers.smart_grid 
 from code.classes.district import District
-import json
-import csv
-import random
-import datetime
+from code.algorithm.random_alg import RandomAlgorithm
+from code.algorithm.greedy import Greedy
 
 def main():
         ### Drawing cables for all districts
@@ -19,9 +21,11 @@ def main():
         print(f'District {i+1}')
         # set up experiment
         experiment = District(districts_houses[i], districts_batteries[i])
+        random_instance = Greedy(experiment)
+        random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
-
-        # check experiment
+        
+         # check experiment
         output_data = experiment.check_50()
 
         # export to json file
