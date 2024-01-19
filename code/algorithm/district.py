@@ -3,6 +3,7 @@ from code.classes.house import House
 from code.classes.battery import Battery
 from code.classes.cable import Cable
 from code.helpers.smart_grid import load_battery_data, load_house_data
+import random
 
 class Experiment:
     def __init__(self, houses_file, batteries_file):

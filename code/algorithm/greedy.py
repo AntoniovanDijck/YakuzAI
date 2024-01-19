@@ -1,4 +1,3 @@
-class Greedy:
     def __init__(self, experiment):
         self.experiment = experiment
 
