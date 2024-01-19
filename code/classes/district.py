@@ -5,7 +5,7 @@ from code.classes.cable import Cable
 from code.helpers.smart_grid import load_battery_data, load_house_data
 import random
 
-class Experiment:
+class District:
     def __init__(self, houses_file, batteries_file):
         # Load houses and batteries
         house_dict = load_house_data(houses_file)
@@ -174,16 +174,3 @@ class Experiment:
 
         return output_data
     
-
-
-# battery_district1_link = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-# house_district1_link = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-# experiment = Experiment(house_district1_link, battery_district1_link)
-# experiment.calculate_totals()
-
-
-# output_data = experiment.check_50()
-
-# #to json file
-# with open(f'data/output_data/output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
-#     json.dump(output_data, outfile)
