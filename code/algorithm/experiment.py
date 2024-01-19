@@ -259,5 +259,5 @@ experiment.calculate_totals()
 output_data = experiment.check_50()
 
 #to json file
-with open(f'data/output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
+with open(f'data/output_data/output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
     json.dump(output_data, outfile)
