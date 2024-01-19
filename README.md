@@ -63,7 +63,7 @@ python main.py
 
 ## Project Structure 
 
-- `/Huizen&Batterijen`: Data sets for positions and battery capacities per district.
+- `data/Huizen&Batterijen/`: Data sets for positions and battery capacities per district.
 - `requirements.txt`: Dependencies.
 - `main.py`: Main script.
 - `helpers folder`: contains helper functions.
