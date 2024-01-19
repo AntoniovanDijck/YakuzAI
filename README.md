@@ -1,19 +1,6 @@
 
 # YakuzAI Smart Grids![YakuzAI Logo](data/assets/smart_grids1.png)
 
-
-## Overview
-
-YakuzAI's Smart Grid project
-
-
-## Key Features
-
-- **Reading the data**: Intelligently reading the data from the data sets.
-- **Connecting the houses**: Connecting the houses to the batteries.
-- **Calculating the costs**: Calculating the costs of the connections.
-- **Plotting the results**: Plotting the results in a graph.
-
 ## Table of Contents
 - [Overview](#overview)
 - [Key Features](#key-features)
@@ -31,6 +18,18 @@ YakuzAI's Smart Grid project
 - [Community & Support](#community--support)
 - [License](#license-)
 - [Acknowledgments](#acknowledgments)
+
+## Overview
+
+YakuzAI's Smart Grid project
+
+
+## Key Features
+
+- **Reading the data**: Intelligently reading the data from the data sets.
+- **Connecting the houses**: Connecting the houses to the batteries.
+- **Calculating the costs**: Calculating the costs of the connections.
+- **Plotting the results**: Plotting the results in a graph.
 
 ## Getting Started
 
