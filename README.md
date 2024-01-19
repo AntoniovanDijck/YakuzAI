@@ -10,6 +10,27 @@ YakuzAI's Smart Grid project
 ## Key Features
 
 - **Reading the data**: Intelligently reading the data from the data sets.
+- **Connecting the houses**: Connecting the houses to the batteries.
+- **Calculating the costs**: Calculating the costs of the connections.
+- **Plotting the results**: Plotting the results in a graph.
+
+## Table of Contents
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Table of Contents](#table-of-contents)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Detailed Usage](#detailed-usage)
+   - [Running the Script](#running-the-script)
+- [Project Structure](#project-structure)
+- [Customization Guide](#customization-guide)
+- [How to Contribute](#how-to-contribute)
+  - [Contributing Steps](#contributing-steps)
+  - [Guidelines](#guidelines)
+- [Community & Support](#community--support)
+- [License](#license-)
+- [Acknowledgments](#acknowledgments)
 
 ## Getting Started
 
@@ -38,14 +59,19 @@ YakuzAI's Smart Grid project
 ### Running the Script
 
 ```bash
-python smart_grid.py
+python main.py
 ```
 
 ## Project Structure 
 
 - `/Huizen&Batterijen`: Data sets for positions and battery capacities per district.
 - `requirements.txt`: Dependencies.
-- `smart_grid.py`: Main script.
+- `main.py`: Main script.
+- `helpers folder`: contains helper functions.
+- `classes folder`: contains classes for houses, batteries and districts.
+- `data folder`: contains data for the visualisation, output and input data.
+- `demo.ipynb`: Jupyter notebook with a demo of the code.
+
 
 ## Customization Guide
 
@@ -53,7 +79,9 @@ python smart_grid.py
 | ---------------------- | ---------------------------------------- |
 | Houses                 | Grid size, connections, etc.             | 
 | Battery                | Battery capacities, Battery types.       | 
-| Cables                 | length, types, Manhattan distance.       | 
+| Cables                 | length, types, Manhattan distance.       |
+| Costs                  | Costs of the cables, batteries, etc.     |
+| Districts              | Districts, houses, batteries, cables.    | 
 
 ## How to Contribute
 
