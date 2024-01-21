@@ -2,10 +2,10 @@ import numpy as np
 import json
 import csv
 import random
-from code.house import House
-from code.cable import Cable
-from code.battery import Battery
-from code.cable import Cable
+from code.classes.house import House
+from code.classes.cable import Cable
+from code.classes.battery import Battery
+from code.classes.cable import Cable
 from code.smart_grid import load_battery_data, load_house_data
 
 
