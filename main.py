@@ -10,12 +10,13 @@ import code.helpers.smart_grid
 from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.greedy import Greedy
+from code.classes.visualizer import Visualizer
 
 def main():
         ### Drawing cables for all districts
     districts_houses = ['data/Huizen&Batterijen/district_1/district-1_houses.csv', 'data/Huizen&Batterijen/district_2/district-2_houses.csv', 'data/Huizen&Batterijen/district_3/district-3_houses.csv']
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
-
+ 
     # for each district
     for i in range(0, 3):
         print(f'District {i+1}')
@@ -28,9 +29,14 @@ def main():
          # check experiment
         output_data = experiment.check_50()
 
+        #visualizer 
+        visualizer = Visualizer(experiment)
+
+        visualizer.visualize(Greedy)
+
         # export to json file
         with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
             json.dump(output_data, outfile)
-
+    
 if __name__ == "__main__":
     main()

@@ -15,7 +15,7 @@ from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.greedy import Greedy
 
-class visualizer:
+class Visualizer:
     def __init__(self, district):
         self.district = district
 
@@ -35,7 +35,7 @@ class visualizer:
         for cable in self.district.cables:
             ax.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 'b-', linewidth=0.5)
         
-    def visualize_algorithm(self, algorithm):
+    def visualize(self, algorithm):
         fig, ax = plt.subplots(figsize=(12, 12))
         self.draw_grid(ax)
         self.plot_houses_and_batteries(ax)
@@ -43,12 +43,3 @@ class visualizer:
         self.draw_cables(ax)
         plt.title(f'Visualization of {type(algorithm).__name__} Algorithm')
         plt.show()
-
-
-district = District(houses_file, batteries_file)
-visualizer = GridVisualizer(district)
-
-greedy_alg = Greedy(district)
-random_alg = RandomAlgorithm(district)
-
-visualizer.compare_algorithms(greedy_alg, random_alg)
