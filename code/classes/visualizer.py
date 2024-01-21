@@ -39,7 +39,8 @@ class Visualizer:
         fig, ax = plt.subplots(figsize=(12, 12))
         self.draw_grid(ax)
         self.plot_houses_and_batteries(ax)
-        algorithm.connect_houses_to_batteries()  # Run the algorithm
+        algoritmh_instance = algorithm(self.district)
+        algoritmh_instance.connect_houses_to_batteries()
         self.draw_cables(ax)
         plt.title(f'Visualization of {type(algorithm).__name__} Algorithm')
         plt.show()
