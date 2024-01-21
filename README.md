@@ -74,13 +74,12 @@ python main.py
 
 ## Customization Guide
 
-| Variables              | Description                              |
+| Classes                | Description                              |
 | ---------------------- | ---------------------------------------- |
 | Houses                 | Grid size, connections, etc.             | 
 | Battery                | Battery capacities, Battery types.       | 
-| Cables                 | length, types, Manhattan distance.       |
-| Costs                  | Costs of the cables, batteries, etc.     |
-| Districts              | Districts, houses, batteries, cables.    | 
+| Cables                 | Length, types, Manhattan distance.       |
+| District               | Connected, houses, batteries, cables.    | 
 
 ## How to Contribute
 
