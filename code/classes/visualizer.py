@@ -35,12 +35,25 @@ class Visualizer:
         for cable in self.district.cables:
             ax.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 'b-', linewidth=0.5)
         
-    def visualize(self, algorithm):
+    def visualize(self, algorithm, district_number):
         fig, ax = plt.subplots(figsize=(12, 12))
         self.draw_grid(ax)
         self.plot_houses_and_batteries(ax)
-        algoritmh_instance = algorithm(self.district)
-        algoritmh_instance.connect_houses_to_batteries()
+
+        algorithm_instance = algorithm(self.district)
+        algorithm_instance.connect_houses_to_batteries()
         self.draw_cables(ax)
-        plt.title(f'Visualization of {type(algorithm).__name__} Algorithm')
+
+        # Corrected line for setting the title
+        plt.title(f'Visualization of {algorithm.__name__} Algorithm for District {district_number}')
+
+        # Save the figure before showing it
+        filename = f'district_{district_number}_visualization.png'
+        plt.savefig(filename)
+
+        # Handling labels
+        handles, labels = ax.get_legend_handles_labels()
+        unique_labels = dict(zip(labels, handles))
+        ax.legend(unique_labels.values(), unique_labels.keys())
+
         plt.show()

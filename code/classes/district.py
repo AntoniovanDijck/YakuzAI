@@ -72,12 +72,12 @@ class District:
         route_cables = set()
 
         # Generate horizontal cable segments
-        for x in range(min(house.x, battery.x), max(house.x, battery.x)+1):
-            cable = Cable(x, house.y, x + 1, house.y)
+        for x in range(min(house.x, battery.x), max(house.x, battery.x) + 1):
+            cable = Cable(x, house.y, x + 1, house.y +1)
             route_cables.add(cable)
 
         # Generate vertical cable segments
-        for y in range(min(house.y, battery.y), max(house.y, battery.y)):
+        for y in range(min(house.y, battery.y), max(house.y, battery.y) +1):
             cable = Cable(battery.x, y, battery.x, y + 1)
             route_cables.add(cable)
 

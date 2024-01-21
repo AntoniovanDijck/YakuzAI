@@ -29,10 +29,10 @@ def main():
          # check experiment
         output_data = experiment.check_50()
 
-        #visualizer 
-        visualizer = Visualizer(experiment)
+        # #visualizer 
+        # visualizer = Visualizer(experiment)
 
-        visualizer.visualize(Greedy)
+        # visualizer.visualize(Greedy,1)
 
         # export to json file
         with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
