@@ -38,7 +38,7 @@ def main():
     #visualizer 
     visualizer = Visualizer(experiment)
 
-    visualizer.visualize(RandomAlgorithm,1)
+    visualizer.visualize(RandomAlgorithm,2)
     
 if __name__ == "__main__":
     main()
