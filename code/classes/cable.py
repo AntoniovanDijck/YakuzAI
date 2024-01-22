@@ -10,4 +10,4 @@ class Cable:
         self.end_y = end_y
 
         # Create an id for the cable
-        self.id = f"{self.start_x}, {self.start_y}"
+        self.id = f"{start_x}, {start_y}-{end_x},{end_y}"
