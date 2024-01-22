@@ -40,24 +40,14 @@ class RandomAlgorithm:
             if not connected:
                 print(f"House at ({house.x}, {house.y}) could not be connected to any battery.")
 
-    
-    def place_cables(self, house, battery):
-        closest_cable, cable_distance = self.experiment.find_closest_cable(house)
-        battery_distance = abs(house.x - battery.x) + abs(house.y - battery.y)
 
-        if cable_distance < battery_distance:
-            # Connect to the closest cable segment instead of directly to the battery.
-            # Let's assume the closest cable segment is horizontal for simplicity.
-            for x in range(min(house.x, closest_cable.start_x), max(house.x, closest_cable.start_x) + 1):
-                self.experiment.place_cables(x, house.y, x + 1, house.y)
-            # Now connect vertically to the actual closest cable point.
-            for y in range(min(house.y, closest_cable.start_y), max(house.y, closest_cable.start_y) + 1):
-                self.experiment.place_cables(closest_cable.start_x, y, closest_cable.start_x, y + 1)
-        else:
-            # Connect directly to the battery, same as before.
-            # Align on the x-axis
-            for x in range(min(house.x, battery.x), max(house.x, battery.x) + 1):
-                self.experiment.place_cables(x, house.y, x + 1, house.y)
-            # Align on the y-axis
-            for y in range(min(house.y, battery.y), max(house.y, battery.y) + 1):
-                self.experiment.place_cables(battery.x, y, battery.x, y + 1)
+    def place_cables(self, house, battery):
+        # Place cable along x-axis
+        if house.x != battery.x:
+            x_start, x_end = sorted([house.x, battery.x])
+            self.experiment.place_cables(x_start, house.y, x_end, house.y)
+
+        # Place cable along y-axis
+        if house.y != battery.y:
+            y_start, y_end = sorted([house.y, battery.y])
+            self.experiment.place_cables(battery.x, y_start, battery.x, y_end)
