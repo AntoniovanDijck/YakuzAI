@@ -42,11 +42,11 @@ class RandomAlgorithm:
 
     def place_cables(self, house, battery):
         # Align on the x-axis
-        for x in range(min(house.x, battery.x), max(house.x, battery.x) + 1):
+        for x in range(min(house.x, battery.x), max(house.x, battery.x)):
             # Correctly passing the start and end coordinates for each cable segment
             self.experiment.place_cables(x, house.y, x + 1, house.y)
 
         # Align on the y-axis
-        for y in range(min(house.y, battery.y), max(house.y, battery.y) + 1):
+        for y in range(min(house.y, battery.y), max(house.y, battery.y)):
             # Correctly passing the start and end coordinates for each cable segment
             self.experiment.place_cables(battery.x, y, battery.x, y + 1)

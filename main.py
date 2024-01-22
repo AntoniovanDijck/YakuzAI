@@ -22,21 +22,23 @@ def main():
         print(f'District {i+1}')
         # set up experiment
         experiment = District(districts_houses[i], districts_batteries[i])
-        random_instance = Greedy(experiment)
+        random_instance = RandomAlgorithm(experiment)
         random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
         
          # check experiment
         output_data = experiment.check_50()
 
-        # #visualizer 
-        # visualizer = Visualizer(experiment)
 
-        # visualizer.visualize(Greedy,1)
 
         # export to json file
         with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
             json.dump(output_data, outfile)
+    
+    #visualizer 
+    visualizer = Visualizer(experiment)
+
+    visualizer.visualize(RandomAlgorithm,1)
     
 if __name__ == "__main__":
     main()

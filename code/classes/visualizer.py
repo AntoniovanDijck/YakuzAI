@@ -39,9 +39,6 @@ class Visualizer:
         fig, ax = plt.subplots(figsize=(12, 12))
         self.draw_grid(ax)
         self.plot_houses_and_batteries(ax)
-
-        algorithm_instance = algorithm(self.district)
-        algorithm_instance.connect_houses_to_batteries()
         self.draw_cables(ax)
 
         # Corrected line for setting the title
