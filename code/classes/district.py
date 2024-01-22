@@ -53,6 +53,30 @@ class District:
 
     def find_nearest_battery(self, house):
         return min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
+    
+    
+    def find_closest_cable(self, house):
+        """Finds the closest cable to house"""
+        closest_cable = None
+        min_distance = float('inf')
+
+        # Find closest cable.
+        for cable in self.cables:
+            # Check distance from the house to the cable's endpoints
+            distances = [
+                abs(house.x - cable.start_x) + abs(house.y - cable.start_y),
+                abs(house.x - cable.end_x) + abs(house.y - cable.end_y)
+            ]
+            
+            # Find the minimum distance for this cable
+            distance = min(distances)
+            
+            # If this is the shortest distance update closest_cable and min_distance
+            if distance < min_distance:
+                min_distance = distance
+                closest_cable = cable
+
+        return closest_cable, min_distance
 
     def place_cables(self, start_x, start_y, end_x, end_y):
         new_cable = Cable(start_x, start_y, end_x, end_y)

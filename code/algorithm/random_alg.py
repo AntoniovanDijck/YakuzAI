@@ -40,13 +40,24 @@ class RandomAlgorithm:
             if not connected:
                 print(f"House at ({house.x}, {house.y}) could not be connected to any battery.")
 
+    
     def place_cables(self, house, battery):
-        # Align on the x-axis
-        for x in range(min(house.x, battery.x), max(house.x, battery.x)):
-            # Correctly passing the start and end coordinates for each cable segment
-            self.experiment.place_cables(x, house.y, x + 1, house.y)
+        closest_cable, cable_distance = self.experiment.find_closest_cable(house)
+        battery_distance = abs(house.x - battery.x) + abs(house.y - battery.y)
 
-        # Align on the y-axis
-        for y in range(min(house.y, battery.y), max(house.y, battery.y)):
-            # Correctly passing the start and end coordinates for each cable segment
-            self.experiment.place_cables(battery.x, y, battery.x, y + 1)
+        if cable_distance < battery_distance:
+            # Connect to the closest cable segment instead of directly to the battery.
+            # Let's assume the closest cable segment is horizontal for simplicity.
+            for x in range(min(house.x, closest_cable.start_x), max(house.x, closest_cable.start_x) + 1):
+                self.experiment.place_cables(x, house.y, x + 1, house.y)
+            # Now connect vertically to the actual closest cable point.
+            for y in range(min(house.y, closest_cable.start_y), max(house.y, closest_cable.start_y) + 1):
+                self.experiment.place_cables(closest_cable.start_x, y, closest_cable.start_x, y + 1)
+        else:
+            # Connect directly to the battery, same as before.
+            # Align on the x-axis
+            for x in range(min(house.x, battery.x), max(house.x, battery.x) + 1):
+                self.experiment.place_cables(x, house.y, x + 1, house.y)
+            # Align on the y-axis
+            for y in range(min(house.y, battery.y), max(house.y, battery.y) + 1):
+                self.experiment.place_cables(battery.x, y, battery.x, y + 1)
