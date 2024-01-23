@@ -29,23 +29,28 @@ def visualize(district):
 
     #load the image for houses and batteries
     house_image = plt.imread("data/Huizen&Batterijen/Images/housy.png")
-    battery_image = plt.imread("data/Huizen&Batterijen/Images/battery.jpeg")
+    battery_image = plt.imread("data/Huizen&Batterijen/Images/battery.png")
 
-    def plot_image(img, x, y):
-        image = OffsetImage(img, zoom=0.05)
+    def plot_house(img, x, y):
+        image = OffsetImage(img, zoom=0.03)
+        ab = AnnotationBbox(image, (x,y), frameon=False)
+        ax.add_artist(ab)
+
+    def plot_battery(img, x, y):
+        image = OffsetImage(img, zoom=0.01)
         ab = AnnotationBbox(image, (x,y), frameon=False)
         ax.add_artist(ab)
 
     # Plot houses
     for house in experiment_instance.houses:
-        plot_image(house_image, house.x, house.y)
+        plot_house(house_image, house.x, house.y)
 
     # Set total cost to 0
     total_cost = 0
 
     # Plot batteries
     for battery in experiment_instance.batteries:
-        plt.scatter(battery.x, battery.y, color='yellow', edgecolors='black', linewidth=0.5, marker='s', label='Battery')
+        plot_battery(battery_image, battery.x, battery.y)
         
         # Add 5000 to the total cost for every battery
         total_cost += 5000
