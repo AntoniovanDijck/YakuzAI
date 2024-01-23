@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
-def draw_cables(district):
+def visualize(district):
     """
     This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
     """
@@ -26,9 +27,18 @@ def draw_cables(district):
     ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
     ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
 
+    #load the image for houses and batteries
+    house_image = plt.imread("data/Huizen&Batterijen/Images/housy.png")
+    battery_image = plt.imread("data/Huizen&Batterijen/Images/battery.jpeg")
+
+    def plot_image(img, x, y):
+        image = OffsetImage(img, zoom=0.05)
+        ab = AnnotationBbox(image, (x,y), frameon=False)
+        ax.add_artist(ab)
+
     # Plot houses
     for house in experiment_instance.houses:
-        plt.scatter(house.x, house.y, color='blue', label='House')
+        plot_image(house_image, house.x, house.y)
 
     # Set total cost to 0
     total_cost = 0
@@ -77,4 +87,5 @@ def draw_cables(district):
 
     plt.title('Houses and Batteries with Manhattan-style Cables')
     plt.show()
+
 

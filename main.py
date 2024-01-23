@@ -10,7 +10,8 @@ import code.helpers.smart_grid
 from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.greedy import Greedy
-from code.classes.visualizer import Visualizer
+from code.helpers.visualize import visualize
+
 
 def main():
         ### Drawing cables for all districts
@@ -34,11 +35,9 @@ def main():
         # export to json file
         with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
             json.dump(output_data, outfile)
-    
-    #visualizer 
-    visualizer = Visualizer(experiment)
 
-    visualizer.visualize(RandomAlgorithm,2)
+    visualize(experiment)
+    
     
 if __name__ == "__main__":
     main()
