@@ -1,3 +1,7 @@
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 import numpy as np
 import json
 import csv

@@ -1,10 +1,14 @@
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 class Greedy1:
     def __init__(self, experiment):
         self.experiment = experiment
 
     def connect_houses_to_batteries(self):
         for house in self.experiment.houses:
-            
+
             # Sort batteries by distance to the house
             sorted_batteries = sorted(self.experiment.batteries, 
                                       key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))

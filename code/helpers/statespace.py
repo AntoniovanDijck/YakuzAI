@@ -1,4 +1,6 @@
-
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
 
 #Simple statespace which only calculates how many different connections (only amount) there can be per battery given a max 
 #amount of connections 

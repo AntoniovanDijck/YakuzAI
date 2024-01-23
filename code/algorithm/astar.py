@@ -1,3 +1,7 @@
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 class A_star:
     def __init__(self, district):
         self.district = district

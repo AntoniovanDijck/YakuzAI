@@ -8,7 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
-
 def load_battery_data(filename):
     '''
     reads the csv file and returns a dictionary with the positions of the batteries and their capacity

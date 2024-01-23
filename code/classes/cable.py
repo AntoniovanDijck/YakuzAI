@@ -1,3 +1,6 @@
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
 
 class Cable:
     """

@@ -1,3 +1,7 @@
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 import random 
 
 class RandomAlgorithm:

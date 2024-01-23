@@ -1,3 +1,7 @@
+# Smart_grid.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy as np

@@ -2,7 +2,6 @@
 # Antonio, Mec, Vincent
 # YakuzAI
 
-
 def get_5_total_length(batteries):
     total_cable_length = 0
     
