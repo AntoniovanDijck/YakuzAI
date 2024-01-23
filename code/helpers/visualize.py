@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
-def draw_cables(district):
+def visualize(district, district_number):
     """
     This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
     """
@@ -26,16 +27,30 @@ def draw_cables(district):
     ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
     ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
 
+    #load the image for houses and batteries
+    house_image = plt.imread("data/Huizen&Batterijen/Images/housy.png")
+    battery_image = plt.imread("data/Huizen&Batterijen/Images/battery.png")
+
+    def plot_house(img, x, y):
+        image = OffsetImage(img, zoom=0.03)
+        ab = AnnotationBbox(image, (x,y), frameon=False)
+        ax.add_artist(ab)
+
+    def plot_battery(img, x, y):
+        image = OffsetImage(img, zoom=0.01)
+        ab = AnnotationBbox(image, (x,y), frameon=False)
+        ax.add_artist(ab)
+
     # Plot houses
     for house in experiment_instance.houses:
-        plt.scatter(house.x, house.y, color='blue', label='House')
+        plot_house(house_image, house.x, house.y)
 
     # Set total cost to 0
     total_cost = 0
 
     # Plot batteries
     for battery in experiment_instance.batteries:
-        plt.scatter(battery.x, battery.y, color='yellow', edgecolors='black', linewidth=0.5, marker='s', label='Battery')
+        plot_battery(battery_image, battery.x, battery.y)
         
         # Add 5000 to the total cost for every battery
         total_cost += 5000
@@ -76,5 +91,6 @@ def draw_cables(district):
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
     plt.title('Houses and Batteries with Manhattan-style Cables')
-    plt.show()
+    plt.savefig(f"data/output_data/plots/district{district_number}.png")
+    plt.close(fig)
 

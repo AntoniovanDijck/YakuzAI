@@ -1,56 +1,91 @@
-
-
-import csv
-import json
-import random
+import matplotlib.pyplot as plt
+import numpy as np
+from code.helpers.smart_grid import load_battery_data, load_house_data, show_district
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-
-#importing our modules 
-from code.classes.house import House
 from code.classes.battery import Battery
+from code.classes.house import House
 from code.classes.cable import Cable
 from code.classes.district import District
-from code.algorithm.random_alg import RandomAlgorithm
+from code.helpers.visualize import draw_cables
 from code.algorithm.greedy import Greedy
+from code.algorithm.random_alg import RandomAlgorithm
 
-class Visualizer:
-    def __init__(self, district):
-        self.district = district
+def draw_cables(district):
+    """
+    This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
+    """
+    # Create an instance of the Experiment clas
+    experiment_instance = district
 
-    def draw_grid(self, ax):
-        ax.set_xticks(np.arange(0,51,1))
-        ax.set_yticks(np.arange(0,51,1))
-        ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder=0)
 
-    def plot_houses_and_batteries(self, ax):
-        for house in self.district.houses:
-            ax.scatter(house.x, house.y, color="blue", label="house")
+    # Create a figure and 50x50 grid
+    fig, ax = plt.subplots(figsize=(12, 12))
+    ax.set_xticks(np.arange(0, 51, 1))
+    ax.set_yticks(np.arange(0, 51, 1))
+
+    # Draw grid with grey lines
+    ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder=0)
+
+    # Draw thicker grey lines for every 10th line
+    for i in range(0, 51, 10):
+        ax.axvline(x=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
+        ax.axhline(y=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
+
+    # Set labels for every 10th line
+    ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
+    ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
+
+    # Plot houses
+    for house in experiment_instance.houses:
+        plt.scatter(house.x, house.y, color='blue', label='House')
+
+    # Set total cost to 0
+    total_cost = 0
+
+    # Plot batteries
+    for battery in experiment_instance.batteries:
+        plt.scatter(battery.x, battery.y, color='yellow', edgecolors='black', linewidth=0.5, marker='s', label='Battery')
         
-        for battery in self.district.batteries:
-            ax.scatter(battery.x, battery.y, color="red", edgecolors='black', linewidth=0.5, marker='s', label='Battery')
+        # Add 5000 to the total cost for every battery
+        total_cost += 5000
 
-    def draw_cables(self,ax):
-        for cable in self.district.cables:
-            ax.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 'b-', linewidth=0.5)
+        # Calculate and annotate total output and total cables for each battery
+        total_output = sum(house.maxoutput for house in battery.connected_houses)
+
+        # Create a set of all cables connected to the battery
+        battery_cables = set()
+
+        # Add all cables connected to the battery to the set
+        for house in battery.connected_houses:
+
+            # Loop over cables
+            for cable in experiment_instance.get_cables_for_route(house, battery):
+
+                # Check if the cable is connected to the battery
+                battery_cables.add(cable.id)
+
+        # Calculate the total cables used
+        total_cables = len(battery_cables)
+
+        # Ecery cable adds 9 to the total cost
+        total_cost += total_cables * 9
+
+        # Annotate the battery with the total output and total cables
+        plt.annotate(f'Output: {total_output}\nCables: {total_cables}', 
+                    (battery.x, battery.y), textcoords="offset points", 
+                    xytext=(0,10), ha='right', fontsize=12, color='black')
+
+    # Plot cables
+    for cable in experiment_instance.cables:
+        plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
+                'b-', linewidth=0.5)
         
-    def visualize(self, algorithm, district_number):
-        fig, ax = plt.subplots(figsize=(12, 12))
-        self.draw_grid(ax)
-        self.plot_houses_and_batteries(ax)
-        self.draw_cables(ax)
+    # Add the total cost of the district to the plot
+    plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
+                xytext=(10,10), ha='left', fontsize=12, color='black')
 
-        # Corrected line for setting the title
-        plt.title(f'Visualization of {algorithm.__name__} Algorithm for District {district_number}')
+    plt.title('Houses and Batteries with Manhattan-style Cables')
+    plt.show()
 
-        # Save the figure before showing it
-        filename = f'district_{district_number}_visualization.png'
-        plt.savefig(filename)
-
-        # Handling labels
-        handles, labels = ax.get_legend_handles_labels()
-        unique_labels = dict(zip(labels, handles))
-        ax.legend(unique_labels.values(), unique_labels.keys())
-
-        plt.show()
