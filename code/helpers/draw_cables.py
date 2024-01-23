@@ -1,16 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from code.helpers.smart_grid import load_battery_data, load_house_data, show_district
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-from code.classes.battery import Battery
-from code.classes.house import House
-from code.classes.cable import Cable
-from code.classes.district import District
-from code.helpers.visualize import draw_cables
-from code.algorithm.greedy import Greedy
-from code.algorithm.random_alg import RandomAlgorithm
+
 
 def draw_cables(district):
     """
