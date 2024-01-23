@@ -21,8 +21,8 @@ class Experiment:
         house_dict = load_house_data(houses_file)
         battery_dict = load_battery_data(batteries_file)
 
-        # Create houses and batteries using the data
-        self.houses = [House(x, y, maxoutput) for (x, y), maxoutput in house_dict.items()]
+        # Create houses and batteries using the data 
+        self.houses = [House(x, y, maxoutput) for (x, y), maxoutput in house_dict.items()] #deze lijst moet in een functie gedaan worden
         self.batteries = [Battery(x, y, capacity) for (x, y), capacity in battery_dict.items()]
 
         # Create empty list for cables
@@ -134,6 +134,8 @@ class Experiment:
 
         return route_cables
 
+
+    #deze kan weg
     def shared_cables(self):
         """This method checks if a cable segment is already existing"""
 
