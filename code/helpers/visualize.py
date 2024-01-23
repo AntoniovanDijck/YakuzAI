@@ -69,7 +69,7 @@ def visualize(district, district_number):
         for house in battery.connected_houses:
 
             # Loop over cables
-            for cable in experiment_instance.get_cables_for_route(house, battery):
+            for cable in house.route:
 
                 # Check if the cable is connected to the battery
                 battery_cables.add(cable.id)

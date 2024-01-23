@@ -1,14 +1,9 @@
-# Smart_grid.py
-# Antonio, Mec, Vincent
-# YakuzAI
-
-class Greedy1:
+class Greedy:
     def __init__(self, experiment):
         self.experiment = experiment
 
     def connect_houses_to_batteries(self):
         for house in self.experiment.houses:
-
             # Sort batteries by distance to the house
             sorted_batteries = sorted(self.experiment.batteries, 
                                       key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
@@ -34,59 +29,79 @@ class Greedy2:
         self.district = district
 
     def distance(self, house, battery):
-        ''' Function that calculates the distance between a house and a battery'''
-
-        # Calculate distance between house and battery using the Manhattan distance
         return abs(battery.x - house.x) + abs(battery.y - house.y)
 
     def connect_houses_to_batteries(self):
-        ''' Function that connects houses to batteries'''
-
-        # loop through houses in the district
+        # Precompute distances
         for house in self.district.houses:
-
-            # add battery and distance to list using the distance function
             house.battery_distances = [(battery, self.distance(house, battery)) for battery in self.district.batteries]
-
-            # Sort by distance, second culumn [1] using lamda function. 
             house.battery_distances.sort(key=lambda x: x[1])
 
-        # Connect houses to batteries
+
         for house in self.district.houses:
-            
-            # Try to connect to the closest battery first
-            for battery, y in house.battery_distances:
-
-                # If the battery can connect to the house, connect them
+            for battery, _ in house.battery_distances:
                 if battery.can_connect(house):
-
-                    # Place cables
-                    self.place_cables(house, battery)
+                    self.place_cables(house, battery)  # Place cables one by one
                     battery.connect_house(house)
-
-                    # Stop looking for batteries if connected
                     break
             else:
-                # if house could not be connected to any battery print error
                 print(f"House at ({house.x}, {house.y}) could not be connected to any battery.")
 
+
     def place_cables(self, house, battery):
-        ''' Function that places cables between house and battery'''
-
-        # Place cable on y-axis if the house and battery are not on the same y-axis
+        # Place cable along x-axis
         if house.x != battery.x:
-
-            # Sort x-coordinates and take the smallest and largest value
             x_start, x_end = sorted([house.x, battery.x])
+            for x in range(x_start, x_end):
+                # Create a new cable segment for each unit along the x-axis
+                self.district.place_cables(x, house.y, x + 1, house.y, battery)
 
-            # Place cables between house and battery
-            self.district.place_cables(x_start, house.y, x_end, house.y)
-
-        # Place cable on y-axis if the house and battery are not on the same y-axis
+        # Place cable along y-axis
         if house.y != battery.y:
-
-            # Sort y-coordinates and take the smallest and largest value
             y_start, y_end = sorted([house.y, battery.y])
+            for y in range(y_start, y_end):
+                # Create a new cable segment for each unit along the y-axis
+                self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
 
-            # Place cables between house and battery
-            self.district.place_cables(battery.x, y_start, battery.x, y_end)
+class Greedy3:
+    def __init__(self, experiment):
+        self.experiment = experiment
+
+    def find_nearest_object(self, house):
+        # Combine batteries and cables into a single list
+        objects = self.experiment.batteries + self.experiment.cables
+
+        # Sort objects by distance to the house
+        sorted_objects = sorted(objects, key=lambda obj: abs(obj.x - house.x) + abs(obj.y - house.y))
+        return sorted_objects
+
+    def connect_houses_to_batteries(self):
+        for house in self.experiment.houses:
+            sorted_objects = self.find_nearest_object(house)
+
+            for obj in sorted_objects:
+                if isinstance(obj, battery) and obj.can_connect(house):
+                    # Connect to the battery
+                    obj.connect(house)
+                    break
+                elif isinstance(obj, self.cable):
+                    connected_battery = obj.connected_battery
+                    if connected_battery and connected_battery.can_connect(house):
+                        # Connect to the cable, which routes to the battery
+                        obj.connect(house)
+                        break
+
+    def place_cables(self, house, battery):
+        # Place cable along x-axis
+        if house.x != battery.x:
+            x_start, x_end = sorted([house.x, battery.x])
+            for x in range(x_start, x_end):
+                # Create a new cable segment for each unit along the x-axis
+                self.district.place_cables(x, house.y, x + 1, house.y, battery)
+
+        # Place cable along y-axis
+        if house.y != battery.y:
+            y_start, y_end = sorted([house.y, battery.y])
+            for y in range(y_start, y_end):
+                # Create a new cable segment for each unit along the y-axis
+                self.district.place_cables(battery.x, y, battery.x, y + 1, battery)

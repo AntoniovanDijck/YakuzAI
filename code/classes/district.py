@@ -81,34 +81,16 @@ class District:
 
         return closest_cable, min_distance
 
-    def place_cables(self, start_x, start_y, end_x, end_y):
-        new_cable = Cable(start_x, start_y, end_x, end_y)
-
+    def place_cables(self, start_x, start_y, end_x, end_y, battery = None):
+        new_cable = Cable(start_x, start_y, end_x, end_y, battery)
+        new_cable.connected_battery = battery
         # Check for duplicate cables
         for cable in self.cables:
             if cable.id == new_cable.id:
                 return  # Cable already exists, no need to add again
-        
+
         self.cables.append(new_cable)
 
-    
-    def get_cables_for_route(self, house, battery):
-        """
-        This method returns a set of cables that are part of the route from a house to a battery
-        """
-        route_cables = set()
-
-        # Generate horizontal cable segments
-        for x in range(min(house.x, battery.x), max(house.x, battery.x) + 1):
-            cable = Cable(x, house.y, x + 1, house.y +1)
-            route_cables.add(cable)
-
-        # Generate vertical cable segments
-        for y in range(min(house.y, battery.y), max(house.y, battery.y) +1):
-            cable = Cable(battery.x, y, battery.x, y + 1)
-            route_cables.add(cable)
-
-        return route_cables
 
     def shared_cables(self):
         """This method checks if a cable segment is already existing"""
@@ -149,7 +131,7 @@ class District:
             for house in battery.connected_houses:
 
                 # Loop over cables
-                for cable in self.get_cables_for_route(house, battery):
+                for cable in house.route:
                     
                     # Check if the cable is connected to the battery
                     battery_cables.add(cable.id)
@@ -184,7 +166,7 @@ class District:
 
             for house in battery.connected_houses:
                 #generate cables for each house
-                cables = self.get_cables_for_route(house, battery)
+                cables = house.route
 
                 cable_data = [f"{cable.start_x},{cable.start_y}" for cable in cables]
                 house_data = {

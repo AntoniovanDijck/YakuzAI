@@ -13,3 +13,5 @@ class House():
         #houses output
         self.maxoutput = maxoutput
         
+        # Set the connected route battery to None
+        self.route = []
