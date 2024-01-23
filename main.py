@@ -23,7 +23,7 @@ def main():
         print(f'District {i+1}')
         # set up experiment
         experiment = District(districts_houses[i], districts_batteries[i])
-        random_instance = RandomAlgorithm(experiment)
+        random_instance = Greedy(experiment)
         random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
         

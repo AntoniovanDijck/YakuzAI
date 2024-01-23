@@ -92,5 +92,6 @@ def visualize(district, district_number):
 
     plt.title('Houses and Batteries with Manhattan-style Cables')
     plt.savefig(f"data/output_data/plots/district{district_number}.png")
-
+    plt.show()
+    plt.close(fig)
 
