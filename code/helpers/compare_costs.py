@@ -27,7 +27,7 @@ def algorithm_costs(Algoritmh):
         random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
 
-
+# test 
 algorithm_costs(Greedy2)
 
 
