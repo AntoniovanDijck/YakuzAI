@@ -1,4 +1,4 @@
-class Greedy:
+class Greedy1:
     def __init__(self, experiment):
         self.experiment = experiment
 
