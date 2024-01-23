@@ -4,6 +4,7 @@ class Greedy1:
 
     def connect_houses_to_batteries(self):
         for house in self.experiment.houses:
+            
             # Sort batteries by distance to the house
             sorted_batteries = sorted(self.experiment.batteries, 
                                       key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
@@ -58,6 +59,8 @@ class Greedy2:
                     # Place cables
                     self.place_cables(house, battery)
                     battery.connect_house(house)
+
+                    # Stop looking for batteries if connected
                     break
             else:
                 # if house could not be connected to any battery print error

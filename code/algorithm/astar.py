@@ -2,10 +2,53 @@ class A_star:
     def __init__(self, district):
         self.district = district
 
+    def search(self, house, battery):
+        batteries_sorted = [(self.distance(house, battery), house)]
+        vorige_node = {}
+        g_score = {node: float("inf") for node in self.district.batteries}
+        g_score[house] = 0
+
+        while batteries_sorted:
+            batteries_sorted.sort(key=lambda x: x[0])
+            current = batteries_sorted.pop(0)[1]
+
+            if current == battery:
+                break
+
+            for next in current.connections:
+                new_g_score = g_score[current] + self.distance(current, next)
+
+                if new_g_score < g_score[next]:
+                    vorige_node[next] = current
+                    g_score[next] = new_g_score
+                    batteries_sorted.append((new_g_score + self.distance(next, battery), next))
+                    batteries_sorted.sort()
+
+        return vorige_node
+    
+    def place_cables(self, house, battery):
+        total_path = []
+        vorige_node = self.search(house, battery)
+        current = battery
+
+        while current != house:
+            total_path.append(current)
+            current = vorige_node[current]
+
+        total_path.append(house)
+        total_path.reverse()
+
+        for i in range(len(total_path) - 1):
+            if total_path[i].x == total_path[i + 1].x:
+                self.district.place_cables(total_path[i].x, total_path[i].y, total_path[i + 1].x, total_path[i + 1].y)
+            else:
+                self.district.place_cables(total_path[i].x, total_path[i].y, total_path[i].x, total_path[i + 1].y)
+
     def distance(self, house, battery):
         ''' Function that calculates the Manhattan distance between a house and a battery'''
         return abs(battery.x - house.x) + abs(battery.y - house.y)
-    def connect_houses_to_batteries(self):
+    
+    def connect_houses_to_batteries2(self):
         for house in self.district.houses:
             # maak een lijst met de batterijen en hun afstand t.o.v huis
             batteries_sorted = [(self.distance(house, battery), battery.x, battery) for battery in self.district.batteries]
