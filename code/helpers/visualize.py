@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
-def visualize(district):
+def visualize(district, district_number):
     """
     This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
     """
@@ -91,6 +91,6 @@ def visualize(district):
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
     plt.title('Houses and Batteries with Manhattan-style Cables')
-    plt.show()
+    plt.savefig(f"data/output_data/plots/district{district_number}.png")
 
 

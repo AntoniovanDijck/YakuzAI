@@ -36,7 +36,7 @@ def main():
         with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
             json.dump(output_data, outfile)
 
-    visualize(experiment)
+        visualize(experiment, i+1)
     
     
 if __name__ == "__main__":
