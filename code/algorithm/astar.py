@@ -2,7 +2,11 @@ class A_star:
     def __init__(self, district):
         self.district = district
 
-    def search(self, house, battery):
+    def distance(self, house, battery):
+        ''' Function that calculates the Manhattan distance between a house and a battery'''
+        return abs(battery.x - house.x) + abs(battery.y - house.y)
+
+    def a_star_search(self, house, battery):
         batteries_sorted = [(self.distance(house, battery), house)]
         vorige_node = {}
         g_score = {node: float("inf") for node in self.district.batteries}
@@ -21,32 +25,17 @@ class A_star:
                 if new_g_score < g_score[next]:
                     vorige_node[next] = current
                     g_score[next] = new_g_score
-                    batteries_sorted.append((new_g_score + self.distance(next, battery), next))
-                    batteries_sorted.sort()
+
+                    # Check if next is already in batteries_sorted
+                    for i, (existing_f_score, existing_node) in enumerate(batteries_sorted):
+                        if existing_node == next:
+                            if new_g_score + self.distance(next, battery) < existing_f_score:
+                                batteries_sorted[i] = (new_g_score + self.distance(next, battery), next)
+                            break
+                    else:
+                        batteries_sorted.append((new_g_score + self.distance(next, battery), next))
 
         return vorige_node
-    
-    def place_cables(self, house, battery):
-        total_path = []
-        vorige_node = self.search(house, battery)
-        current = battery
-
-        while current != house:
-            total_path.append(current)
-            current = vorige_node[current]
-
-        total_path.append(house)
-        total_path.reverse()
-
-        for i in range(len(total_path) - 1):
-            if total_path[i].x == total_path[i + 1].x:
-                self.district.place_cables(total_path[i].x, total_path[i].y, total_path[i + 1].x, total_path[i + 1].y)
-            else:
-                self.district.place_cables(total_path[i].x, total_path[i].y, total_path[i].x, total_path[i + 1].y)
-
-    def distance(self, house, battery):
-        ''' Function that calculates the Manhattan distance between a house and a battery'''
-        return abs(battery.x - house.x) + abs(battery.y - house.y)
     
     def connect_houses_to_batteries2(self):
         for house in self.district.houses:
