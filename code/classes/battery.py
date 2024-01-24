@@ -21,6 +21,8 @@ class Battery():
         # list of cables connecxted to battery per battery is stored here
         self.cables = []
 
+        self.color = None
+
 
     def connect_house(self, house):
         """

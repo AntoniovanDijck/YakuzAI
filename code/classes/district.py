@@ -46,8 +46,9 @@ class District:
 
         # create empty list for batteries
         batteries = []
-
+    
         # open file and read in the data and create batteries
+        
         with open(file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
