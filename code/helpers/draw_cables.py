@@ -60,7 +60,7 @@ def draw_cables(district):
             for cable in house.route:
 
                 # Check if the cable is connected to the battery
-                battery_cables.add(cable.id)
+                battery_cables.add(cable)
 
         # Calculate the total cables used
         total_cables = len(battery_cables)

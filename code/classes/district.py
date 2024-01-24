@@ -9,6 +9,9 @@ from code.classes.cable import Cable
 from code.helpers.smart_grid import load_battery_data, load_house_data
 
 class District:
+    """
+    Class that creates a district with houses and batteries
+    """
     def __init__(self, houses_file, batteries_file):
         # Load houses and batteries
         house_dict = load_house_data(houses_file)
@@ -55,11 +58,17 @@ class District:
 
 
     def find_nearest_battery(self, house):
+        """
+        Finds the nearest battery to house using the manhattan distance
+        """
         return min(self.batteries, key=lambda battery: abs(battery.x - house.x) + abs(battery.y - house.y))
     
-    
+        
     def find_closest_cable(self, house):
-        """Finds the closest cable to house"""
+        """
+        Finds the closest cable to a house and returns the cable and the distance
+        """
+
         closest_cable = None
         min_distance = float('inf')
 
@@ -74,31 +83,31 @@ class District:
             # Find the minimum distance for this cable
             distance = min(distances)
             
-            # If this is the shortest distance update closest_cable and min_distance
+            # If this is the shortest distance, update closest_cable and min_distance
             if distance < min_distance:
                 min_distance = distance
                 closest_cable = cable
 
         return closest_cable, min_distance
 
-    def place_cables(self, start_x, start_y, end_x, end_y, battery = None):
-        new_cable = Cable(start_x, start_y, end_x, end_y, battery)
-        new_cable.connected_battery = battery
-        # Check for duplicate cables
-        for cable in self.cables:
-            if cable.id == new_cable.id:
-                return  # Cable already exists, no need to add again
+    def place_cables(self, start_x, start_y, end_x, end_y, battery=None):
+        """
+        This method places a cable between two points and adds it to the list of cables
+        """
 
-        self.cables.append(new_cable)
+    
+        # Create a unique cable id
+        cable_id = f"{start_x},{start_y}-{end_x},{end_y}"
 
+        # Check if the cable with this id already exists
+        if not any(cable.id == cable_id for cable in self.cables):
 
-    def shared_cables(self):
-        """This method checks if a cable segment is already existing"""
+            # Create a new cable with the given coordinates
+            new_cable = Cable(start_x, start_y, end_x, end_y, battery)
 
-        used_cables = {}
-        
-        for house in self.houses:
-            return None
+            # Add the cable to the list of cables
+            self.cables.append(new_cable)
+
 
     def is_cable_connected_to_battery(self, cable, battery):
         """
@@ -106,48 +115,47 @@ class District:
         """
 
         # Check if a cable end point is at the battery location
-        return ((cable.end_x, cable.end_y) == (battery.x, battery.y) or
+        return ((cable.end_x, cable.end_y) == (battery.x, battery.y) 
+                or
                 (cable.start_x, cable.start_y) == (battery.x, battery.y))
     
     def calculate_totals(self):
         """
-        Calculates the total output and total cables used per battery
+        This method calculates the total cost and total output of the district
         """
 
+        # Initialize variables
         total_cost = 0
+        unique_cable_ids = set()  
 
-        # Loop over batteries
+        # Loop over all batteries
         for battery in self.batteries:
 
+            # Add the battery cost to the total cost
             total_cost += 5000
 
-            # Calculate total output as a sum of the max output of the connected houses
-            total_output = sum(house.maxoutput for house in battery.connected_houses)
-
-            # Create a set of cables to prevent duplicates
-            battery_cables = set()
-
-            # Loop over houses connected to the battery
+            # Loop over all houses connected to the battery
             for house in battery.connected_houses:
 
-                # Loop over cables
+                # Add the cost of the cable to the total cost
                 for cable in house.route:
-                    
-                    # Check if the cable is connected to the battery
-                    battery_cables.add(cable.id)
+                    unique_cable_ids.add(cable)  # Add unique cable IDs
+
+        # Calculate the total amount of unique cables
+        total_cables = len(unique_cable_ids)
+
+        # Add the cost of the cables to the total cost
+        total_cost += total_cables * 9 
+
+        # Calculate the total output of the district
+        total_output = sum(house.maxoutput for house in battery.connected_houses)
 
 
-            # Calculate the total cables used
-            total_cables = len(battery_cables)
-
-            # Add a cost of 9 per cabkle
-            total_cost += total_cables * 9
-
-            # Print the results
-            print(f'Battery at ({battery.x}, {battery.y}):')
-            print(f'  Total output connected: {total_output}')
-            print(f'  Total cables used: {total_cables}')
-           
+        # Print the results
+        print(f'Battery at ({battery.x}, {battery.y}):')
+        print(f'  Total output connected: {total_output}')
+        print(f'  Total cables used: {total_cables}')
+        
         print(f'  Total cost: {total_cost}')
 
         return total_cost
@@ -168,7 +176,7 @@ class District:
                 #generate cables for each house
                 cables = house.route
 
-                cable_data = [f"{cable.start_x},{cable.start_y}" for cable in cables]
+                cable_data = cables
                 house_data = {
                     "location": f"{house.x}, {house.y}", "output": house.maxoutput, "cables": cable_data
                 }
