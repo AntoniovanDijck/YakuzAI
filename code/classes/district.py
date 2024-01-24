@@ -6,7 +6,6 @@ import csv
 from code.classes.house import House
 from code.classes.battery import Battery
 from code.classes.cable import Cable
-from code.helpers.smart_grid import load_battery_data, load_house_data
 
 class District:
     """
@@ -119,6 +118,17 @@ class District:
         return ((cable.end_x, cable.end_y) == (battery.x, battery.y) 
                 or
                 (cable.start_x, cable.start_y) == (battery.x, battery.y))
+    
+    def remoove_connected_house(self, house, battery):
+        """
+        This method removes a house from the connected houses of a battery and resets the house route
+        """
+        
+        # Remove the house from the connected houses of the battery
+        battery.connected_houses.remove(house)
+
+        # Reset the house route
+        house.route = []
     
     def calculate_totals(self):
         """
