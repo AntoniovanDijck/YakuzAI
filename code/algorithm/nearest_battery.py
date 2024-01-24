@@ -1,3 +1,5 @@
+import random
+
 class nearest_battery:
     def __init__(self, district):
         self.district = district
@@ -20,7 +22,19 @@ class nearest_battery:
                     battery.connect_house(house)
                     break
             else:
-                print(f"House at ({house.x}, {house.y}) could not be connected to any battery.")
+                # Remove a random house from the battery and try again until it works
+
+                while True:
+
+                    battery = random.choice(self.district.batteries)
+
+                    # select a random house that is connected to this battery
+                    house = random.choice(battery.connected_houses)
+
+                    # remove the house from the battery
+                    self.district.remove_connected_house(house, battery)
+
+                    break
 
 
     def place_cables(self, house, battery):

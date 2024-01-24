@@ -121,7 +121,7 @@ class District:
                 or
                 (cable.start_x, cable.start_y) == (battery.x, battery.y))
     
-    def remoove_connected_house(self, house, battery):
+    def remove_connected_house(self, house, battery):
         """
         This method removes a house from the connected houses of a battery and resets the house route
         """
