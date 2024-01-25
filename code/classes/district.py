@@ -55,6 +55,9 @@ class District:
             for row in reader:
                 house = House(int(row['x']), int(row['y']), float(row['maxoutput']))
                 houses.append(house)
+
+        # shuffle houses
+        random.shuffle(houses)
         return houses
     
 
