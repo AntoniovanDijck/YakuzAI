@@ -229,7 +229,7 @@ class Experiment:
         for battery in self.batteries:
             battery_data = {
                 "position": f"{battery.x},{battery.y}",
-                "capacity": battery.capacity,
+                "capacity": battery.max_capacity,
                 "houses": [] 
             }
 
@@ -259,7 +259,7 @@ class Experiment:
 
         for house in self.houses:
             # Find possible batteries with sufficient capacity for this house
-            possible_batteries = [battery for battery in self.batteries if battery.capacity >= house.maxoutput]
+            possible_batteries = [battery for battery in self.batteries if battery.max_capacity >= house.maxoutput]
 
             if possible_batteries:
                 # Randomly select one battery from the possible options

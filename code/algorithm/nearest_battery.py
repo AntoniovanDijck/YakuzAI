@@ -26,7 +26,7 @@ class nearest_battery:
 
                 while True:
 
-                    print("A house was removed and replaced")
+                    print("A house was removed and a new connection was tried")
 
                     battery = random.choice(self.district.batteries)
 

@@ -21,34 +21,46 @@ class RandomAlgorithm:
         random.shuffle(random_houses)
    
 
+        # Keep track of which batteries have been tried
+        tried_batteries = set()
+
+        # Keep track of which batteries are still possible
+        possible_batteries = self.district.batteries.copy()
+
+
         # Try to connect each house to a battery
-        for house in random_houses:
-            connected = False
-            tried_batteries = set()
+        for house in enumerate(random_houses):
+            house = house[1]
 
-            # while the house is not connected and there are still batteries to try
-            while not connected and len(tried_batteries) < len(self.district.batteries):
-                selected_battery = random.choice(self.district.batteries) 
+            while len(tried_batteries) != len(self.district.batteries):
+                selected_battery = random.choice(possible_batteries)
 
-                # Check if the battery has not been tried yet
-                if selected_battery not in tried_batteries:
-                    tried_batteries.add(selected_battery)
+                # Add the battery to the tried batteries
+                tried_batteries.add(selected_battery)
+                    
+                # Remove the battery from the possible batteries
+                possible_batteries.remove(selected_battery)
 
-                    # Check if the battery has enough capacity
-                    if selected_battery.can_connect(house):
+                # Check if the battery has enough capacity  
+                if selected_battery.can_connect(house):
 
-                        # Connect the house to the battery
-                        self.place_cables(house, selected_battery)  
-                        selected_battery.connect_house(house)
-                        connected = True
-                    break
+                    # Connect the house to the battery
+                    self.place_cables(house, selected_battery)  
+                    selected_battery.connect_house(house)
 
+                    # Reset the tried batteries and possible batteries
+
+
+                    tried_batteries = set()
+                    possible_batteries = self.district.batteries.copy()
+
+                    break   
+
+           
             else:
                 # Remove a random house from the battery and try again until it works
 
-                while True:
-
-                    print("A house was removed and replaced")
+                    print("A house was removed and a new connection was tried")
 
                     battery = random.choice(self.district.batteries)
 
@@ -58,8 +70,9 @@ class RandomAlgorithm:
                     # remove the house from the battery
                     self.district.remove_connected_house(house, battery)
 
-                    break
 
+                    continue
+                
                 
     def place_cables(self, house, battery):
 

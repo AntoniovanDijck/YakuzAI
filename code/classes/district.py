@@ -242,7 +242,7 @@ class District:
         for battery in self.batteries:
             battery_data = {
                 "position": f"{battery.x},{battery.y}",
-                "capacity": battery.capacity,
+                "capacity": battery.max_capacity,
                 "houses": [] 
             }
 

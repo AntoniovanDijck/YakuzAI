@@ -13,7 +13,9 @@ class Battery():
         self.y = y
 
         # capacity of battery
-        self.capacity = capacity
+        self.max_capacity = capacity
+
+        self.current_capacity = 0
         
         # list of houses connected to battery per battery is stored here
         self.connected_houses = []
@@ -30,13 +32,14 @@ class Battery():
         """
         if house not in self.connected_houses:
             self.connected_houses.append(house)
+            self.current_capacity += house.maxoutput
 
     def can_connect(self, house):
             """
             Checks if a house can be connected to the battery without exceeding its capacity.
             """
             total_power = sum(house.maxoutput for house in self.connected_houses)
-            if (total_power + house.maxoutput) <= self.capacity:
+            if (total_power + house.maxoutput) <= self.max_capacity:
                 return True  # The house can be connected
             else:
                 return False  # The house cannot be connected due to capacity constraints
