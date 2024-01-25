@@ -54,10 +54,11 @@ class nearest_object:
         """
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
-        random.shuffle(self.district.houses)
+        random_houses = self.district.houses
+        random.shuffle(random_houses)
 
         # Loop over all houses
-        for house in self.district.houses:
+        for house in random_houses:
         
             # Find the nearest battery or cable to the house
             sorted_objects = self.find_nearest_object(house)

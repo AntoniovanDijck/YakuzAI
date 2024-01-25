@@ -9,15 +9,17 @@ class nearest_battery:
 
     def connect_houses_to_batteries(self):
 
-        random.shuffle(self.district.houses)
+        # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
+        random_houses = self.district.houses
+        random.shuffle(random_houses)
         
         # Precompute distances
-        for house in self.district.houses:
+        for house in random_houses:
             house.battery_distances = [(battery, self.distance(house, battery)) for battery in self.district.batteries]
             house.battery_distances.sort(key=lambda x: x[1])
 
 
-        for house in self.district.houses:
+        for house in random_houses:
             for battery, _ in house.battery_distances:
                 if battery.can_connect(house):
                     self.place_cables(house, battery)  # Place cables one by one

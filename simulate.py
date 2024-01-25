@@ -28,14 +28,16 @@ class Simulate_algorithm:
             algorithm_instance = self.algorithm(district1)
             algorithm_instance.connect_houses_to_batteries()
 
-            count += 1
-            print(count)         
+
+            # print the percentage of the simulation in 10% steps
+            if i % (self.iterations / 10) == 0:
+                count += 10
+                print(f"{count}%")
 
             # Calculate the total costs
             total_costs = district1.calculate_totals()
             self.costs.append(total_costs)
 
-            
 
         return self.costs
     
@@ -45,11 +47,12 @@ class Simulate_algorithm:
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
+print("1/3")
 sim_rand = Simulate_algorithm(RandomAlgorithm, 10).simulate()
-
+print("2/3")
 #run the algorithm for nearest battery and plot
 sim_near_batt = Simulate_algorithm(nearest_battery, 10).simulate()
-
+print("3/3")
 #run the algorithm for nearest object and plot
 sim_near_obj = Simulate_algorithm(nearest_object, 10).simulate()
 

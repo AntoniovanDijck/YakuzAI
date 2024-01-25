@@ -73,7 +73,6 @@ class RandomAlgorithm:
 
                     continue
                 
-                
     def place_cables(self, house, battery):
 
         # Place cable along x-axis
