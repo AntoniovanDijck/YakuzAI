@@ -52,6 +52,9 @@ def visualize(district, district_number):
     # Set total cost to 0
     total_cost = 0
 
+    # Store the colors of the batteries to later give the cables that color
+    battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
+    
     # Plot batteries
     for battery in experiment_instance.batteries:
         plot_battery(battery_image, battery.x, battery.y)
@@ -77,7 +80,7 @@ def visualize(district, district_number):
         # Calculate the total cables used
         total_cables = len(battery_cables)
 
-        # Ecery cable adds 9 to the total cost
+        # Every cable adds 9 to the total cost, since this is the cost formula
         total_cost += total_cables * 9
 
         # Annotate the battery with the total output and total cables
@@ -86,9 +89,13 @@ def visualize(district, district_number):
                     xytext=(0,10), ha='right', fontsize=12, color='black')
 
     # Plot cables
-    for cable in experiment_instance.cables:
-        plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
-                'b-', linewidth=0.5)
+    for i in range(len(experiment_instance.batteries)):
+
+        #loop over the cables in experiment and look for the colors by ID so it plots cable colors per battery
+        for cable in experiment_instance.cables:
+            if cable.connected_battery == experiment_instance.batteries[i]:
+                plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
+                linewidth=0.5, color=battery_colors[i], zorder=0)
         
     # Add the total cost of the district to the plot
     plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
