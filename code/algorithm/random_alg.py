@@ -60,7 +60,7 @@ class RandomAlgorithm:
             else:
                 # Remove a random house from the battery and try again until it works
 
-                    print("A house was removed and a new connection was tried")
+                    # print("A house was removed and a new connection was tried")
 
                     battery = random.choice(self.district.batteries)
 

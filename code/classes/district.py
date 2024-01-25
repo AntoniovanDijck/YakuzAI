@@ -71,7 +71,7 @@ class District:
 
         # open file and read in the data
         with open(file_path, 'r') as file:
-            reader = csv.DictReader(file)
+            reader = csv.DictReader(file) 
             for row in reader:
                 house = House(int(row['x']), int(row['y']), float(row['maxoutput']))
                 houses.append(house)
@@ -226,12 +226,12 @@ class District:
         total_output = sum(house.maxoutput for house in battery.connected_houses)
 
 
-        # Print the results
-        print(f'Battery at ({battery.x}, {battery.y}):')
-        print(f'  Total output connected: {total_output}')
-        print(f'  Total cables used: {total_cables}')
+        # # Print the results
+        # print(f'Battery at ({battery.x}, {battery.y}):')
+        # print(f'  Total output connected: {total_output}')
+        # print(f'  Total cables used: {total_cables}')
         
-        print(f'  Total cost: {total_cost}')
+        # print(f'  Total cost: {total_cost}')
 
         return total_cost
     
