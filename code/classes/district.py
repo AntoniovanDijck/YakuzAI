@@ -41,24 +41,6 @@ class District:
                 houses.append(house)
         return houses
 
-    def load_random_houses(self, file_path):
-        """
-        This method loads in the houses from a csv file and returns a list of houses
-        """
-
-        # create empty list for houses
-        houses = []
-
-        # open file and read in the data
-        with open(file_path, 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                house = House(int(row['x']), int(row['y']), float(row['maxoutput']))
-                houses.append(house)
-
-        # shuffle houses
-        random.shuffle(houses)
-        return houses
     
 
     def load_random_houses(self, file_path):

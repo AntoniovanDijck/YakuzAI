@@ -9,6 +9,8 @@ class nearest_battery:
 
     def connect_houses_to_batteries(self):
 
+        random.shuffle(self.district.houses)
+        
         # Precompute distances
         for house in self.district.houses:
             house.battery_distances = [(battery, self.distance(house, battery)) for battery in self.district.batteries]
@@ -26,7 +28,7 @@ class nearest_battery:
 
                 while True:
 
-                    print("A house was removed and a new connection was tried")
+                    # print("A house was removed and a new connection was tried")
 
                     battery = random.choice(self.district.batteries)
 

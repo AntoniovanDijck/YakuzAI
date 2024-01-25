@@ -1,6 +1,7 @@
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from code.classes.house import House
+import random
 
 
 class nearest_object:
@@ -52,6 +53,9 @@ class nearest_object:
         has the capacity.
         """
 
+        # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
+        random.shuffle(self.district.houses)
+
         # Loop over all houses
         for house in self.district.houses:
         
@@ -89,7 +93,7 @@ class nearest_object:
                         if connected_battery.can_connect(house):
 
                             # Place cables and connect to the battery
-                            self.place_cables(house, connected_battery)
+                            self.place_cables(house, object)
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
@@ -100,6 +104,7 @@ class nearest_object:
 
                             # Break out of the loop as the house is connected
                             break
+
                         else:
                             continue
 
