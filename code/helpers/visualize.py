@@ -54,7 +54,7 @@ def visualize(district, district_number):
 
     # Store the colors of the batteries to later give the cables that color
     battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
-    
+
     # Plot batteries
     for battery in experiment_instance.batteries:
         plot_battery(battery_image, battery.x, battery.y)
@@ -101,7 +101,6 @@ def visualize(district, district_number):
     plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
-    plt.title('Houses and Batteries with Manhattan-style Cables')
-    plt.savefig(f"data/output_data/plots/district{district_number}.png")
-    plt.close(fig)
+    return fig, ax
+
 
