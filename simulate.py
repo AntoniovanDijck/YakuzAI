@@ -2,9 +2,10 @@
 from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_battery import nearest_battery
-from code.algorithm.nearest_object import nearest_object
+from code.algorithm.nearest_object_x import nearest_object_x
+import code.algorithm.nearest_object_y as nearest_object_y
+from code.algorithm.nearest_object_rand import nearest_object_rand
 import matplotlib.pyplot as plt
-import time
 
 
 class Simulate_algorithm:
@@ -20,13 +21,9 @@ class Simulate_algorithm:
         """
         simulates the algorithm x mount of times
         """
-
-        #Create a dynamic plot (updated with each iteration) thats empty for now
-        plt.ion()
-        fig, ax = plt.subplots()
-
         count = 0
         for i in range(self.iterations):
+
 
             district1 = District(district1_houses, district1_batteries)
             # Apply the Greedy algorithm to connect houses to batteries
@@ -43,18 +40,6 @@ class Simulate_algorithm:
             total_costs = district1.calculate_totals()
             self.costs.append(total_costs)
 
-        #     #change the plot for every iteration
-        #     #clear the previous plotted data and plot new data
-        #     ax.clear()
-        #     ax.hist(self.costs, bins=50)
-        #     ax.set_xlabel("Costs")
-        #     ax.set_ylabel("Frequency")
-        #     plt.title("live costs simulation")
-        #     plt.draw()
-        #     plt.pause(0.1)
-
-        # plt.ioff()
-        # plt.show()
 
         return self.costs
     
@@ -64,26 +49,32 @@ class Simulate_algorithm:
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-print("1/3")
+print("1/5")
 sim_rand = Simulate_algorithm(RandomAlgorithm, 10).simulate()
-print("2/3")
+print("2/5")
+sim_battery = Simulate_algorithm(nearest_battery, 10).simulate()
+print("3/5")
+sim_object_x = Simulate_algorithm(nearest_object_x, 10).simulate()
+print("4/5")
 #run the algorithm for nearest battery and plot
-sim_near_batt = Simulate_algorithm(nearest_battery, 10).simulate()
-print("3/3")
-#run the algorithm for nearest object and plot
-sim_near_obj = Simulate_algorithm(nearest_object, 10).simulate()
+sim_object_y = Simulate_algorithm(nearest_object_y, 10).simulate()
+print("5/5")
+# run the algorithm for nearest object and plot
+sim_obj_rand = Simulate_algorithm(nearest_object_rand, 10).simulate()
 
-#plot the sim in a simple bar chart with bins of 100, the amount of times the total costs are in a bin is the frequency
+# plot the sim in a simple bar chart with bins of 100, the amount of times the total costs are in a bin is the frequency
 plt.hist(sim_rand, bins=50)
-plt.hist(sim_near_batt, bins=50)
-plt.hist(sim_near_obj, bins=50)
+plt.hist(sim_battery, bins=50)
+plt.hist(sim_object_x, bins=50)
+plt.hist(sim_object_y, bins=50)
+plt.hist(sim_obj_rand, bins=50)
 # title and labels
 plt.title("Random algorithm")
 plt.xlabel("Total costs")
 plt.ylabel("Frequency")
 
 # indicate what color is what
-plt.legend(['Random', 'Nearest battery', 'Nearest object'])
+plt.legend(["Random", "Nearest battery", "Nearest object x", "Nearest object y", "Nearest object rand"])
 
 plt.show()
 
