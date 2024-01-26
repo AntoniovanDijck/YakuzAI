@@ -3,10 +3,10 @@ from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.nearest_object_x import nearest_object_x
-import code.algorithm.nearest_object_y as nearest_object_y
+from code.algorithm.nearest_object_y import nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand
 import matplotlib.pyplot as plt
-
+from code.helpers.visualize import visualize
 
 class simulate_algorithm:
     """
@@ -17,7 +17,9 @@ class simulate_algorithm:
         self.iterations = iterations
         self.costs = []
         self.houses_file = houses_file
-        self.batteries_file = batteries_file    
+        self.batteries_file = batteries_file
+        self.lowest_costs = 0
+        self.lowest_district = None    
     
     def simulate(self):
         """
@@ -27,9 +29,9 @@ class simulate_algorithm:
         for i in range(self.iterations):
 
 
-            district1 = District(self.houses_file, self.batteries_file)
+            district = District(self.houses_file, self.batteries_file)
             # Apply the Greedy algorithm to connect houses to batteries
-            algorithm_instance = self.algorithm(district1)
+            algorithm_instance = self.algorithm(district)
             algorithm_instance.connect_houses_to_batteries()
 
 
@@ -39,11 +41,16 @@ class simulate_algorithm:
                 print(f"{count}%")
 
             # Calculate the total costs
-            total_costs = district1.calculate_totals()
+            total_costs = district.calculate_totals()
             self.costs.append(total_costs)
+            if total_costs < self.lowest_costs or self.lowest_costs == 0:
+                self.lowest_costs = total_costs
+                self.lowest_district = district
 
+        print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 
         return self.costs
+    
     
 def experiment(houses_file, batteries_file, iterations=100):
     
@@ -55,7 +62,7 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_object_x = simulate_algorithm(nearest_object_x, iterations, houses_file, batteries_file).simulate()
     print("4/5")
     # run the algorithm for nearest battery and plot
-    #sim_object_y = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file).simulate()
+    sim_object_y = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file).simulate()
     print("5/5")
     # run the algorithm for nearest object and plot
     sim_obj_rand = simulate_algorithm(nearest_object_rand, iterations, houses_file, batteries_file).simulate()
@@ -64,7 +71,7 @@ def experiment(houses_file, batteries_file, iterations=100):
     plt.hist(sim_rand, bins=iterations)
     plt.hist(sim_battery, bins=iterations)
     plt.hist(sim_object_x, bins=iterations)
-    #plt.hist(sim_object_y, bins=iterations)
+    plt.hist(sim_object_y, bins=iterations)
     plt.hist(sim_obj_rand, bins=iterations)
     # title and labels
     plt.title("Algorithms")
@@ -78,7 +85,7 @@ def experiment(houses_file, batteries_file, iterations=100):
 
 #run the algorithm for district 1
 #test debug
-district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+#district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
+#district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-experiment(district1_houses, district1_batteries,iterations=10000)
+#experiment(district1_houses, district1_batteries,iterations=10000)
