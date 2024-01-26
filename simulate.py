@@ -50,17 +50,17 @@ district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
 print("1/5")
-sim_rand = Simulate_algorithm(RandomAlgorithm, 10).simulate()
+sim_rand = Simulate_algorithm(RandomAlgorithm, 100).simulate()
 print("2/5")
-sim_battery = Simulate_algorithm(nearest_battery, 10).simulate()
+sim_battery = Simulate_algorithm(nearest_battery, 100).simulate()
 print("3/5")
-sim_object_x = Simulate_algorithm(nearest_object_x, 10).simulate()
+sim_object_x = Simulate_algorithm(nearest_object_x, 100).simulate()
 print("4/5")
-#run the algorithm for nearest battery and plot
-sim_object_y = Simulate_algorithm(nearest_object_y, 10).simulate()
+# run the algorithm for nearest battery and plot
+# sim_object_y = Simulate_algorithm(nearest_object_y, 100).simulate()
 print("5/5")
 # run the algorithm for nearest object and plot
-sim_obj_rand = Simulate_algorithm(nearest_object_rand, 10).simulate()
+sim_obj_rand = Simulate_algorithm(nearest_object_rand, 100).simulate()
 
 # plot the sim in a simple bar chart with bins of 100, the amount of times the total costs are in a bin is the frequency
 plt.hist(sim_rand, bins=50)
@@ -74,7 +74,7 @@ plt.xlabel("Total costs")
 plt.ylabel("Frequency")
 
 # indicate what color is what
-plt.legend(["Random", "Nearest battery", "Nearest object x", "Nearest object y", "Nearest object rand"])
+plt.legend(["Random", "Nearest battery", "Nearest object x", "Nearest object rand"])
 
 plt.show()
 

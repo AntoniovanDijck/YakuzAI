@@ -109,31 +109,34 @@ class nearest_object_x:
                         else:
                             continue
 
-    
+
+
     def place_cables(self, house, object):
         """
-        places the cables the same as the other nearest_object_rand algorithms, but randomly chooses between the x-axis and
-        the y-axis
+        This method places cables between houses and batteries. It does this by placing cables along the x-axis and the
+        y-axis. It does this by checking the x and y coordinates of the house and the battery. It then places cables
+        between these coordinates.
         """
-        if house.y != object.y != house.x != object.x:
+        # Place cable along x-axis
+
+        if house.y != object.y:
             y_start, y_end = sorted([house.y, object.y])
+
+            # Create a new cable segment for each unit along the x-axis
+            for x in range(y_start, y_end):
+                cable_id = f"{x},{object.y},{x+1},{object.y}"
+                self.district.place_cables(x, object.y, x + 1, object.y, object)
+                house.route.append(cable_id)
+        # Place cable along y-axis
+        if house.x != object.x:
             x_start, x_end = sorted([house.x, object.x])
 
-            if random.choice([True, False]):
-                #Place the cable along y-axis
-                for y in range(y_start, y_end):
+            # Create a new cable segment for each unit along the y-axis
+            for y in range(x_start, x_end):
                     cable_id = f"{house.x},{y},{house.x},{y+1}"
                     self.district.place_cables(house.x, y, house.x, y + 1, object)
                     house.route.append(cable_id)
-            else:
-                # Place the cable along x-axis
-                for x in range(x_start, x_end):
-                    cable_id = f"{x},{object.y},{x+1},{object.y}"
-                    self.district.place_cables(x, object.y, x + 1, object.y, object)
-                    house.route.append(cable_id)
-            
-
-
+    
 
                 
     def extend_route_to_battery(self, house, cable, battery):
