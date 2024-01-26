@@ -41,7 +41,7 @@ class simulate_algorithm:
                 print(f"{count}%")
 
             # Calculate the total costs
-            total_costs = district1.calculate_totals()
+            total_costs = district.calculate_totals()
 
             self.costs.append(total_costs)
             if total_costs < self.lowest_costs or self.lowest_costs == 0:
@@ -84,7 +84,7 @@ def experiment(houses_file, batteries_file, iterations=100):
     plt.hist(sim_obj_rand, bins=bins, alpha=0.5)
 
     # Title and labels
-    plt.title("Comparison of Algorithms")
+    plt.title(f"Comparison of Algorithms with {iterations} iterations")
     plt.xlabel("Total Costs")
     plt.ylabel("Frequency")
 
@@ -93,10 +93,9 @@ def experiment(houses_file, batteries_file, iterations=100):
 
     plt.show()
 
-#run the algorithm for district 1
-#test debug
-#district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-#district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+# run the algorithm for district 1
+district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
+district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-experiment(district1_houses, district1_batteries,iterations=10)
+experiment(district1_houses, district1_batteries,iterations = 100000)
 
