@@ -109,30 +109,41 @@ class nearest_object_rand:
                         else:
                             continue
 
-    
+        
     def place_cables(self, house, object):
         """
-        places the cables the same as the other nearest_object_rand algorithms, but randomly chooses between the x-axis and
-        the y-axis
+        places the cables with a 50/50 chance of choosing between the x-axis and y-axis first
         """
         if house.y != object.y != house.x != object.x:
             y_start, y_end = sorted([house.y, object.y])
             x_start, x_end = sorted([house.x, object.x])
 
             if random.choice([True, False]):
-                #Place the cable along y-axis
+                # Place the cable along y-axis first
                 for y in range(y_start, y_end):
                     cable_id = f"{house.x},{y},{house.x},{y+1}"
                     self.district.place_cables(house.x, y, house.x, y + 1, object)
                     house.route.append(cable_id)
+
+                if house.x != object.x:
+                    # Then place the cable along x-axis
+                    for x in range(x_start, x_end):
+                        cable_id = f"{x},{object.y},{x+1},{object.y}"
+                        self.district.place_cables(x, object.y, x + 1, object.y, object)
+                        house.route.append(cable_id)
             else:
-                # Place the cable along x-axis
+                # Place the cable along x-axis first
                 for x in range(x_start, x_end):
                     cable_id = f"{x},{object.y},{x+1},{object.y}"
                     self.district.place_cables(x, object.y, x + 1, object.y, object)
                     house.route.append(cable_id)
-            
 
+                if house.y != object.y:
+                    # Then place the cable along y-axis
+                    for y in range(y_start, y_end):
+                        cable_id = f"{house.x},{y},{house.x},{y+1}"
+                        self.district.place_cables(house.x, y, house.x, y + 1, object)
+                        house.route.append(cable_id)
 
 
                 

@@ -3,10 +3,10 @@ from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.nearest_object_x import nearest_object_x
-import code.algorithm.nearest_object_y as nearest_object_y
+from code.algorithm.nearest_object_y import nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 class simulate_algorithm:
     """
@@ -40,13 +40,15 @@ class simulate_algorithm:
 
             # Calculate the total costs
             total_costs = district1.calculate_totals()
+
             self.costs.append(total_costs)
 
 
         return self.costs
     
 def experiment(houses_file, batteries_file, iterations=100):
-    
+
+
     print("1/5")
     sim_rand = simulate_algorithm(RandomAlgorithm, iterations, houses_file, batteries_file).simulate()
     print("2/5")
@@ -55,24 +57,32 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_object_x = simulate_algorithm(nearest_object_x, iterations, houses_file, batteries_file).simulate()
     print("4/5")
     # run the algorithm for nearest battery and plot
-    #sim_object_y = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file).simulate()
+    sim_object_y = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file).simulate()
     print("5/5")
     # run the algorithm for nearest object and plot
     sim_obj_rand = simulate_algorithm(nearest_object_rand, iterations, houses_file, batteries_file).simulate()
 
-    # plot the sim in a simple bar chart with bins of 100, the amount of times the total costs are in a bin is the frequency
-    plt.hist(sim_rand, bins=iterations)
-    plt.hist(sim_battery, bins=iterations)
-    plt.hist(sim_object_x, bins=iterations)
-    #plt.hist(sim_object_y, bins=iterations)
-    plt.hist(sim_obj_rand, bins=iterations)
-    # title and labels
-    plt.title("Algorithms")
-    plt.xlabel("Total costs")
+    # Determine the common range for all histograms
+    all_values = sim_rand + sim_battery + sim_object_x + sim_obj_rand
+    min_value, max_value = min(all_values), max(all_values)
+
+    # Standardize bin edges
+    bins = np.linspace(min_value, max_value, int(np.sqrt(iterations)))
+
+    # Plot the histograms
+    plt.hist(sim_rand, bins=bins, alpha=0.5)
+    plt.hist(sim_battery, bins=bins, alpha=0.5)
+    plt.hist(sim_object_x, bins=bins, alpha=0.5)
+    plt.hist(sim_object_y, bins=bins, alpha=0.5)
+    plt.hist(sim_obj_rand, bins=bins, alpha=0.5)
+
+    # Title and labels
+    plt.title("Comparison of Algorithms")
+    plt.xlabel("Total Costs")
     plt.ylabel("Frequency")
 
-    # indicate what color is what
-    plt.legend(["Random", "Nearest battery", "Nearest object x", "Nearest object y", "Nearest object rand"])
+    # Legend
+    plt.legend(["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand"])
 
     plt.show()
 
@@ -81,4 +91,5 @@ def experiment(houses_file, batteries_file, iterations=100):
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-experiment(district1_houses, district1_batteries,iterations=10000)
+experiment(district1_houses, district1_batteries,iterations=10)
+
