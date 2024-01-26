@@ -17,7 +17,9 @@ class simulate_algorithm:
         self.iterations = iterations
         self.costs = []
         self.houses_file = houses_file
-        self.batteries_file = batteries_file    
+        self.batteries_file = batteries_file
+        self.lowest_costs = 0
+        self.lowest_district = None    
     
     def simulate(self):
         """
@@ -27,9 +29,9 @@ class simulate_algorithm:
         for i in range(self.iterations):
 
 
-            district1 = District(self.houses_file, self.batteries_file)
+            district = District(self.houses_file, self.batteries_file)
             # Apply the Greedy algorithm to connect houses to batteries
-            algorithm_instance = self.algorithm(district1)
+            algorithm_instance = self.algorithm(district)
             algorithm_instance.connect_houses_to_batteries()
 
 
@@ -42,9 +44,14 @@ class simulate_algorithm:
             total_costs = district1.calculate_totals()
 
             self.costs.append(total_costs)
+            if total_costs < self.lowest_costs or self.lowest_costs == 0:
+                self.lowest_costs = total_costs
+                self.lowest_district = district
 
+        print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 
         return self.costs
+    
     
 def experiment(houses_file, batteries_file, iterations=100):
 
@@ -88,8 +95,8 @@ def experiment(houses_file, batteries_file, iterations=100):
 
 #run the algorithm for district 1
 #test debug
-district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+#district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
+#district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
 experiment(district1_houses, district1_batteries,iterations=10)
 

@@ -29,19 +29,15 @@ def main():
     # for each district
     for i in range(0, 3):
         print(f'District {i+1}')
+
         # set up experiment
-        experimento = District(districts_houses[i], districts_batteries[i])
-        random_instance = RandomAlgorithm(experimento)
-        random_instance.connect_houses_to_batteries()
-        experimento.calculate_totals()
+        experiment(districts_houses[i], districts_batteries[i], iterations)
+
         
         # check experiment
         #output_data = experiment.check_50()
-
-        experiment(districts_houses[i], districts_batteries[i], iterations)
        
 
-        visualize(experimento, i)
 
 
         
