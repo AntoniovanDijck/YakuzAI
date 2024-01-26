@@ -28,13 +28,12 @@ def main():
         print(f'District {i+1}')
         # set up experiment
         experiment = District(districts_houses[i], districts_batteries[i])
-        random_instance = nearest_battery(experiment)
+        random_instance = nearest_object(experiment)
         random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
         
          # check experiment
         output_data = experiment.check_50()
-
 
 
         # # export to json file this can be muted
@@ -51,5 +50,6 @@ def main():
         #     frame_fig, frame_ax = visualize(experiment, n)
         #     frames.append([frame_ax])
 
+        visualize(experiment, i)
 if __name__ == "__main__":
     main()

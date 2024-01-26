@@ -4,6 +4,7 @@ from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.nearest_object import nearest_object
 import matplotlib.pyplot as plt
+import time
 
 
 class Simulate_algorithm:
@@ -19,9 +20,13 @@ class Simulate_algorithm:
         """
         simulates the algorithm x mount of times
         """
+
+        #Create a dynamic plot (updated with each iteration) thats empty for now
+        plt.ion()
+        fig, ax = plt.subplots()
+
         count = 0
         for i in range(self.iterations):
-
 
             district1 = District(district1_houses, district1_batteries)
             # Apply the Greedy algorithm to connect houses to batteries
@@ -38,6 +43,18 @@ class Simulate_algorithm:
             total_costs = district1.calculate_totals()
             self.costs.append(total_costs)
 
+        #     #change the plot for every iteration
+        #     #clear the previous plotted data and plot new data
+        #     ax.clear()
+        #     ax.hist(self.costs, bins=50)
+        #     ax.set_xlabel("Costs")
+        #     ax.set_ylabel("Frequency")
+        #     plt.title("live costs simulation")
+        #     plt.draw()
+        #     plt.pause(0.1)
+
+        # plt.ioff()
+        # plt.show()
 
         return self.costs
     
