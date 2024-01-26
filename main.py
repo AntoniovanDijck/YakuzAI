@@ -9,6 +9,9 @@ import code.classes.cable
 import code.classes.battery
 from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
+from code.algorithm.nearest_object_rand import nearest_object_rand
+from code.algorithm.nearest_object_x import nearest_object_x
+from code.algorithm.nearest_object_y import nearest_object_y
 from code.helpers.visualize import visualize
 from code.algorithm.nearest_object import nearest_object
 from code.algorithm.nearest_battery import nearest_battery
@@ -28,7 +31,7 @@ def main():
         print(f'District {i+1}')
         # set up experiment
         experiment = District(districts_houses[i], districts_batteries[i])
-        random_instance = nearest_object(experiment)
+        random_instance = nearest_object_rand(experiment)
         random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
         
@@ -51,5 +54,6 @@ def main():
         #     frames.append([frame_ax])
 
         visualize(experiment, i)
+
 if __name__ == "__main__":
     main()

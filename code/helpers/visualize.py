@@ -54,9 +54,8 @@ def visualize(district, district_number):
 
     # Store the colors of the batteries to later give the cables that color
     battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
-    
     # Plot batteries
-    for index, battery in enumerate(district.batteries):
+    for battery in experiment_instance.batteries:
         plot_battery(battery_image, battery.x, battery.y)
         
         # Add 5000 to the total cost for every battery
@@ -82,14 +81,6 @@ def visualize(district, district_number):
 
         # Every cable adds 9 to the total cost, since this is the cost formula
         total_cost += total_cables * 9
-
-        #Fix for nearest object to draw cables connected to cables
-        for cable in district.cables:
-            #loop over the batteries by their color index and plot them if connected to a cable
-            battery_color_index = next((index for index, battery in enumerate(district.batteries) if cable.connected_battery == battery), None)
-            if battery_color_index is not None:
-                plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], linewidth=0.5, color=battery_colors[battery_color_index], zorder=0)
-
 
         # Annotate the battery with the total output and total cables
         plt.annotate(f'Output: {total_output}\nCables: {total_cables}', 
