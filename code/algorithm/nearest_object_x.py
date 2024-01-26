@@ -19,7 +19,7 @@ class nearest_object_x:
         """
 
         # Create a list of all batteries and cables
-        objects = self.district.batteries + self.district.cables
+        objects = self.district.batteries + list(self.district.cables.values())
 
 
         def distance_to_object(obj):
