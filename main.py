@@ -39,19 +39,7 @@ def main():
         #output_data = experiment.check_50()
 
         experiment(districts_houses[i], districts_batteries[i])
-        # # export to json file this can be muted
-        # with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
-        #     json.dump(output_data, outfile)
-        
-        # fig, ax = plt.subplots(figsize=(12, 12))
-        # #visualization / animation, this can be muted
-        # for n in range(iterations): 
-        #     experiment = District(districts_houses[i], districts_batteries[i])
-        #     random_instance = nearest_battery(experiment)
-        #     random_instance.connect_houses_to_batteries()
-        #     experiment.calculate_totals()
-        #     frame_fig, frame_ax = visualize(experiment, n)
-        #     frames.append([frame_ax])
+       
 
         visualize(experimento, i)
 
