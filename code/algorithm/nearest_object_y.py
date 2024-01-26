@@ -4,7 +4,7 @@ from code.classes.house import House
 import random
 
 
-class nearest_object_x:
+class nearest_object_y:
     """"
     This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
     to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is
