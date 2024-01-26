@@ -13,7 +13,7 @@ from code.algorithm.nearest_object_rand import nearest_object_rand
 from code.algorithm.nearest_object_x import nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y
 from code.helpers.visualize import visualize
-
+from simulate import experiment
 from code.algorithm.nearest_battery import nearest_battery
 
 #Creators: Team YakuzAI
@@ -30,15 +30,15 @@ def main():
     for i in range(0, 3):
         print(f'District {i+1}')
         # set up experiment
-        experiment = District(districts_houses[i], districts_batteries[i])
-        random_instance = RandomAlgorithm(experiment)
+        experimento = District(districts_houses[i], districts_batteries[i])
+        random_instance = RandomAlgorithm(experimento)
         random_instance.connect_houses_to_batteries()
-        experiment.calculate_totals()
+        experimento.calculate_totals()
         
          # check experiment
-        output_data = experiment.check_50()
+        #output_data = experiment.check_50()
 
-
+        experiment(districts_houses[i], districts_batteries[i])
         # # export to json file this can be muted
         # with open(f'data/output_data/district_{i+1}_output-{datetime.datetime.now():%Y-%m-%d-%H:%M}.json','w') as outfile:
         #     json.dump(output_data, outfile)
@@ -53,7 +53,10 @@ def main():
         #     frame_fig, frame_ax = visualize(experiment, n)
         #     frames.append([frame_ax])
 
-        visualize(experiment, i)
+        visualize(experimento, i)
+
+
+        
 
 if __name__ == "__main__":
     main()
