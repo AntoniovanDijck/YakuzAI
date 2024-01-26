@@ -4,6 +4,7 @@
 
 import random 
 
+
 class RandomAlgorithm:
     """
     A class that implements a random pathfinding algorithm.
@@ -79,18 +80,33 @@ class RandomAlgorithm:
         if house.x != battery.x:
             x_start, x_end = sorted([house.x, battery.x])
             for x in range(x_start, x_end):
-                # Create a new cable segment for each unit along the x-axis
-                self.district.place_cables(x, house.y, x + 1, house.y, battery)
 
-                house.route.append(self.district.cables[-1].id)
+                cable_id = f"{x},{house.y},{x + 1},{house.y}"
 
+                # see if cable id already exists
+                if cable_id not in battery.cables:
+
+                    # make new cable segment along the x-axis
+                    new_cable = self.district.place_cables(x, house.y, x + 1, house.y, battery)
+                    # append the new cable to the battery's cables dictionary
+                    battery.cables[cable_id] = new_cable
+                    # append the cable ID to the route of house
+                    house.route.append(cable_id)
+                    
         # Place cable along y-axis
         if house.y != battery.y:
             y_start, y_end = sorted([house.y, battery.y])
             for y in range(y_start, y_end):
-                
-                # Create a new cable segment for each unit along the y-axis
-                self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
+                #create new cable id
+                cable_id = f"{battery.x},{y},{battery.x},{y + 1}"
 
-                house.route.append(self.district.cables[-1].id)
-        
+                    # see if cable id already exists
+                if cable_id not in battery.cables:
+
+                    # make new cable segment along the x-axis
+                    new_cable = self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
+                    # append the new cable to the battery's cables dictionary
+                    battery.cables[cable_id] = new_cable
+                    # append the cable ID to the route of house
+                    house.route.append(cable_id)
+            

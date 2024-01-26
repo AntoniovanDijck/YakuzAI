@@ -13,7 +13,7 @@ from code.algorithm.nearest_object_rand import nearest_object_rand
 from code.algorithm.nearest_object_x import nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y
 from code.helpers.visualize import visualize
-from code.algorithm.nearest_object import nearest_object
+
 from code.algorithm.nearest_battery import nearest_battery
 
 #Creators: Team YakuzAI
@@ -31,7 +31,7 @@ def main():
         print(f'District {i+1}')
         # set up experiment
         experiment = District(districts_houses[i], districts_batteries[i])
-        random_instance = nearest_object_rand(experiment)
+        random_instance = RandomAlgorithm(experiment)
         random_instance.connect_houses_to_batteries()
         experiment.calculate_totals()
         

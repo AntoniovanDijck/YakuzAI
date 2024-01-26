@@ -19,7 +19,7 @@ class Cable:
         self.y = start_y
 
         # Create an id for the cable
-        self.id = f"{start_x},{start_y}"
+        self.id = f"{start_x},{start_y}, {end_x}, {end_y}"
 
         # Every cable can be connected to a battery and this is stored in this attribute
         self.connected_battery = battery

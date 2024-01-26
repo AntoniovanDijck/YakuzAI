@@ -4,7 +4,7 @@ from code.classes.house import House
 import random
 
 
-class nearest_object:
+class nearest_object_x:
     """"
     This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
     to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is
@@ -13,7 +13,7 @@ class nearest_object:
     def __init__(self, district):
         self.district = district
 
-    def find_nearest_object(self, house):
+    def find_nearest_object_x(self, house):
         """
         This method finds the nearest battery or cable to a house.
         """
@@ -61,7 +61,7 @@ class nearest_object:
         for house in random_houses:
         
             # Find the nearest battery or cable to the house
-            sorted_objects = self.find_nearest_object(house)
+            sorted_objects = self.find_nearest_object_x(house)
 
             # Loop over all objects sorted by distance to the house
             for object in sorted_objects:

@@ -4,14 +4,14 @@ from code.classes.house import House
 import random
 
 
-class nearest_object:
+class nearest_object_y:
     """"
-    version of the nearest_object algorithm that first works on the y-axis and then on the x-axis
+    version of the nearest_object_y algorithm that first works on the y-axis and then on the x-axis
     """
     def __init__(self, district):
         self.district = district
 
-    def find_nearest_object(self, house):
+    def find_nearest_object_y(self, house):
         """
         This method finds the nearest battery or cable to a house.
         """
@@ -61,7 +61,7 @@ class nearest_object:
         for house in random_houses:
         
             # Find the nearest battery or cable to the house
-            sorted_objects = self.find_nearest_object(house)
+            sorted_objects = self.find_nearest_object_y(house)
 
             # Loop over all objects sorted by distance to the house
             for object in sorted_objects:

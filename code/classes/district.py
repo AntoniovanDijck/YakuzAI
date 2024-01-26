@@ -22,7 +22,7 @@ class District:
         # Create houses and batteries using the data
         self.houses = [House(x, y, maxoutput) for (x, y), maxoutput in house_dict.items()]
         self.batteries = [Battery(x, y, capacity) for (x, y), capacity in battery_dict.items()]
-        self.cables = []
+        self.cables = {}
 
 
     def load_houses(self, file_path):
@@ -143,25 +143,30 @@ class District:
 
     
         # Create a unique cable id
-        cable_id = f"{start_x},{start_y}-{end_x},{end_y}"
+        cable_id = f"{start_x},{start_y},{end_x},{end_y}"
 
         # Check if the cable with this id already exists
-        if not any(cable.id == cable_id for cable in self.cables):
+        if cable_id not in self.cables:
 
             # Create a new cable with the given coordinates
             new_cable = Cable(start_x, start_y, end_x, end_y, battery)
 
             # Add the cable to the list of cables
-            self.cables.append(new_cable)
+            self.cables[cable_id] = new_cable
+        
+        # else:
+        #     return battery.cables[cable_id]
 
 
-    def is_cable_connected_to_battery(self, cable, battery):
+    def is_cable_connected_to_battery(self, cable_id, battery):
         """
         This method checks if a cable is connected to a battery
         """
 
         # Check if a cable end point is at the battery location
-        return ((cable.end_x, cable.end_y) == (battery.x, battery.y) 
+        if cable_id in self.cables:
+            cable = self.cables[cable_id]
+            return ((cable.end_x, cable.end_y) == (battery.x, battery.y) 
                 or
                 (cable.start_x, cable.start_y) == (battery.x, battery.y))
     

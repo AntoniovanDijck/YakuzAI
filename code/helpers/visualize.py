@@ -91,7 +91,7 @@ def visualize(district, district_number):
     for i in range(len(experiment_instance.batteries)):
 
         #loop over the cables in experiment and look for the colors by ID so it plots cable colors per battery
-        for cable in experiment_instance.cables:
+        for cable_id, cable in experiment_instance.cables.items():
             if cable.connected_battery == experiment_instance.batteries[i]:
                 plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
                 linewidth=0.5, color=battery_colors[i], zorder=0)

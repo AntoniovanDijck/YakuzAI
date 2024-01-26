@@ -50,9 +50,9 @@ class nearest_battery:
             x_start, x_end = sorted([house.x, battery.x])
             for x in range(x_start, x_end):
                 # Create a new cable segment for each unit along the x-axis
+                cable_id = f"{x},{house.y},{x+1},{house.y}"
                 self.district.place_cables(x, house.y, x + 1, house.y, battery)
-
-                house.route.append(self.district.cables[-1].id)
+                house.route.append(cable_id)
 
         # Place cable along y-axis
         if house.y != battery.y:
@@ -60,6 +60,6 @@ class nearest_battery:
             for y in range(y_start, y_end):
                 
                 # Create a new cable segment for each unit along the y-axis
+                cable_id = f"{battery.x},{y},{battery.x},{y+1}"
                 self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
-
-                house.route.append(self.district.cables[-1].id)
+                house.route.append(cable_id)
