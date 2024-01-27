@@ -1,5 +1,7 @@
 #imports
 from code.classes.district import District
+import json
+import os
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.nearest_object_x import nearest_object_x
@@ -40,34 +42,62 @@ class simulate_algorithm:
                 count += 10
                 print(f"{count}%")
 
-            # Calculate the total costs
+            # Update best results for each iteration
             total_costs = district.calculate_totals()
 
             self.costs.append(total_costs)
+
             if total_costs < self.lowest_costs or self.lowest_costs == 0:
                 self.lowest_costs = total_costs
                 self.lowest_district = district
+                self.lowest_cost_house_order = [house for house in district.houses]
 
         print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 
         return self.costs
     
+    def get_lowest_cost_house_order(self):
+        """Retrieve the house order for the lowest cost."""
+        return self.lowest_cost_house_order
     
+
+
+    def save_results_to_file(self, file_name_prefix, save_directory):
+        """Save the results to a file in the specified directory."""
+        if not os.path.exists(save_directory):
+            os.makedirs(save_directory)
+
+        file_path = os.path.join(save_directory, f"{file_name_prefix}_results.json")
+        results = {
+            'lowest_cost': self.lowest_costs,
+            'house_order': [(house.x, house.y) for house in self.lowest_cost_house_order]
+        }
+        with open(file_path, 'w') as file:
+            json.dump(results, file, indent=4)
+
+
+
 def experiment(houses_file, batteries_file, iterations=100):
 
 
+    # Create instances for each algorithm
+    sim_rand_instance = simulate_algorithm(RandomAlgorithm, iterations, houses_file, batteries_file)
+    sim_battery_instance = simulate_algorithm(nearest_battery, iterations, houses_file, batteries_file)
+    sim_object_x_instance = simulate_algorithm(nearest_object_x, iterations, houses_file, batteries_file)
+    sim_object_y_instance = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file)
+    sim_obj_rand_instance = simulate_algorithm(nearest_object_rand, iterations, houses_file, batteries_file)
+
+    # Run simulations
     print("1/5")
-    sim_rand = simulate_algorithm(RandomAlgorithm, iterations, houses_file, batteries_file).simulate()
+    sim_rand = sim_rand_instance.simulate()
     print("2/5")
-    sim_battery = simulate_algorithm(nearest_battery, iterations, houses_file, batteries_file).simulate()
+    sim_battery = sim_battery_instance.simulate()
     print("3/5")
-    sim_object_x = simulate_algorithm(nearest_object_x, iterations, houses_file, batteries_file).simulate()
+    sim_object_x = sim_object_x_instance.simulate()
     print("4/5")
-    # run the algorithm for nearest battery and plot
-    sim_object_y = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file).simulate()
+    sim_object_y = sim_object_y_instance.simulate()
     print("5/5")
-    # run the algorithm for nearest object and plot
-    sim_obj_rand = simulate_algorithm(nearest_object_rand, iterations, houses_file, batteries_file).simulate()
+    sim_obj_rand = sim_obj_rand_instance.simulate()
 
     # Determine the common range for all histograms
     all_values = sim_rand + sim_battery + sim_object_x + sim_obj_rand
@@ -91,11 +121,24 @@ def experiment(houses_file, batteries_file, iterations=100):
     # Legend
     plt.legend(["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand"])
 
-    plt.show()
+    # plt.show()
+
+    # Define the directory to save the results
+    save_directory = "simulation_results"
+
+    # Save results for each algorithm
+    save_directory = "simulation_results"
+    sim_rand_instance.save_results_to_file("random_algorithm", save_directory)
+    sim_battery_instance.save_results_to_file("nearest_battery", save_directory)
+    sim_object_x_instance.save_results_to_file("nearest_object_x", save_directory)
+    sim_object_y_instance.save_results_to_file("nearest_object_y", save_directory)
+    sim_obj_rand_instance.save_results_to_file("nearest_object_rand", save_directory)
+
 
 # run the algorithm for district 1
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-experiment(district1_houses, district1_batteries,iterations = 100000)
+experiment(district1_houses, district1_batteries,iterations = 5)
+
 
