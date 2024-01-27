@@ -101,6 +101,6 @@ def visualize(district, district_number):
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
     plt.title('Houses and Batteries with Manhattan-style Cables')
-    plt.savefig(f"data/output_data/plots/district{district_number}.png")
-    plt.close(fig)
+    # plt.savefig(f"data/output_data/plots/district{district_number}.png")
+    plt.show()
 
