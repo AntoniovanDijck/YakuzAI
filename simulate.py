@@ -25,36 +25,35 @@ class simulate_algorithm:
     
     def simulate(self):
         """
-        simulates the algorithm x mount of times
+        Simulates the algorithm x number of times, optimized for efficiency.
         """
-        count = 0
+        self.costs = set()  # Using a set for unique total costs
+        progress_step = self.iterations // 10
+        is_initial_cost_set = self.lowest_costs != 0
+
         for i in range(self.iterations):
-
-
             district = District(self.houses_file, self.batteries_file)
-            # Apply the Greedy algorithm to connect houses to batteries
             algorithm_instance = self.algorithm(district)
             algorithm_instance.connect_houses_to_batteries()
 
+            # Efficient progress reporting
+            if i % progress_step == 0:
+                print(f"{(i // progress_step) * 10}%")
 
-            # print the percentage of the simulation in 10% steps
-            if i % (self.iterations / 10) == 0:
-                count += 10
-                print(f"{count}%")
-
-            # Update best results for each iteration
             total_costs = district.calculate_totals()
 
-            self.costs.append(total_costs)
+            self.costs.add(total_costs)
 
-            if total_costs < self.lowest_costs or self.lowest_costs == 0:
+            if not is_initial_cost_set or total_costs < self.lowest_costs:
                 self.lowest_costs = total_costs
                 self.lowest_district = district
                 self.lowest_cost_house_order = [house for house in district.houses]
+                is_initial_cost_set = True
 
         print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 
         return self.costs
+
     
     def get_lowest_cost_house_order(self):
         """Retrieve the house order for the lowest cost."""
@@ -100,7 +99,7 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_obj_rand = sim_obj_rand_instance.simulate()
 
     # Determine the common range for all histograms
-    all_values = sim_rand + sim_battery + sim_object_x + sim_obj_rand
+    all_values = sim_rand | sim_battery | sim_object_x | sim_obj_rand
     min_value, max_value = min(all_values), max(all_values)
 
     # Standardize bin edges
@@ -134,11 +133,14 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_object_y_instance.save_results_to_file("nearest_object_y", save_directory)
     sim_obj_rand_instance.save_results_to_file("nearest_object_rand", save_directory)
 
+    # Save the figure
+    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"))   
+
 
 # run the algorithm for district 1
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-experiment(district1_houses, district1_batteries,iterations = 5)
+experiment(district1_houses, district1_batteries,iterations = 10)
 
 
