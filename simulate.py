@@ -42,6 +42,7 @@ class simulate_algorithm:
                 print(f"{(i // progress_step) * 10}%")
 
             total_costs = district.calculate_totals()
+            print(total_costs)
 
             self.costs.add(total_costs)
 
@@ -179,6 +180,6 @@ def experiment(houses_file, batteries_file, iterations=100):
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
-experiment(district1_houses, district1_batteries,iterations = 100)
+experiment(district1_houses, district1_batteries,iterations = 10)
 
 
