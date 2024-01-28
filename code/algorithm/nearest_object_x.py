@@ -98,7 +98,7 @@ class nearest_object_x:
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
-                            # self.extend_route_to_battery(house, object, connected_battery)
+                            self.extend_route_to_battery(house, object, connected_battery)
 
                             # Connect house to the battery
                             connected_battery.connect_house(house)
