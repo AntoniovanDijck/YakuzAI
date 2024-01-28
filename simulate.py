@@ -41,7 +41,7 @@ class simulate_algorithm:
             algorithm_instance.connect_houses_to_batteries()
 
             total_costs = district.calculate_totals()
-            print(total_costs)
+            #print(total_costs)
 
             self.costs.add(total_costs)
 
@@ -177,16 +177,3 @@ def experiment(houses_file, batteries_file, iterations=100):
 
 
 
-    ### Drawing cables for all districts
-districts_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-districts_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
- 
-
-#Iterations for animation
-iterations = 100
-
-# test district 1
-print(f'District 1')
-# set up experiment
-
-experiment(districts_houses, districts_batteries, iterations)
