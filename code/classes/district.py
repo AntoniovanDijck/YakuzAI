@@ -136,7 +136,7 @@ class District:
 
         return closest_cable, min_distance
 
-    def place_cables(self, start_x, start_y, end_x, end_y, battery=None):
+    def place_cables(self, start_x, start_y, end_x, end_y, battery):
         """
         This method places a cable between two points and adds it to the list of cables
         """
@@ -154,8 +154,6 @@ class District:
             # Add the cable to the list of cables
             self.cables[cable_id] = new_cable
         
-        # else:
-        #     return battery.cables[cable_id]
 
 
     def is_cable_connected_to_battery(self, cable_id, battery):

@@ -11,7 +11,7 @@ class nearest_battery:
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = self.district.houses
-        random.shuffle(random_houses)
+        # random.shuffle(random_houses)
                 
         # Precompute distances
         for house in random_houses:
@@ -30,12 +30,9 @@ class nearest_battery:
 
                 while True:
 
-                    # print("A house was removed and a new connection was tried")
+                    # Remove the house with the most non shared cables
+                    house = max(battery.connected_houses, key=lambda x: len(x.route))
 
-                    battery = random.choice(self.district.batteries)
-
-                    # select a random house that is connected to this battery
-                    house = random.choice(battery.connected_houses)
 
                     # remove the house from the battery
                     self.district.remove_connected_house(house, battery)

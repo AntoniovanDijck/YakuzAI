@@ -108,7 +108,18 @@ class nearest_object_y:
 
                         else:
                             continue
+                
+                else:
+                    # if no battery is found, remove the house with the longest route on x, as we want to avoid long x
+                    while True:
+                        # Remove the house with the longest x route
+                        house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
 
+
+                        # remove the house from the battery
+                        self.district.remove_connected_house(house, connected_battery)
+
+                        break
 
 
     def place_cables(self, house, object):

@@ -98,7 +98,7 @@ class nearest_object_rand:
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
-                            # self.extend_route_to_battery(house, object, connected_battery)
+                            self.extend_route_to_battery(house, object, connected_battery)
 
                             # Connect house to the battery
                             connected_battery.connect_house(house)
@@ -108,6 +108,29 @@ class nearest_object_rand:
 
                         else:
                             continue
+                else:
+                    while True:
+                        
+                        # If no battery has the capacity, remove the house with the longest x or y route and try again
+                        if random.choice([True, False]):
+
+                            # Remove the house with the longest x route
+                            house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
+
+
+                            # remove the house from the battery
+                            self.district.remove_connected_house(house, connected_battery)
+
+                            break
+                        else:  
+                            # Remove the house with the longest y route
+                            house = max(connected_battery.connected_houses, key=lambda x: len(y.route))
+
+
+                            # remove the house from the battery
+                            self.district.remove_connected_house(house, connected_battery)
+
+                            break
 
         
     def place_cables(self, house, object):

@@ -34,6 +34,10 @@ class Battery():
             self.connected_houses.append(house)
             self.current_capacity += house.maxoutput
 
+        else:
+            print("House is already connected to this battery")
+
+
     def can_connect(self, house):
             """
             Checks if a house can be connected to the battery without exceeding its capacity.
