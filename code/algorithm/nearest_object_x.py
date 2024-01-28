@@ -70,7 +70,6 @@ class nearest_object_x:
                 if isinstance(object, Battery):
                     
                     connected_battery = object
-                    print(connected_battery)
                     # Check if the battery has the capacity to connect the house
                     if connected_battery.can_connect(house):
                     
@@ -85,26 +84,18 @@ class nearest_object_x:
 
                 # Check if the object is a cable
                 elif isinstance(object, Cable):
-                
-                    # Check if the cable is connected to a battery
+
+                    # Ensure the connected object is a Battery
                     connected_battery = object.connected_battery
 
-                    # print(connected_battery)
-                    # Place cables and connect to the cable, which routes to the battery
-                    if connected_battery.can_connect(house):
+                    if isinstance(connected_battery, Battery) and connected_battery.can_connect(house):
 
-                        # Place cables and connect to the battery
                         self.place_cables(house, object, connected_battery)
-
-                        # To keep track of the cables that are used to connect houses to batteries, the overlapping
-                        # cables need to be tracked as well
                         self.extend_route_to_battery(house, object, connected_battery)
-
-                        # Connect house to the battery
                         connected_battery.connect_house(house)
 
-                        # Break out of the loop as the house is connected
                         break
+
                     else:
                         continue
 
@@ -127,7 +118,6 @@ class nearest_object_x:
         between these coordinates.
         """
         # Place cable along x-axis
-
         if house.y != object.y:
             y_start, y_end = sorted([house.y, object.y])
 

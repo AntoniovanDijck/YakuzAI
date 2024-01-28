@@ -13,7 +13,7 @@ class nearest_object_y:
     def __init__(self, district):
         self.district = district
 
-    def find_nearest_object_x(self, house):
+    def find_nearest_object_y(self, house):
         """
         This method finds the nearest battery or cable to a house.
         """
@@ -61,19 +61,20 @@ class nearest_object_y:
         for house in random_houses:
         
             # Find the nearest battery or cable to the house
-            sorted_objects = self.find_nearest_object_x(house)
+            sorted_objects = self.find_nearest_object_y(house)
 
             # Loop over all objects sorted by distance to the house
             for object in sorted_objects:
                 
                 # Check if the object is a battery or a cable
                 if isinstance(object, Battery):
-                
+                    
+                    connected_battery = object
                     # Check if the battery has the capacity to connect the house
-                    if object.can_connect(house):
+                    if connected_battery.can_connect(house):
                     
                         # Place cables and connect to the battery
-                        self.place_cables(house, object)
+                        self.place_cables(house, object, connected_battery)
                         object.connect_house(house) 
                         break
                     
@@ -83,38 +84,26 @@ class nearest_object_y:
 
                 # Check if the object is a cable
                 elif isinstance(object, Cable):
-                
-                    # Check if the cable is connected to a battery
+
+                    # Ensure the connected object is a Battery
                     connected_battery = object.connected_battery
 
-                    # Check if the connected_battery is a battery class to prevent errors
-                    if isinstance(connected_battery, Battery):
-                                            
-                        # Place cables and connect to the cable, which routes to the battery
-                        if connected_battery.can_connect(house):
+                    if isinstance(connected_battery, Battery) and connected_battery.can_connect(house):
 
-                            # Place cables and connect to the battery
-                            self.place_cables(house, object)
+                        self.place_cables(house, object, connected_battery)
+                        self.extend_route_to_battery(house, object, connected_battery)
+                        connected_battery.connect_house(house)
 
-                            # To keep track of the cables that are used to connect houses to batteries, the overlapping
-                            # cables need to be tracked as well
-                            self.extend_route_to_battery(house, object, connected_battery)
+                        break
 
-                            # Connect house to the battery
-                            connected_battery.connect_house(house)
+                    else:
+                        continue
 
-                            # Break out of the loop as the house is connected
-                            break
-
-                        else:
-                            continue
-                
                 else:
                     # if no battery is found, remove the house with the longest route on x, as we want to avoid long x
                     while True:
                         # Remove the house with the longest x route
                         house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
-
 
                         # remove the house from the battery
                         self.district.remove_connected_house(house, connected_battery)
@@ -122,33 +111,35 @@ class nearest_object_y:
                         break
 
 
-    def place_cables(self, house, object):
+    def place_cables(self, house, object, connected_battery):
         """
         This method places cables between houses and batteries. It does this by placing cables along the x-axis and the
         y-axis. It does this by checking the x and y coordinates of the house and the battery. It then places cables
         between these coordinates.
         """
         # Place cable along x-axis
-
         if house.y != object.y:
             y_start, y_end = sorted([house.y, object.y])
 
-            # Create a new cable segment for each unit along the x-axis
+            # Loop over the x coordinates
             for x in range(y_start, y_end):
+
                 cable_id = f"{x},{object.y},{x+1},{object.y}"
-                self.district.place_cables(x, object.y, x + 1, object.y, object)
+                self.district.place_cables(x, object.y, x + 1, object.y, connected_battery)
+
+                # Keep track of the route of the house by adding the cable id to the route
                 house.route.append(cable_id)
+
         # Place cable along y-axis
         if house.x != object.x:
             x_start, x_end = sorted([house.x, object.x])
 
             # Create a new cable segment for each unit along the y-axis
             for y in range(x_start, x_end):
-                    cable_id = f"{house.x},{y},{house.x},{y+1}"
-                    self.district.place_cables(house.x, y, house.x, y + 1, object)
+                    cable_id = f"{object.x},{y},{object.x},{y+1}"
+                    self.district.place_cables(object.x, y, object.x, y + 1, object)
                     house.route.append(cable_id)
     
-
                 
     def extend_route_to_battery(self, house, cable, battery):
         """
@@ -167,7 +158,9 @@ class nearest_object_y:
                 self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
                 # Keep track of the route of the house by adding the cable id to the route
 
-        if cable.end_y != battery.x:
+
+        # Place cable along x-axis from cable end to battery
+        if cable.end_x != battery.x:
 
             # Sort the x coordinates from the cable and the battery
             x_start, x_end = sorted([cable.end_x, battery.x])
