@@ -2,11 +2,11 @@
 from code.classes.district import District
 import json
 import os
-from code.algorithm.random_alg import RandomAlgorithm
-from code.algorithm.nearest_battery import nearest_battery
-from code.algorithm.nearest_object_x import nearest_object_x
-from code.algorithm.nearest_object_y import nearest_object_y
-from code.algorithm.nearest_object_rand import nearest_object_rand
+from code.algorithm.random_alg import RandomAlgorithm as RandomAlgorithm_nonrand
+from code.algorithm.nearest_battery import nearest_battery as nearest_battery_nonrand
+from code.algorithm.nearest_object_x import nearest_object_x as nearest_object_x_nonrand
+from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y_nonrand
+from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand_nonrand
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
@@ -41,7 +41,6 @@ class simulate_algorithm:
             algorithm_instance.connect_houses_to_batteries()
 
             total_costs = district.calculate_totals()
-            print(total_costs)
 
             self.costs.add(total_costs)
 
@@ -53,6 +52,13 @@ class simulate_algorithm:
                 is_initial_cost_set = True
 
         print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
+
+        district = None 
+
+        # visualize the district with the lowest costs
+        low_district = self.lowest_district
+        near_batt = nearest_battery(low_district)
+        
 
         return self.costs
 
@@ -128,9 +134,7 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_obj_rand_list = list(sim_obj_rand)
 
     # Combine the lists into a list of lists for the histogram
-    # data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list]
-    data_to_plot = [sim_battery_list]
-    
+    data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list]
 
     # Find the global minimum and maximum to set the bins
     min_value = min(map(min, data_to_plot))
@@ -171,20 +175,3 @@ def experiment(houses_file, batteries_file, iterations=100):
     plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
 
     plt.show()  # If you want to display the plot as well
-
-
-
-
-    ### Drawing cables for all districts
-districts_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
-districts_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
- 
-
-#Iterations for animation
-iterations = 100
-
-# test district 1
-print(f'District 1')
-# set up experiment
-
-experiment(districts_houses, districts_batteries, iterations)
