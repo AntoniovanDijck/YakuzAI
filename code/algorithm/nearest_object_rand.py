@@ -55,8 +55,6 @@ class nearest_object_rand:
         random_houses = self.district.houses
         random.shuffle(random_houses)
 
-        
-
         # Loop over all houses
         for house in random_houses:
         

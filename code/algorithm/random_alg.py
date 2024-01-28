@@ -19,7 +19,7 @@ class RandomAlgorithm:
 
         # Shuffle the district houses
         random_houses = self.district.houses
-        # random.shuffle(random_houses)
+        random.shuffle(random_houses)
    
 
         # Keep track of which batteries have been tried
