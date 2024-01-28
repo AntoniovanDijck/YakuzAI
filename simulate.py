@@ -2,11 +2,11 @@
 from code.classes.district import District
 import json
 import os
-from code.algorithm.random_alg import RandomAlgorithm as RandomAlgorithm_nonrand
-from code.algorithm.nearest_battery import nearest_battery as nearest_battery_nonrand
-from code.algorithm.nearest_object_x import nearest_object_x as nearest_object_x_nonrand
-from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y_nonrand
-from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand_nonrand
+from code.algorithm.random_alg import RandomAlgorithm as RandomAlgorithm
+from code.algorithm.nearest_battery import nearest_battery as nearest_battery
+from code.algorithm.nearest_object_x import nearest_object_x as nearest_object_x
+from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y
+from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
