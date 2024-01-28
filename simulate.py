@@ -144,11 +144,13 @@ def experiment(houses_file, batteries_file, iterations=100):
     # Increase figure size
     plt.figure(figsize=(12, 8))  # Width, Height in inches
 
+    # Using the "tab10" colorpallet, as it should work with the overlapping colors and is colorblind friendly
+    colors = plt.cm.tab10(np.linspace(0, 1, 10))
+
     # Plot each algorithm's histogram
-    colors = ['blue', 'green', 'red', 'purple', 'orange']
     labels = ["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand"]
-    for data, color, label in zip(data_to_plot, colors, labels):
-        plt.hist(data, bins=bins, alpha=0.5, color=color, label=label)
+    for i, (data, label) in enumerate(zip(data_to_plot, labels)):
+        plt.hist(data, bins=bins, alpha=0.5, color=colors[i], label=label)
 
     # Add grid
     plt.grid(True)
