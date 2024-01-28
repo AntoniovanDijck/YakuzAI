@@ -10,6 +10,7 @@ from code.algorithm.nearest_object_rand import nearest_object_rand
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
+from tqdm import tqdm
 
 class simulate_algorithm:
     """
@@ -32,14 +33,10 @@ class simulate_algorithm:
         progress_step = self.iterations // 10
         is_initial_cost_set = self.lowest_costs != 0
 
-        for i in range(self.iterations):
+        for i in tqdm(range(self.iterations), desc=f"Simulating {self.algorithm.__name__}"):
             district = District(self.houses_file, self.batteries_file)
             algorithm_instance = self.algorithm(district)
             algorithm_instance.connect_houses_to_batteries()
-
-            # Efficient progress reporting
-            if i % progress_step == 0:
-                print(f"{(i // progress_step) * 10}%")
 
             total_costs = district.calculate_totals()
             print(total_costs)
