@@ -114,22 +114,63 @@ def experiment(houses_file, batteries_file, iterations=100):
     csv_filename_obj_rand = os.path.join(save_directory, 'nearest_object_rand_lowest_cost_order.csv')
     sim_obj_rand_instance.save_lowest_cost_house_order_to_csv(csv_filename_obj_rand)
 
-    # Plotting and saving the histogram
-    all_values = sim_rand | sim_battery | sim_object_x | sim_object_y | sim_obj_rand
-    min_value, max_value = min(all_values), max(all_values)
-    bins = np.linspace(min_value, max_value, int(np.sqrt(iterations)))
+    # Convert the sets of costs to lists
+    sim_rand_list = list(sim_rand)
+    sim_battery_list = list(sim_battery)
+    sim_object_x_list = list(sim_object_x)
+    sim_object_y_list = list(sim_object_y)
+    sim_obj_rand_list = list(sim_obj_rand)
 
-    plt.hist(sim_rand, bins=bins, alpha=0.5)
-    plt.hist(sim_battery, bins=bins, alpha=0.5)
-    plt.hist(sim_object_x, bins=bins, alpha=0.5)
-    plt.hist(sim_object_y, bins=bins, alpha=0.5)
-    plt.hist(sim_obj_rand, bins=bins, alpha=0.5)
-    plt.title(f"Comparison of Algorithms with {iterations} iterations")
-    plt.xlabel("Total Costs")
-    plt.ylabel("Frequency")
-    plt.legend(["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand"])
-    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"))
- 
+    # Convert the sets of costs to lists
+    sim_rand_list = list(sim_rand)
+    sim_battery_list = list(sim_battery)
+    sim_object_x_list = list(sim_object_x)
+    sim_object_y_list = list(sim_object_y)
+    sim_obj_rand_list = list(sim_obj_rand)
+
+    # Combine the lists into a list of lists for the histogram
+    data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list]
+
+    # Find the global minimum and maximum to set the bins
+    min_value = min(map(min, data_to_plot))
+    max_value = max(map(max, data_to_plot))
+
+    # Determine the number of bins to use
+    number_of_bins = int(np.sqrt(iterations))  # Experiment with this value
+
+    # Create evenly spaced bins from the min to max value
+    bins = np.linspace(min_value, max_value, number_of_bins)
+
+    # Increase figure size
+    plt.figure(figsize=(12, 8))  # Width, Height in inches
+
+    # Plot each algorithm's histogram
+    colors = ['blue', 'green', 'red', 'purple', 'orange']
+    labels = ["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand"]
+    for data, color, label in zip(data_to_plot, colors, labels):
+        plt.hist(data, bins=bins, alpha=0.5, color=color, label=label)
+
+    # Add grid
+    plt.grid(True)
+
+    # Rotate x-axis labels if they are overlapping
+    plt.xticks(rotation=45)
+
+    # Increase font size for labels and title
+    plt.xlabel("Total Costs", fontsize=14)
+    plt.ylabel("Frequency", fontsize=14)
+    plt.title(f"Comparison of Algorithms with {iterations} iterations", fontsize=16)
+
+    # Increase font size for legend and place it outside the plot area
+    plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
+
+    # Save the figure with a higher resolution
+    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
+
+    plt.show()  # If you want to display the plot as well
+
+
+    
 
 
 # run the algorithm for district 1
