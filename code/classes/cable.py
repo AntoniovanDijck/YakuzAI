@@ -6,7 +6,7 @@ class Cable:
     """
     Class that creates a cable with coordinates and an id
     """
-    def __init__(self, start_x, start_y, end_x, end_y, battery = None):
+    def __init__(self, start_x, start_y, end_x, end_y, battery):
 
         # Coordinates
         self.start_x = start_x

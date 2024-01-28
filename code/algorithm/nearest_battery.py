@@ -4,15 +4,17 @@ class nearest_battery:
     def __init__(self, district):
         self.district = district
 
+
     def distance(self, house, battery):
         return abs(battery.x - house.x) + abs(battery.y - house.y)
+
 
     def connect_houses_to_batteries(self):
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = self.district.houses
         random.shuffle(random_houses)
-                
+
         # Precompute distances
         for house in random_houses:
             house.battery_distances = [(battery, self.distance(house, battery)) for battery in self.district.batteries]
@@ -30,12 +32,9 @@ class nearest_battery:
 
                 while True:
 
-                    # print("A house was removed and a new connection was tried")
+                    # Remove the house with the most non shared cables
+                    house = max(battery.connected_houses, key=lambda x: len(x.route))
 
-                    battery = random.choice(self.district.batteries)
-
-                    # select a random house that is connected to this battery
-                    house = random.choice(battery.connected_houses)
 
                     # remove the house from the battery
                     self.district.remove_connected_house(house, battery)

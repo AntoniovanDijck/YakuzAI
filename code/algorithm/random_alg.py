@@ -59,20 +59,18 @@ class RandomAlgorithm:
 
            
             else:
-                # Remove a random house from the battery and try again until it works
+                # Remove the house with the longest x connection
 
-                    # print("A house was removed and a new connection was tried")
+                while True:
 
-                    battery = random.choice(self.district.batteries)
+                    # Remove the house with the most non shared cables
+                    house = max(selected_battery.connected_houses, key=lambda x: len(x.route))
 
-                    # select a random house that is connected to this battery
-                    house = random.choice(battery.connected_houses)
 
                     # remove the house from the battery
-                    self.district.remove_connected_house(house, battery)
+                    self.district.remove_connected_house(house, selected_battery)
 
-
-                    continue
+                    break
                 
     def place_cables(self, house, battery):
 

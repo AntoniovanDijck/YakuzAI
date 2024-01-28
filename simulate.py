@@ -12,6 +12,7 @@ import csv
 import numpy as np
 from tqdm import tqdm
 
+
 class simulate_algorithm:
     """
     simulates x mount of itterations of a given algorithm and saves the frequency of the total costs in a list
@@ -23,22 +24,24 @@ class simulate_algorithm:
         self.houses_file = houses_file
         self.batteries_file = batteries_file
         self.lowest_costs = 0
-        self.lowest_district = None    
-    
+        self.lowest_district = None
+
+
     def simulate(self):
         """
-        Simulates the algorithm x number of times, optimized for efficiency.
+        Simulates the algorithm x number of times, optimized for efficiency and shows progress using tqdm.
         """
         self.costs = set()  # Using a set for unique total costs
         is_initial_cost_set = self.lowest_costs != 0
 
-        for i in tqdm(range(self.iterations), desc=f"Simulating {self.algorithm.__name__}"):
+        # Use tqdm for progress display
+        for _ in tqdm(range(self.iterations), desc=f"Simulating {self.algorithm.__name__}"):
             district = District(self.houses_file, self.batteries_file)
             algorithm_instance = self.algorithm(district)
             algorithm_instance.connect_houses_to_batteries()
 
             total_costs = district.calculate_totals()
-            #print(total_costs)
+            print(total_costs)
 
             self.costs.add(total_costs)
 
@@ -53,23 +56,22 @@ class simulate_algorithm:
 
         return self.costs
 
-    
+
+
     def get_lowest_cost_house_order(self):
         """Retrieve the house order for the lowest cost."""
         return self.lowest_cost_house_order
-    
+
 
     def save_lowest_cost_house_order_to_csv(self, file_name):
         """Saves the house order for the lowest cost to a CSV file."""
-        
+
         with open(file_name, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(['x', 'y', 'maxoutput'])  # Header
 
             for house in self.lowest_cost_house_order:
                 writer.writerow(house)
-
-
 
 def experiment(houses_file, batteries_file, iterations=100):
     # Create instances for each algorithm
@@ -128,7 +130,9 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_obj_rand_list = list(sim_obj_rand)
 
     # Combine the lists into a list of lists for the histogram
-    data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list]
+    # data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list]
+    data_to_plot = [sim_battery_list]
+    
 
     # Find the global minimum and maximum to set the bins
     min_value = min(map(min, data_to_plot))
@@ -160,17 +164,29 @@ def experiment(houses_file, batteries_file, iterations=100):
     # Increase font size for labels and title
     plt.xlabel("Total Costs", fontsize=14)
     plt.ylabel("Frequency", fontsize=14)
-    plt.title(f"Comparison of Algorithms with {iterations} iterations in District {districtname}", fontsize=16)
+    plt.title(f"Comparison of Algorithms with {iterations} iterations", fontsize=16)
 
     # Increase font size for legend and place it outside the plot area
     plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
- 
 
     # Save the figure with a higher resolution
-    plt.savefig(os.path.join(save_directory, f"simulation_histogram_district_{districtname}-{iterations}_iterations.png"), dpi=300)
+    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
 
     plt.show()  # If you want to display the plot as well
 
 
 
 
+    ### Drawing cables for all districts
+districts_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
+districts_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+ 
+
+#Iterations for animation
+iterations = 100
+
+# test district 1
+print(f'District 1')
+# set up experiment
+
+experiment(districts_houses, districts_batteries, iterations)
