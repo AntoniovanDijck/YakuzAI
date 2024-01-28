@@ -27,7 +27,7 @@ def main():
     # WARNING LONG RUNTIME INCOMING! ~ 1 dag
     iterations = [100, 1000, 10000, 100000]
 
-    # For each district
+    # for each district
     for i in range(0, 3):
         print(f'District {i+1}')
 
