@@ -149,6 +149,8 @@ def experiment(houses_file, batteries_file, iterations=100):
     for i, (data, label) in enumerate(zip(data_to_plot, labels)):
         plt.hist(data, bins=bins, alpha=0.5, color=colors[i], label=label)
 
+    districtname = houses_file.split('/')[2].split('_')[1]
+
     # Add grid
     plt.grid(True)
 
@@ -158,24 +160,29 @@ def experiment(houses_file, batteries_file, iterations=100):
     # Increase font size for labels and title
     plt.xlabel("Total Costs", fontsize=14)
     plt.ylabel("Frequency", fontsize=14)
-    plt.title(f"Comparison of Algorithms with {iterations} iterations", fontsize=16)
+    plt.title(f"Comparison of Algorithms with {iterations} iterations in District {districtname}", fontsize=16)
 
     # Increase font size for legend and place it outside the plot area
     plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
+ 
 
     # Save the figure with a higher resolution
-    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
+    plt.savefig(os.path.join(save_directory, f"simulation_histogram_district_{districtname}-{iterations}_iterations.png"), dpi=300)
 
     plt.show()  # If you want to display the plot as well
 
 
     
 
-
-# run the algorithm for district 1
+# Debug
+# run the algorithm for onky district 1
 district1_houses = 'data/Huizen&Batterijen/district_1/district-1_houses.csv'
 district1_batteries = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
+<<<<<<< HEAD
 experiment(district1_houses, district1_batteries,iterations = 1)
+=======
+experiment(district1_houses, district1_batteries,iterations = 100)
+>>>>>>> 67a04485ff294a3934c8df1bdfb813023ad20e3f
 
 
