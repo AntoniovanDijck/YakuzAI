@@ -30,7 +30,6 @@ class simulate_algorithm:
         Simulates the algorithm x number of times, optimized for efficiency.
         """
         self.costs = set()  # Using a set for unique total costs
-        progress_step = self.iterations // 10
         is_initial_cost_set = self.lowest_costs != 0
 
         for i in tqdm(range(self.iterations), desc=f"Simulating {self.algorithm.__name__}"):
@@ -39,7 +38,7 @@ class simulate_algorithm:
             algorithm_instance.connect_houses_to_batteries()
 
             total_costs = district.calculate_totals()
-            print(total_costs)
+            #print(total_costs)
 
             self.costs.add(total_costs)
 
