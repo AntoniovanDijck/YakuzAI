@@ -23,15 +23,20 @@ def main():
     districts_houses = ['data/Huizen&Batterijen/district_1/district-1_houses.csv', 'data/Huizen&Batterijen/district_2/district-2_houses.csv', 'data/Huizen&Batterijen/district_3/district-3_houses.csv']
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
  
-    #Iterations for animation
-    iterations = 1000
+    # Iterations 
+    # WARNING LONG RUNTIME INCOMING! ~ 1 dag
+    iterations = [100, 1000, 10000, 100000]
 
-    # for each district
+    # For each district
     for i in range(0, 3):
         print(f'District {i+1}')
 
-        # set up experiment
-        experiment(districts_houses[i], districts_batteries[i], iterations)
+        for i in iterations:
+
+            print(f'Iterations: {i}')
+            # set up experiment
+            experiment(districts_houses[i], districts_batteries[i], i)
+    
 
         
         # check experiment
