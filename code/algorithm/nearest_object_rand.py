@@ -114,7 +114,7 @@ class nearest_object_rand:
                             break
                         else:  
                             # Remove the house with the longest y route
-                            house = max(connected_battery.connected_houses, key=lambda x: len(y.route))
+                            house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
 
 
                             # remove the house from the battery
