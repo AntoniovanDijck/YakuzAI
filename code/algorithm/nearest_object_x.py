@@ -55,7 +55,7 @@ class nearest_object_x:
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = self.district.houses
-        random.shuffle(random_houses)
+        # random.shuffle(random_houses)
 
         # Loop over all houses
         for house in random_houses:
