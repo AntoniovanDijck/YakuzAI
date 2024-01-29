@@ -1,11 +1,11 @@
 import random
 from nearest_object_y import nearest_object_y
-
+from dijckstra import dijckstra
 
 class Hillclimber:
     def __init__(self, district):
         self.district = district
-        self.near_obj_y = nearest_object_y(district)
+        self.dijckstra = dijckstra(district)
         self.best_solution = None
         self.best_cost = float("inf")
 
@@ -15,7 +15,7 @@ class Hillclimber:
 
     def initial_solution(self):
         """Generate start population based upon the nearest obj y algorithm"""
-        self.near_obj_y.connect_houses_to_batteries()
+        self.dijckstra.connect_houses_to_batteries()
         self.best_solution = self.current_solution()
         self.best_cost = self.evaluate_solution(self.best_solution)
 

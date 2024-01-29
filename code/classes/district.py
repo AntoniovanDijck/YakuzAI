@@ -187,6 +187,7 @@ class District:
         # Initialize variables
         total_cost = 0
         unique_cable_ids = set()  
+        total_cables = 0
 
         # Loop over all batteries
         for battery in self.batteries:
@@ -199,10 +200,12 @@ class District:
 
                 # Add the cost of the cable to the total cost
                 for cable in house.route:
-                    unique_cable_ids.add(cable)  # Add unique cable IDs
+                    unique_cable_ids.add(cable) 
+
+            total_cables += len(unique_cable_ids)
 
         # Calculate the total amount of unique cables
-        total_cables = len(unique_cable_ids)
+
 
         # Add the cost of the cables to the total cost
         total_cost += total_cables * 9 
