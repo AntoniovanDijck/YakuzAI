@@ -5,8 +5,6 @@ from code.classes.district import District
 class Hillclimber:
     def __init__(self, district, depth=1):
         self.district = district
-        self.dijckstra = dijckstra(district)
-        self.best_solution = None
         self.best_cost = float("inf")
         self.depth = depth
         #here the state before the step is saved in case the cost increases after the step meaning the 
