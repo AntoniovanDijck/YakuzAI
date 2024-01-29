@@ -17,4 +17,21 @@ class Hillclimber:
 
     def current_solution(self):
         """Get the current solution from the algoritmh"""
+        
+        #implement later
         pass
+
+    def evaluate_solution(self):
+        """evaluate the current solution"""
+
+        #implement later
+        pass
+
+    def solution_change(self):
+        """Add a minor change to the cables or connections"""
+
+        #implement later
+        pass
+
+    def hillclimber(self):
+        
