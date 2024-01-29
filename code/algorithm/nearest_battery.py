@@ -1,3 +1,6 @@
+from code.classes.cable import Cable
+from code.classes.battery import Battery
+from code.classes.house import House
 import random
 
 class nearest_battery:

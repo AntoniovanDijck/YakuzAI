@@ -20,22 +20,19 @@ from code.algorithm.nearest_battery import nearest_battery
 
 def main():
         ### Drawing cables for all districts
+    ### Drawing cables for all districts
     districts_houses = ['data/Huizen&Batterijen/district_1/district-1_houses.csv', 'data/Huizen&Batterijen/district_2/district-2_houses.csv', 'data/Huizen&Batterijen/district_3/district-3_houses.csv']
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
- 
-    # Iterations 
-    # WARNING LONG RUNTIME INCOMING! ~ 1 dag
-    iterations = [100, 1000, 10000, 100000]
+    
+    #Iterations for animation
+    iterations = 10
 
     # for each district
-    for i in range(0, 3):
+    for i in range(0, 1):
         print(f'District {i+1}')
+        # set up experiment
 
-        for i in iterations:
-
-            print(f'Iterations: {i}')
-            # set up experiment
-            experiment(districts_houses[i], districts_batteries[i], i)
+        experiment(districts_houses[i], districts_batteries[i], iterations)
     
 
         

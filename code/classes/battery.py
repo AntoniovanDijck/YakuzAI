@@ -1,7 +1,3 @@
-# Smart_grid.py
-# Antonio, Mec, Vincent
-# YakuzAI
-
 class Battery():
     """
     Class that creates a battery with coordinates and capacity
@@ -16,7 +12,7 @@ class Battery():
         self.max_capacity = capacity
 
         self.current_capacity = 0
-        
+
         # list of houses connected to battery per battery is stored here
         self.connected_houses = []
 
@@ -34,7 +30,6 @@ class Battery():
             self.connected_houses.append(house)
             self.current_capacity += house.maxoutput
 
-
     def can_connect(self, house):
             """
             Checks if a house can be connected to the battery without exceeding its capacity.
@@ -44,5 +39,3 @@ class Battery():
                 return True  # The house can be connected
             else:
                 return False  # The house cannot be connected due to capacity constraints
-    
-        
