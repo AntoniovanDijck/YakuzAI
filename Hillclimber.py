@@ -5,6 +5,9 @@ import copy
 
 
 class HillClimber:
+    """
+    Hillclimber algorithm to optimize the order of houses connected to batteries
+    """
     def __init__(self, district, depth=1, iterations=500):
         self.district = district
         self.depth = depth
@@ -33,7 +36,14 @@ class HillClimber:
                 house = random.choice(connected_battery.connected_houses)
                 district.remove_connected_house(house, connected_battery)
 
-        dijckstra.connect_houses_to_batteries(self.district)
+        for _ in range(self.depth):
+            batteries_without_houses = [b for b in district.batteries if not b.connected_houses]
+            if not batteries_without_houses:
+                continue
+
+            battery = random.choice(batteries_without_houses)
+            house = random.choice(district.houses)
+            dijckstra.connect_houses_to_batteries(self.district)
 
     def hill_climb(self):
         best_cost = self.calculate_total_cost()
