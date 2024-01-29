@@ -59,8 +59,7 @@ class Hillclimber:
     def undo_change(self):
         """undo the last change if it increased the cost"""
 
-        #implement later
-        pass
-
+        for house, route in self.previous_state.items():
+            house.route = route
 
 
