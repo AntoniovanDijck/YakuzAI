@@ -1,4 +1,4 @@
-
+import random
 from nearest_object_y import nearest_object_y
 
 
@@ -8,6 +8,10 @@ class Hillclimber:
         self.near_obj_y = nearest_object_y(district)
         self.best_solution = None
         self.best_cost = float("inf")
+
+        #here the state before the step is saved in case the cost increases after the step meaning the 
+        #previous state had a better cost
+        self.previous_state = None 
 
     def initial_solution(self):
         """Generate start population based upon the nearest obj y algorithm"""
