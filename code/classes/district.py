@@ -203,6 +203,7 @@ class District:
                     unique_cable_ids.add(cable) 
 
             total_cables += len(unique_cable_ids)
+            unique_cable_ids = set()
 
         # Calculate the total amount of unique cables
 
