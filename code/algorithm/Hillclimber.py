@@ -29,8 +29,11 @@ class Hillclimber:
     def solution_change(self):
         """Add a minor change to the cables or connections"""
 
-        #implement later
-        pass
+        house = random.choice(self.district.houses)
+
+        #previous state method doesn't exist yet, will be made in a minute
+        self.previous_state = {house: list(house.route)}
+
 
     def hillclimber(self, iterations=100):
         """Here the hillclimb optimization is performed for a given iterations"""
