@@ -210,14 +210,6 @@ class District:
         # Calculate the total output of the district
         total_output = sum(house.maxoutput for house in battery.connected_houses)
 
-
-        # # Print the results
-        # print(f'Battery at ({battery.x}, {battery.y}):')
-        # print(f'  Total output connected: {total_output}')
-        # print(f'  Total cables used: {total_cables}')
-        
-        # print(f'  Total cost: {total_cost}')
-
         return total_cost
     
     def check_50(self): 

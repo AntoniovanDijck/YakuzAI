@@ -14,6 +14,7 @@ def visualize(district, district_number):
     experiment_instance = district
 
 
+
     # Create a figure and 50x50 grid
     fig, ax = plt.subplots(figsize=(12, 12))
     ax.set_xticks(np.arange(0, 51, 1))
@@ -49,8 +50,6 @@ def visualize(district, district_number):
     for house in experiment_instance.houses:
         plot_house(house_image, house.x, house.y)
 
-    # Set total cost to 0
-    total_cost = 0
 
     # Store the colors of the batteries to later give the cables that color
     battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
@@ -58,8 +57,6 @@ def visualize(district, district_number):
     for battery in experiment_instance.batteries:
         plot_battery(battery_image, battery.x, battery.y)
         
-        # Add 5000 to the total cost for every battery
-        total_cost += 5000
 
         # Calculate and annotate total output and total cables for each battery
         total_output = sum(house.maxoutput for house in battery.connected_houses)
@@ -79,13 +76,15 @@ def visualize(district, district_number):
         # Calculate the total cables used
         total_cables = len(battery_cables)
 
-        # Every cable adds 9 to the total cost, since this is the cost formula
-        total_cost += total_cables * 9
 
         # Annotate the battery with the total output and total cables
         plt.annotate(f'Output: {total_output}\nCables: {total_cables}', 
                     (battery.x, battery.y), textcoords="offset points", 
                     xytext=(0,10), ha='right', fontsize=12, color='black')
+
+
+    # Calculate and annotate the total cost of the district
+    total_cost = experiment_instance.calculate_totals()
 
     # Plot cables
     for i in range(len(experiment_instance.batteries)):

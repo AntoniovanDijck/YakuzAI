@@ -44,10 +44,7 @@ class simulate_algorithm:
             algorithm_instance = self.algorithm(district) 
             algorithm_instance.connect_houses_to_batteries()
 
-            #visualize(district, 1)
-
             total_costs = district.calculate_totals()
-            #print(total_costs)
 
             self.costs.add(total_costs)
  
@@ -60,7 +57,7 @@ class simulate_algorithm:
                 is_initial_cost_set = True
 
         districtname = self.houses_file.split('/')[2].split('_')[1]
-        visualize(self.lowest_district,int(districtname))
+        # visualize(self.lowest_district,int(districtname))
         print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 
 
@@ -190,6 +187,6 @@ def experiment(houses_file, batteries_file, iterations=100):
     plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
 
     # Save the figure with a higher resolution
-    # plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
+    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
 
     plt.show()  # If you want to display the plot as well
