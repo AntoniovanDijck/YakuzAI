@@ -1,89 +1,73 @@
 import random
-from code.algorithm.dijckstra import dijckstra
+from code.algorithm.dijckstra import dijckstra_max as dijckstra
 from code.classes.district import District
 
-class Hillclimber:
-    def __init__(self, district, depth=1):
+class HillClimber:
+    def __init__(self, district, depth=1, iterations=500):
         self.district = district
-        self.best_cost = float("inf")
         self.depth = depth
-        #here the state before the step is saved in case the cost increases after the step meaning the 
-        #previous state had a better cost
-        self.previous_state = None 
+        self.iterations = iterations
+        self.dijckstra_max = dijckstra(district)  # Initialize dijckstra_max
 
-    def initial_solution(self):
-        """Generate start population based upon the dijckstra"""
-        self.dijckstra.connect_houses_to_batteries()
-        self.best_solution = self.current_solution()
-        self.best_cost = self.evaluate_solution(self.best_solution)
+    def calculate_total_cost(self):
+        return district.calculate_totals()
 
-    def current_solution(self):
-        """Get the current solution from the algoritmh"""
+    def modify_house_order(self):
+        # Randomly remove houses
+        for _ in range(self.depth):
+            batteries_with_houses = [b for b in district.batteries if b.connected_houses]
+            if not batteries_with_houses:
+                continue
 
-        return {house: house.route for house in self.district.houses}
-    
-
-    def evaluate_solution(self):
-        """evaluate the current solution"""
-
-        return self.district.calculate_totals()
-
-    def solution_change(self):
-        """Add a minor change to the cables or connections"""
-
-        for i in range(self.depth):
-
-            if random.choice([True, False]):
-
-                # select a random battery
-                connected_battery = random.choice(self.district.batteries)
-
-                # select a random house connected to this battery
+            connected_battery = random.choice(batteries_with_houses)
+            if connected_battery.connected_houses:
                 house = random.choice(connected_battery.connected_houses)
+                district.remove_connected_house(house, connected_battery)
 
-                # remove the house from the battery
-                self.district.remove_connected_house(house, connected_battery)
+        # Reconnect houses using dijckstra_max
+        dijckstra.connect_houses_to_batteries(self.district)
 
-                break
+    def hill_climb(self):
+        best_cost = self.calculate_total_cost()
 
-        # Reconnect the houses using dijckstra
-        
-        self.dijckstra.connect_houses_to_batteries()
+        for _ in range(self.iterations):
+            self.modify_house_order()
+            new_cost = self.calculate_total_cost()
+            print(f'New cost: {new_cost}')
+            print(f'Best cost: {best_cost}')
+            if new_cost < best_cost:
+                best_cost = new_cost
+                print(f'New best cost: {best_cost}')
 
-
-    def hillclimber(self, iterations=100):
-        """Here the hillclimb optimization is performed for a given iterations"""
-        
-
-        for _ in range(iterations):
-            self.solution_change()
-            current_solution = self.current_solution()
-            current_cost = self.evaluate_solution(current_solution)
-
-            if current_cost < self.best_cost:
-                self.best_cost = current_solution
-                self.best_cost = current_cost
-                print("New best cost: ", self.best_cost)
-            
+                ### SAVE THE BEST ###
+                
             else:
-                self.undo_change()
+                ### REVERT TO THE BEST ###
 
-    def undo_change(self):
-        """undo the last change if it increased the cost"""
-
-        for house, route in self.previous_state.items():
-            house.route = route
+        return best_cost
 
 
 
-# Run the hillclimber
-            
+## RUN HILLCLIMBER ###
 houses_file = 'simulation_results/dijckstra_lowest_cost_order.csv'
 batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
 
 district = District(houses_file, batteries_file)
+dijckstra_instance = dijckstra(district)
+dijckstra_instance.connect_houses_to_batteries()
+
+hillclimber = HillClimber(dijckstra_instance)
+hillclimber.hill_climb()
 
 
-hillclimber = Hillclimber(dijckstra)
-hillclimber.hillclimber()
+# print("DIJCKSTRA BEST RESULTS")
+# houses_file = hillclimber.hill_climb(houses_file)
+
+# district = District(houses_file, batteries_file)
+
+# # Apply the Greedy algorithm to connect houses to batteries
+# dijckstra = dijckstra(district)
+# dijckstra.connect_houses_to_batteries()
+
+# visualize(district, 1)

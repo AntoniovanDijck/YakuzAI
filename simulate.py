@@ -8,16 +8,14 @@ from code.algorithm.nearest_object_x import nearest_object_x as nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand
 import matplotlib.pyplot as plt
-from code.algorithm.dijckstra import dijckstra
-from code.algorithm.dijckstra import dijckstra_sum
-from code.algorithm.dijckstra import dijckstra_max
-
+from code.algorithm.dijckstra import dijckstra as dijckstra_algo
+from code.algorithm.dijckstra import dijckstra_sum as dijckstra_sum_algo
+from code.algorithm.dijckstra import dijckstra_max as dijckstra_max_algo
 from code.helpers.visualize import visualize
 import csv
 import numpy as np
 from tqdm import tqdm
 
-from tqdm import tqdm
 
 class simulate_algorithm:
     """
@@ -47,7 +45,7 @@ class simulate_algorithm:
             algorithm_instance = self.algorithm(district) 
             algorithm_instance.connect_houses_to_batteries()
 
-            total_costs = district.calculate_totals()
+            total_costs = district.caFlculate_totals()
 
             self.costs.append(total_costs)
  
@@ -96,7 +94,7 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_object_x_instance = simulate_algorithm(nearest_object_x, iterations, houses_file, batteries_file)
     sim_object_y_instance = simulate_algorithm(nearest_object_y, iterations, houses_file, batteries_file)
     sim_obj_rand_instance = simulate_algorithm(nearest_object_rand, iterations, houses_file, batteries_file)
-    sim_dijckstra_instance = simulate_algorithm(dijckstra, iterations, houses_file, batteries_file)
+    sim_dijckstra_instance = simulate_algorithm(dijckstra_algo, iterations, houses_file, batteries_file)
 
     # Define the directory to save the results
     save_directory = "simulation_results"
@@ -197,9 +195,9 @@ def experiment(houses_file, batteries_file, iterations=100):
 
 def experiment_dijck(houses_file, batteries_file, iterations=100):
     # Create instances for each algorithm
-    dijckstra_instance = simulate_algorithm(dijckstra, iterations, houses_file, batteries_file)
-    dijckstra_sum_instance = simulate_algorithm(dijckstra_sum, iterations, houses_file, batteries_file)
-    dijckstra_max_instance = simulate_algorithm(dijckstra_max, iterations, houses_file, batteries_file)
+    dijckstra_instance = simulate_algorithm(dijckstra_algo, iterations, houses_file, batteries_file)
+    dijckstra_sum_instance = simulate_algorithm(dijckstra_sum_algo, iterations, houses_file, batteries_file)
+    dijckstra_max_instance = simulate_algorithm(dijckstra_max_algo, iterations, houses_file, batteries_file)
 
     # Define the directory to save the results
     save_directory = "simulation_results"
@@ -208,18 +206,18 @@ def experiment_dijck(houses_file, batteries_file, iterations=100):
 
     # Run simulations and save results for each algorithm
     print("1/6: Running RandomAlgorithm Simulation")
-    dijckstra = dijckstra.simulate()
+    dijckstra = dijckstra_instance.simulate()
     csv_filename_rand = os.path.join(save_directory, 'dijckstra_lowest_cost_order.csv')
     dijckstra_instance.save_lowest_cost_house_order_to_csv(csv_filename_rand)
 
     print("2/6: Running nearest_battery Simulation")
-    dijckstra_sum = dijckstra_sum.simulate()
+    dijckstra_sum = dijckstra_sum_instance.simulate()
     csv_filename_battery = os.path.join(save_directory, 'dijckstra_sum_lowest_cost_order.csv')
     dijckstra_sum_instance.save_lowest_cost_house_order_to_csv(csv_filename_battery)
 
     # Repeat for other algorithms
     print("3/6: Running nearest_object_x Simulation")
-    dijckstra_max = dijckstra_max.simulate()
+    dijckstra_max = dijckstra_max_instance.simulate()
     csv_filename_object_x = os.path.join(save_directory, 'dijckstra_max_lowest_cost_order.csv')
     dijckstra_max_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_x)
 
