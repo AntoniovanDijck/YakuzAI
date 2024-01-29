@@ -27,23 +27,17 @@ class HillClimber:
 
     def modify_house_order(self):
         for _ in range(self.depth):
-            batteries_with_houses = [b for b in district.batteries if b.connected_houses]
-            if not batteries_with_houses:
-                continue
-
-            connected_battery = random.choice(batteries_with_houses)
+            connected_battery = random.choice(district.batteries)
             if connected_battery.connected_houses:
                 house = random.choice(connected_battery.connected_houses)
                 district.remove_connected_house(house, connected_battery)
 
-        for _ in range(self.depth):
-            batteries_without_houses = [b for b in district.batteries if not b.connected_houses]
-            if not batteries_without_houses:
-                continue
-
-            battery = random.choice(batteries_without_houses)
-            house = random.choice(district.houses)
-            dijckstra.connect_houses_to_batteries(self.district)
+        #connect all the houses that are not connected
+        for house in district.houses:
+            for battery in district.batteries:
+                if battery.can_connect(house):
+                    dijckstra.connect_houses_to_batteries(self.district)
+                    break
 
     def hill_climb(self):
         best_cost = self.calculate_total_cost()
