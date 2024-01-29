@@ -25,7 +25,7 @@ def main():
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
     
     #Iterations for animation
-    iterations = 100
+    iterations = 10000
 
     # for each district
     for i in range(0, 1):

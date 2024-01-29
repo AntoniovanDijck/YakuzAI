@@ -1,20 +1,20 @@
 import random
-from nearest_object_y import nearest_object_y
-from dijckstra import dijckstra
+from code.algorithm.dijckstra import dijckstra
+from code.classes.district import District
 
 class Hillclimber:
-    def __init__(self, district):
+    def __init__(self, district, depth=1):
         self.district = district
         self.dijckstra = dijckstra(district)
         self.best_solution = None
         self.best_cost = float("inf")
-
+        self.depth = depth
         #here the state before the step is saved in case the cost increases after the step meaning the 
         #previous state had a better cost
         self.previous_state = None 
 
     def initial_solution(self):
-        """Generate start population based upon the nearest obj y algorithm"""
+        """Generate start population based upon the dijckstra"""
         self.dijckstra.connect_houses_to_batteries()
         self.best_solution = self.current_solution()
         self.best_cost = self.evaluate_solution(self.best_solution)
@@ -33,16 +33,29 @@ class Hillclimber:
     def solution_change(self):
         """Add a minor change to the cables or connections"""
 
-        house = random.choice(self.district.houses)
+        for i in range(self.depth):
 
-        #previous state method doesn't exist yet, will be made in a minute
-        self.previous_state = {house: list(house.route)}
+            if random.choice([True, False]):
+
+                # select a random battery
+                connected_battery = random.choice(self.district.batteries)
+
+                # select a random house connected to this battery
+                house = random.choice(connected_battery.connected_houses)
+
+                # remove the house from the battery
+                self.district.remove_connected_house(house, connected_battery)
+
+                break
+
+        # Reconnect the houses using dijckstra
+        
+        self.dijckstra.connect_houses_to_batteries()
 
 
     def hillclimber(self, iterations=100):
         """Here the hillclimb optimization is performed for a given iterations"""
         
-        self.current_solution
 
         for _ in range(iterations):
             self.solution_change()
@@ -52,6 +65,7 @@ class Hillclimber:
             if current_cost < self.best_cost:
                 self.best_cost = current_solution
                 self.best_cost = current_cost
+                print("New best cost: ", self.best_cost)
             
             else:
                 self.undo_change()
@@ -63,3 +77,15 @@ class Hillclimber:
             house.route = route
 
 
+
+# Run the hillclimber
+            
+houses_file = 'simulation_results/dijckstra_lowest_cost_order.csv'
+batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+
+
+district = District(houses_file, batteries_file)
+
+
+hillclimber = Hillclimber(dijckstra)
+hillclimber.hillclimber()
