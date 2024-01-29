@@ -101,23 +101,23 @@ def experiment(houses_file, batteries_file, iterations=100):
         os.makedirs(save_directory)
 
     # Run simulations and save results for each algorithm
-    print("1/5: Running RandomAlgorithm Simulation")
+    print("1/6: Running RandomAlgorithm Simulation")
     sim_rand = sim_rand_instance.simulate()
     csv_filename_rand = os.path.join(save_directory, 'random_algorithm_lowest_cost_order.csv')
     sim_rand_instance.save_lowest_cost_house_order_to_csv(csv_filename_rand)
 
-    print("2/5: Running nearest_battery Simulation")
+    print("2/6: Running nearest_battery Simulation")
     sim_battery = sim_battery_instance.simulate()
     csv_filename_battery = os.path.join(save_directory, 'nearest_battery_lowest_cost_order.csv')
     sim_battery_instance.save_lowest_cost_house_order_to_csv(csv_filename_battery)
 
     # Repeat for other algorithms
-    print("3/5: Running nearest_object_x Simulation")
+    print("3/6: Running nearest_object_x Simulation")
     sim_object_x = sim_object_x_instance.simulate()
     csv_filename_object_x = os.path.join(save_directory, 'nearest_object_x_lowest_cost_order.csv')
     sim_object_x_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_x)
 
-    print("4/5: Running nearest_object_y Simulation")
+    print("4/6: Running nearest_object_y Simulation")
     sim_object_y = sim_object_y_instance.simulate()
     csv_filename_object_y = os.path.join(save_directory, 'nearest_object_y_lowest_cost_order.csv')
     sim_object_y_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_y)
