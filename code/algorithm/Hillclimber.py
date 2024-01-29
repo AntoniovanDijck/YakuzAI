@@ -1,13 +1,28 @@
 import random
 from nearest_object_y import nearest_object_y
 from dijckstra import dijckstra
+from classes.district import District
 
 class Hillclimber:
     def __init__(self, district):
         self.district = district
-        self.dijckstra = dijckstra(district)
-        self.best_solution = None
         self.best_cost = float("inf")
+
+
+
+
+
+        batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+        houses_file = 'simulation_results/dijckstra_lowest_cost_order.csv'
+        district = District(houses_file, batteries_file)
+        # Apply the Greedy algorithm to connect houses to batteries
+        dijckstra = dijckstra(district)
+        self.best_solution = dijckstra.connect_houses_to_batteries()
+
+
+
+
+
 
         #here the state before the step is saved in case the cost increases after the step meaning the 
         #previous state had a better cost
