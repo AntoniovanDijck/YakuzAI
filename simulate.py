@@ -9,6 +9,9 @@ from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand
 import matplotlib.pyplot as plt
 from code.algorithm.dijckstra import dijckstra
+from code.algorithm.dijckstra import dijckstra_sum
+from code.algorithm.dijckstra import dijckstra_max
+
 from code.helpers.visualize import visualize
 import csv
 import numpy as np
@@ -140,13 +143,6 @@ def experiment(houses_file, batteries_file, iterations=100):
     sim_obj_rand_list = list(sim_obj_rand)
     sim_dijckstra_list = list(sim_dijckstra)
 
-    # Convert the sets of costs to lists
-    sim_rand_list = list(sim_rand)
-    sim_battery_list = list(sim_battery)
-    sim_object_x_list = list(sim_object_x)
-    sim_object_y_list = list(sim_object_y)
-    sim_obj_rand_list = list(sim_obj_rand)
-    sim_dijckstra_list = list(sim_dijckstra)
 
     # Combine the lists into a list of lists for the histogram
     data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list, sim_dijckstra_list]
@@ -169,6 +165,92 @@ def experiment(houses_file, batteries_file, iterations=100):
 
     # Plot each algorithm's histogram
     labels = ["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand", "Dijckstra"]
+    for i, (data, label) in enumerate(zip(data_to_plot, labels)):
+        plt.hist(data, bins=bins, alpha=0.5, color=colors[i], label=label)
+
+    # Add grid
+    plt.grid(True)
+
+    # Rotate x-axis labels if they are overlapping
+    plt.xticks(rotation=45)
+
+    # Increase font size for labels and title
+    plt.xlabel("Total Costs", fontsize=14)
+    plt.ylabel("Frequency", fontsize=14)
+    plt.title(f"Comparison of Algorithms with {iterations} iterations", fontsize=16)
+
+    # Increase font size for legend and place it outside the plot area
+    plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
+
+    # Save the figure with a higher resolution
+    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
+
+    plt.show()  # If you want to display the plot as well
+
+
+
+
+
+
+### TEST THE FIFFERENT VAN DIJCKSTRA ALGORITHMS ###
+
+
+def experiment_dijck(houses_file, batteries_file, iterations=100):
+    # Create instances for each algorithm
+    dijckstra_instance = simulate_algorithm(dijckstra, iterations, houses_file, batteries_file)
+    dijckstra_sum_instance = simulate_algorithm(dijckstra_sum, iterations, houses_file, batteries_file)
+    dijckstra_max_instance = simulate_algorithm(dijckstra_max, iterations, houses_file, batteries_file)
+
+    # Define the directory to save the results
+    save_directory = "simulation_results"
+    if not os.path.exists(save_directory):
+        os.makedirs(save_directory)
+
+    # Run simulations and save results for each algorithm
+    print("1/6: Running RandomAlgorithm Simulation")
+    dijckstra = dijckstra.simulate()
+    csv_filename_rand = os.path.join(save_directory, 'dijckstra_lowest_cost_order.csv')
+    dijckstra_instance.save_lowest_cost_house_order_to_csv(csv_filename_rand)
+
+    print("2/6: Running nearest_battery Simulation")
+    dijckstra_sum = dijckstra_sum.simulate()
+    csv_filename_battery = os.path.join(save_directory, 'dijckstra_sum_lowest_cost_order.csv')
+    dijckstra_sum_instance.save_lowest_cost_house_order_to_csv(csv_filename_battery)
+
+    # Repeat for other algorithms
+    print("3/6: Running nearest_object_x Simulation")
+    dijckstra_max = dijckstra_max.simulate()
+    csv_filename_object_x = os.path.join(save_directory, 'dijckstra_max_lowest_cost_order.csv')
+    dijckstra_max_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_x)
+
+
+    # Convert the sets of costs to lists
+    dijckstra_list = list(dijckstra)
+    dijckstra_sum_list = list(dijckstra_sum)
+    dijckstra_max_list = list(dijckstra_max)
+
+
+    # Combine the lists into a list of lists for the histogram
+    data_to_plot = [dijckstra_list, dijckstra_sum_list, dijckstra_max_list]
+
+    # Find the global minimum and maximum to set the bins
+    min_value = min(map(min, data_to_plot))
+    max_value = max(map(max, data_to_plot))
+
+    # Determine the number of bins to use
+    number_of_bins = int(np.sqrt(iterations))  # Experiment with this value
+
+    # Create evenly spaced bins from the min to max value
+    bins = np.linspace(min_value, max_value, number_of_bins)
+
+    # Increase figure size
+    plt.figure(figsize=(12, 8))  # Width, Height in inches
+
+    # Using the "tab10" colorpallet, as it should work with the overlapping colors and is colorblind friendly
+    colors = plt.cm.tab10(np.linspace(0, 1, 10))
+
+    # Plot each algorithm's histogram
+    labels = ["Dijckstra", "Dijckstra Sum", "Dijckstra Max"]
     for i, (data, label) in enumerate(zip(data_to_plot, labels)):
         plt.hist(data, bins=bins, alpha=0.5, color=colors[i], label=label)
 

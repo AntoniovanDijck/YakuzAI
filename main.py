@@ -14,6 +14,7 @@ from code.algorithm.nearest_object_x import nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y
 from code.helpers.visualize import visualize
 from simulate import experiment
+from simulate import experiment_dijck
 from code.algorithm.nearest_battery import nearest_battery
 
 #Creators: Team YakuzAI
@@ -25,14 +26,14 @@ def main():
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
     
     #Iterations for animation
-    iterations = 100000
+    iterations = 100
 
     # for each district
     for i in range(0, 1):
         print(f'District {i+1}')
         # set up experiment
 
-        experiment(districts_houses[i], districts_batteries[i], iterations)
+        experiment_dijck(districts_houses[i], districts_batteries[i], iterations)
     
 
         
