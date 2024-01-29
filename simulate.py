@@ -31,7 +31,8 @@ class simulate_algorithm:
         """
         Simulates the algorithm x number of times, optimized for efficiency and shows progress using tqdm.
         """
-        self.costs = set()  # Using a set for unique total costs
+        self.costs = []
+        self.cost_tracker = set()
         is_initial_cost_set = self.lowest_costs != 0
 
         # Use tqdm for progress display
@@ -41,11 +42,11 @@ class simulate_algorithm:
             algorithm_instance.connect_houses_to_batteries()
 
             total_costs = district.calculate_totals()
-            print(total_costs)
 
-            self.costs.add(total_costs)
+            self.costs.append(total_costs)
+            self.costs_tracker.add(total_costs)
 
-            if not is_initial_cost_set or total_costs < self.lowest_costs:
+            if not is_initial_cost_set or total_costs < self.costs_tracker:
                 self.lowest_costs = total_costs
                 self.lowest_district = district
                 self.lowest_cost_house_order = [(house.x, house.y, house.maxoutput) for house in district.houses]
