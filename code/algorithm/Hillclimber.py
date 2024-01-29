@@ -1,4 +1,4 @@
-
+import random
 from nearest_object_y import nearest_object_y
 
 
@@ -8,6 +8,10 @@ class Hillclimber:
         self.near_obj_y = nearest_object_y(district)
         self.best_solution = None
         self.best_cost = float("inf")
+
+        #here the state before the step is saved in case the cost increases after the step meaning the 
+        #previous state had a better cost
+        self.previous_state = None 
 
     def initial_solution(self):
         """Generate start population based upon the nearest obj y algorithm"""
@@ -29,8 +33,11 @@ class Hillclimber:
     def solution_change(self):
         """Add a minor change to the cables or connections"""
 
-        #implement later
-        pass
+        house = random.choice(self.district.houses)
+
+        #previous state method doesn't exist yet, will be made in a minute
+        self.previous_state = {house: list(house.route)}
+
 
     def hillclimber(self, iterations=100):
         """Here the hillclimb optimization is performed for a given iterations"""
@@ -52,8 +59,7 @@ class Hillclimber:
     def undo_change(self):
         """undo the last change if it increased the cost"""
 
-        #implement later
-        pass
-
+        for house, route in self.previous_state.items():
+            house.route = route
 
 
