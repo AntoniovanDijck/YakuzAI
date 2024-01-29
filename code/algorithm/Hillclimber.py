@@ -17,9 +17,9 @@ class Hillclimber:
 
     def current_solution(self):
         """Get the current solution from the algoritmh"""
-        
-        #implement later
-        pass
+
+        return {house: house.route for house in self.district.houses}
+    
 
     def evaluate_solution(self):
         """evaluate the current solution"""
