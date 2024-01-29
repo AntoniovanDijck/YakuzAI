@@ -24,8 +24,7 @@ class Hillclimber:
     def evaluate_solution(self):
         """evaluate the current solution"""
 
-        #implement later
-        pass
+        return self.district.calculate_totals()
 
     def solution_change(self):
         """Add a minor change to the cables or connections"""
