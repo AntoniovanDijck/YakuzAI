@@ -45,7 +45,7 @@ class simulate_algorithm:
             algorithm_instance = self.algorithm(district) 
             algorithm_instance.connect_houses_to_batteries()
 
-            total_costs = district.caFlculate_totals()
+            total_costs = district.calculate_totals()
 
             self.costs.append(total_costs)
  
