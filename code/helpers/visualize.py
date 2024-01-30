@@ -93,7 +93,7 @@ def visualize(district, district_number):
         for cable_id, cable in experiment_instance.cables.items():
             if cable.connected_battery == experiment_instance.batteries[i]:
                 plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
-                linewidth=0.5, color=battery_colors[i], zorder=0)
+                linewidth=2.5, color=battery_colors[i], zorder=0)
         
     # Add the total cost of the district to the plot
     plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
