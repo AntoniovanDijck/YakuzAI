@@ -280,8 +280,8 @@ class HillClimber:
         self.current_cost = self.calculate_total_cost()
         costs = [self.current_cost]  # Initialize list to store costs
 
-        #plot/animate the initial state of the district
-        visualize_live(self.district)
+        #keep track of the district states because these are the data for the frames of the animation
+        district_states = [copy.deepcopy(self.district)]
 
         for iteration in tqdm(range(self.iterations), desc="Optimizing"):
             saved_state = self.save_state()
@@ -297,15 +297,11 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
+            #store the current state so it can be used from animation, as a frame, later
+            district_states.append(copy.deepcopy(self.district))
 
-            #plot every nth iteration
-            if iteration % 100 == 0:
-                visualize_live(self.district)
 
-        #return the final (optimal or max iterations) state of the hillclimber algorithm 
-        visualize_live(district)
-        
-        return costs  # Return the list of costs
+        return costs, district_states  # Return the list of costs
 
 
 
@@ -368,27 +364,9 @@ batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
-hillclimber = HillClimber(district, 3, 20000)
-costs = hillclimber.hill_climb()
+hillclimber = HillClimber(district, 3, 200)
+costs, district_states = hillclimber.hill_climb()
+
+visualize_live(district_states)
 
 
-plt.figure(figsize=(10, 6), facecolor='black')
-ax = plt.axes()
-ax.set_facecolor('black')
-
-# Plotting with adjustments for visibility on a black background
-plt.plot(costs, color='lime', linestyle='-', linewidth=2)
-plt.xlabel('Iterations', fontsize=14, fontweight='bold', color='white')
-plt.ylabel('Total Cost', fontsize=14, fontweight='bold', color='white')
-plt.title('Hill Climber Optimization Progress', fontsize=16, fontweight='bold', color='white')
-plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7, color='gray')
-plt.xticks(fontsize=12, color='white')
-plt.yticks(fontsize=12, color='white')
-
-# Invert y-axis
-plt.gca().invert_yaxis()
-
-# Highlighting start and end points
-plt.scatter(0, costs[0], color='yellow', s=50, label='Start', zorder=5)
-plt.scatter(len(costs)-1, costs[-1], color='orange', s=50, label='End', zorder=5)
-plt.show()
