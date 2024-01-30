@@ -9,11 +9,11 @@ class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries
     """
-    def __init__(self, district, depth=1, iterations=1000):
+    def __init__(self, district, depth=1, iterations=100):
         self.district = district
         self.depth = depth
         self.iterations = iterations
-
+        
     def calculate_total_cost(self):
         return self.district.calculate_totals()
 
@@ -32,33 +32,45 @@ class HillClimber:
             if connected_battery.connected_houses:
                 house = random.choice(connected_battery.connected_houses)
                 removed_houses.append(house)
+                # print(removed_houses[0].route)
+
                 self.district.remove_connected_house(house, connected_battery)
+                # print(removed_houses[0].route)
 
         # Reconnect all the houses that are not connected
-        dijckstra_instance.connect_houses_to_batteries(removed_houses)
-
+            dijckstra_instance.connect_houses_to_batteries(removed_houses)
+            # print(removed_houses[0].route)
 
 
     def hill_climb(self):
         self.current_cost = self.calculate_total_cost()
-        self.best_state = self.save_state()
         print(f'Initial cost: {self.current_cost}')
 
         for _ in range(self.iterations):
+
+            # Save the current state
             saved_state = self.save_state()
-            self.modify_house_order()  # Modify the order of house connections
+
+            # Modify the state by removing and adding houses
+            self.modify_house_order()  
+
+            # Calculate the new cost 
             new_cost = self.calculate_total_cost()
+
+            # Print the new cost
             print(f'Current cost: {self.current_cost}')
             print(f'New cost: {new_cost}')
 
+            # Check if the new cost is better than the current cost
             if new_cost < self.current_cost:
                 self.current_cost = new_cost
-                self.saved_state = self.best_state # Update best state
+                self.saved_state = self.district# Update best state
                 print(f'New best cost: {self.current_cost}')
+
+            # If the new cost is not better, revert to the previous state
             else:
                 self.restore_state(saved_state)  # Revert to previous state
 
- 
         return self.current_cost
 
 
