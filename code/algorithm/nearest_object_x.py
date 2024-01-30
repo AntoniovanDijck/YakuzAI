@@ -3,6 +3,17 @@ from code.classes.battery import Battery
 from code.classes.house import House
 import random
 
+## X en Y duplocate code
+## calsses met een hoofdletter
+## README kritisch kijken of alle kopjes nodig zijn
+# Vanaf de main alle algoritmes kunnen runnen
+# Namen van codes intuatief maken
+# docstrins duidelijk maken. Dit doet dit, dit zijn de aannames, class discription duidelijk maken
+# shuffle in de commmantline aan of uit zijn <-- in de readme
+# connect houses to battery in nearaest object random, if = batterij, if = cable en else kunnen allemaal in sub-functies. 
+# Dit idee ook op andere plekken toepassen
+
+
 class nearest_object_x:
     """"
     This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected

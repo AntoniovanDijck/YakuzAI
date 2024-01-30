@@ -44,7 +44,7 @@ class dijckstra:
 
         return sorted_objects
 
-    def connect_houses_to_batteries(self):
+    def connect_houses_to_batteries(self, house = False):
         """
         This method connects houses to batteries. It does this by finding the nearest battery or cable to a house. If
         this object is a battery, it checks if the battery has the capacity to connect the house. If this object is a
@@ -52,9 +52,15 @@ class dijckstra:
         has the capacity.
         """
 
-        # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
-        random_houses = self.district.houses
-        random.shuffle(random_houses)
+        
+
+        if house == False:
+            # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
+            random_houses = self.district.houses
+            random.shuffle(random_houses)
+        
+        else:
+            random_houses = house
 
         # Loop over all houses
         for house in random_houses:
@@ -226,7 +232,7 @@ class dijckstra:
 
 class dijckstra_sum:
     """"
-    This version differs from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
+    This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
     to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is
     connected to a battery. If this battery has the capacity. This algorithm will connect the house to the cable instead.
     """

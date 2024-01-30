@@ -1,5 +1,5 @@
 import random
-from code.algorithm.dijckstra import dijckstra_max as dijckstra
+from code.algorithm.dijckstra import dijckstra as dijckstra
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
@@ -9,11 +9,10 @@ class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries
     """
-    def __init__(self, district, depth=1, iterations=500):
+    def __init__(self, district, depth=2, iterations=10000):
         self.district = district
         self.depth = depth
         self.iterations = iterations
-        self.dijckstra_max = dijckstra(district)
 
     def calculate_total_cost(self):
         return district.calculate_totals()
@@ -27,29 +26,27 @@ class HillClimber:
         self.district = saved_state
 
     def modify_house_order(self):
+        removed_houses = []
         for _ in range(self.depth):
-            connected_battery = random.choice(district.batteries)
+            connected_battery = random.choice(self.district.batteries)
             if connected_battery.connected_houses:
                 house = random.choice(connected_battery.connected_houses)
-                district.remove_connected_house(house, connected_battery)
+                removed_houses.append(house)
+                self.district.remove_connected_house(house, connected_battery)
 
-        #connect all the houses that are not connected
-        for house in district.houses:
-            for battery in district.batteries:
-                if battery.can_connect(house):
-                    dijckstra.connect_houses_to_batteries(self.district)
-                    break
+        # Reconnect all the houses that are not connected
+        dijckstra_instance.connect_houses_to_batteries(removed_houses)
 
     def hill_climb(self):
         best_cost = self.calculate_total_cost()
         best_state = self.save_state()
 
         for _ in range(self.iterations):
-            saved_state = self.save_state()  # Save current state
-            self.modify_house_order()
+            saved_state = self.save_state()
+            self.modify_house_order()  # Modify the order of house connections
             new_cost = self.calculate_total_cost()
-            print(f'New cost: {new_cost}')
-            print(f'Best cost: {best_cost}')
+            # print(f'New cost: {new_cost}')
+            # print(f'Best cost: {best_cost}')
 
             if new_cost < best_cost:
                 best_cost = new_cost
@@ -73,17 +70,17 @@ district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
 
-hillclimber = HillClimber(dijckstra_instance)
+hillclimber = HillClimber(district)
 hillclimber.hill_climb()
 
 
-print("DIJCKSTRA BEST RESULTS")
-houses_file = hillclimber.hill_climb(houses_file)
+# print("DIJCKSTRA BEST RESULTS")
+# houses_file = hillclimber.hill_climb(houses_file)
 
-district = District(houses_file, batteries_file)
+# district = District(houses_file, batteries_file)
 
-# Apply the Greedy algorithm to connect houses to batteries
-dijckstra = dijckstra(district)
-dijckstra.connect_houses_to_batteries()
+# # Apply the Greedy algorithm to connect houses to batteries
+# dijckstra = dijckstra(district)
+# dijckstra.connect_houses_to_batteries()
 
-visualize(district, 1)
+# visualize(district, 1)
