@@ -9,6 +9,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries by removing depth amount of houses and reconnecting them.
@@ -286,7 +287,7 @@ class HillClimber:
             if new_cost < self.current_cost:
                 self.current_cost = new_cost
                 self.saved_state = self.district
-                print(f"New cost: {self.current_cost}")
+                # print(f"New cost: {self.current_cost}")
             else:
                 self.restore_state(saved_state)
 
@@ -296,19 +297,69 @@ class HillClimber:
 
 
 
-## RUN HILLCLIMBER ###
+
+## DEPTH TEST ALGORITHM ##
+# all_costs = {}
+# best_depth = None
+# lowest_final_cost = float('inf')
+
+# for i in range(1,6):
+#     houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
+#     batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+
+
+#     district = District(houses_file, batteries_file)
+#     dijckstra_instance = dijckstra(district)
+#     dijckstra_instance.connect_houses_to_batteries()
+
+#     hillclimber = HillClimber(district, i, 100)
+#     costs = hillclimber.hill_climb()
+#     all_costs[i] = costs
+
+#     # Determine if this is the best depth
+#     if costs[-1] < lowest_final_cost:
+#         lowest_final_cost = costs[-1]
+#         best_depth = i
+
+# # Set plot with a black background
+# plt.figure(figsize=(10, 6), facecolor='black')
+# ax = plt.axes()
+# ax.set_facecolor('black')
+
+# # Plot all costs, highlight the best one in red
+# for depth, costs in all_costs.items():
+#     plt.plot(costs, color='red' if depth == best_depth else 'lime', linestyle='-', linewidth=2 if depth == best_depth else 1, label=f'Depth {depth}' if depth == best_depth else None)
+
+# plt.xlabel('Iterations', fontsize=14, fontweight='bold', color='white')
+# plt.ylabel('Total Cost', fontsize=14, fontweight='bold', color='white')
+# plt.title('Hill Climber Optimization Progress', fontsize=16, fontweight='bold', color='white')
+# plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7, color='gray')
+# plt.xticks(fontsize=12, color='white')
+# plt.yticks(fontsize=12, color='white')
+
+# plt.gca().invert_yaxis()
+
+# # Add legend to show the best depth
+# plt.legend(fontsize=12, facecolor='black', edgecolor='black', labelcolor='white')
+# plt.tight_layout()
+
+# plt.show()
+
+
+
+
+
+
+## RUNNING 1 DEPTH ##
 houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
 batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-
-
 district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
-
-hillclimber = HillClimber(district, 3, 1000)
+hillclimber = HillClimber(district, 3, 20000)
 costs = hillclimber.hill_climb()
 
-# Set plot with a black background
+
 plt.figure(figsize=(10, 6), facecolor='black')
 ax = plt.axes()
 ax.set_facecolor('black')
@@ -326,7 +377,6 @@ plt.yticks(fontsize=12, color='white')
 plt.gca().invert_yaxis()
 
 # Highlighting start and end points
-plt.scatter(0, costs[0], color='yellow', s=40, label='Start', zorder=5)
-plt.scatter(len(costs)-1, costs[-1], color='orange', s=40, label='End', zorder=5)
-
+plt.scatter(0, costs[0], color='yellow', s=50, label='Start', zorder=5)
+plt.scatter(len(costs)-1, costs[-1], color='orange', s=50, label='End', zorder=5)
 plt.show()
