@@ -280,9 +280,6 @@ class HillClimber:
         self.current_cost = self.calculate_total_cost()
         costs = [self.current_cost]  # Initialize list to store costs
 
-        #keep track of the district states because these are the data for the frames of the animation
-        district_states = [copy.deepcopy(self.district)]
-
         for iteration in tqdm(range(self.iterations), desc="Optimizing"):
             saved_state = self.save_state()
             self.modify_house_order()
@@ -297,11 +294,8 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
-            #store the current state so it can be used from animation, as a frame, later
-            district_states.append(copy.deepcopy(self.district))
 
-
-        return costs, district_states  # Return the list of costs
+        return costs, saved_state# Return the list of costs
 
 
 
@@ -364,9 +358,9 @@ batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
-hillclimber = HillClimber(district, 3, 200)
+hillclimber = HillClimber(district, 3, 100)
 costs, district_states = hillclimber.hill_climb()
 
-visualize_live(district_states)
+visualize(district_states,1)
 
 
