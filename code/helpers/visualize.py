@@ -114,30 +114,51 @@ def visualize_live(district_states):
     #initialize/plot the grid
     fig, ax = plt.subplots()
 
-    def update(frame):
-        #remove the old data after an iteration
-        ax.clear()
+    #loading images from data
+    house_image = plt.imread("data/Huizen&Batterijen/Images/housy.png")
+    battery_image = plt.imread("data/Huizen&Batterijen/Images/battery.png")
 
-        #plot dimensions
+    #images for house in plot
+    def plot_house(x, y):
+        image = OffsetImage(house_image, zoom=0.03)
+        ab = AnnotationBbox(image, (x, y), frameon=False)
+        ax.add_artist(ab)
+
+    #images for battery in plot
+    def plot_battery(x, y):
+        image = OffsetImage(battery_image, zoom=0.01)
+        ab = AnnotationBbox(image, (x, y), frameon=False)
+        ax.add_artist(ab)
+
+
+    def update(frame):
+        ax.clear()
         ax.set_xlim(0, 50)
         ax.set_ylim(0, 50)
 
-        #Update the data in the district for a given frame
+        # Set up grid and labels
+        ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder=0)
+        for i in range(0, 51, 10):
+            ax.axvline(x=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
+            ax.axhline(y=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
+        ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
+        ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
+
         district = district_states[frame]
 
-        houses_x = [house.x for house in district.houses]
-        houses_y = [house.y for house in district.houses]
-        ax.scatter(houses_x, houses_y, color='blue', label='Houses')
+        # Plotting houses and batteries
+        for house in district.houses:
+            plot_house(house.x, house.y)
 
         battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
         for i, battery in enumerate(district.batteries):
-            ax.scatter([battery.x], [battery.y], color=battery_colors[i], label=f'Battery {i + 1}')
+            plot_battery(battery.x, battery.y)
             for house in battery.connected_houses:
                 for cable_id in house.route:
                     cable = district.cables[cable_id]
                     ax.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], color=battery_colors[i], linewidth=2)
 
-    #create the animation
-    ani = FuncAnimation(fig, update, frames=len(district_states), repeat=False)
+    ani = FuncAnimation(fig, update, frames=len(district_states), repeat=False, interval=1)
 
+    plt.show()
     plt.show()
