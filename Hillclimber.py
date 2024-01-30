@@ -3,31 +3,40 @@ from code.algorithm.dijckstra import dijckstra as dijckstra
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
-from code.algorithm.nearest_battery import nearest_battery
 from code.classes.cable import Cable
 from code.classes.battery import Battery
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+import numpy as np
 
 class HillClimber:
     """
-    Hillclimber algorithm to optimize the order of houses connected to batteries
+    Hillclimber algorithm to optimize the order of houses connected to batteries by removing depth amount of houses and reconnecting them.
     """
-    def __init__(self, district, depth=2, iterations=1000):
+
+    # Setting the initial values for the depth and iterations
+    def __init__(self, district, depth = 3, iterations=100):
         self.district = district
         self.depth = depth
         self.iterations = iterations
         
+    # Calculate the total cost of a district using the calculate_totals method from the district class
     def calculate_total_cost(self):
         return self.district.calculate_totals()
 
+    # Save a copy of the district's current state in case it needs to be restored
     def save_state(self):
-        # Create a deep copy of the district's current state
         return copy.deepcopy(self.district)
 
+    # Restore the district's state to the saved state
     def restore_state(self, saved_state):
-        # Restore the district's state from the saved state
         self.district = saved_state
 
+
     def modify_house_order(self):
+        """
+        Remove depth amount of random houses from the district. Then reconnected using the logic from Dijckstsra's algorithm..
+        """
         removed_houses = []
 
         # Remove a random house from a random battery
@@ -51,14 +60,14 @@ class HillClimber:
             # Reconnect all the houses that are not connected
             self.connect_houses_to_batteries(removed_houses)
 
-    
+            # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
             total_houses = 0
             for battery in district.batteries:
                 total_houses += len(battery.connected_houses)
             if total_houses != 150:
-                # retry
                 saved_state = self.save_state()
                 self.restore_state(saved_state)
+
 
     def find_nearest_object_x(self, house):
         """
@@ -267,32 +276,23 @@ class HillClimber:
 
     def hill_climb(self):
         self.current_cost = self.calculate_total_cost()
-        print(f'Initial cost: {self.current_cost}')
+        costs = [self.current_cost]  # Initialize list to store costs
 
-        for _ in range(self.iterations):
-
-            # Save the current state
+        for _ in tqdm(range(self.iterations), desc="Optimizing"):
             saved_state = self.save_state()
-
-            # Modify the state by removing and adding houses
-            self.modify_house_order()  
-
-            # Calculate the new cost 
+            self.modify_house_order()
             new_cost = self.calculate_total_cost()
 
-            # Print the new cost
-            print(f'Current cost: {self.current_cost}')
-            print(f'New cost: {new_cost}')
-
-            # Check if the new cost is better than the current cost
             if new_cost < self.current_cost:
                 self.current_cost = new_cost
-                self.saved_state = self.district  # Update best state
-                print(f'New best cost: {self.current_cost}')
+                self.saved_state = self.district
+                print(f"New cost: {self.current_cost}")
             else:
-                self.restore_state(saved_state) # Revert to previous state
+                self.restore_state(saved_state)
 
-        return self.current_cost
+            costs.append(self.current_cost)  # Store cost after each iteration
+
+        return costs  # Return the list of costs
 
 
 
@@ -305,17 +305,28 @@ district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
 
-hillclimber = HillClimber(district)
-hillclimber.hill_climb()
+hillclimber = HillClimber(district, 3, 1000)
+costs = hillclimber.hill_climb()
 
+# Set plot with a black background
+plt.figure(figsize=(10, 6), facecolor='black')
+ax = plt.axes()
+ax.set_facecolor('black')
 
-# print("DIJCKSTRA BEST RESULTS")
-# houses_file = hillclimber.hill_climb(houses_file)
+# Plotting with adjustments for visibility on a black background
+plt.plot(costs, color='lime', linestyle='-', linewidth=2)
+plt.xlabel('Iterations', fontsize=14, fontweight='bold', color='white')
+plt.ylabel('Total Cost', fontsize=14, fontweight='bold', color='white')
+plt.title('Hill Climber Optimization Progress', fontsize=16, fontweight='bold', color='white')
+plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7, color='gray')
+plt.xticks(fontsize=12, color='white')
+plt.yticks(fontsize=12, color='white')
 
-# district = District(houses_file, batteries_file)
+# Invert y-axis
+plt.gca().invert_yaxis()
 
-# # Apply the Greedy algorithm to connect houses to batteries
-# dijckstra = dijckstra(district)
-# dijckstra.connect_houses_to_batteries()
+# Highlighting start and end points
+plt.scatter(0, costs[0], color='yellow', s=40, label='Start', zorder=5)
+plt.scatter(len(costs)-1, costs[-1], color='orange', s=40, label='End', zorder=5)
 
-# visualize(district, 1)
+plt.show()
