@@ -5,6 +5,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import plotly.graph_objects as go
 
 def visualize(district, district_number):
     """
@@ -103,3 +104,64 @@ def visualize(district, district_number):
     # plt.savefig(f"data/output_data/plots/district{district_number}.png")
     # plt.show()
 
+
+def visualize_live(district, district_number):
+    """
+    This function visualizes the houses, batteries, and cables in an interactive Plotly plot. This is meant for 
+    the 
+    """
+    experiment_instance = district
+
+    # create the start plot
+    fig = go.Figure()
+
+    # plot the houses
+    fig.add_trace(go.Scatter(
+        x=[house.x for house in experiment_instance.houses],
+        y=[house.y for house in experiment_instance.houses],
+        mode='markers',
+        marker=dict(size=10, color='blue'),
+        name='Houses'
+    ))
+
+    # plot the batteries
+    battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
+    for i, battery in enumerate(experiment_instance.batteries):
+        fig.add_trace(go.Scatter(
+            x=[battery.x],
+            y=[battery.y],
+            mode='markers',
+            marker=dict(size=15, color=battery_colors[i]),
+            name=f'Battery {i + 1}'
+        ))
+
+        # plot the house info
+        fig.add_annotation(
+            x=battery.x,
+            y=battery.y,
+            text=f'Output: {sum(house.maxoutput for house in battery.connected_houses)}\nCables: {len(set(cable_id for house in battery.connected_houses for cable_id in house.route))}',
+            showarrow=True,
+            arrowhead=1
+        )
+
+        # add cables
+        for house in battery.connected_houses:
+            for cable_id in house.route:
+                cable = experiment_instance.cables[cable_id]
+                fig.add_trace(go.Scatter(
+                    x=[cable.start_x, cable.end_x],
+                    y=[cable.start_y, cable.end_y],
+                    mode='lines',
+                    line=dict(width=2, color=battery_colors[i]),
+                    name=f'Cable {cable_id}'
+                ))
+
+    # set up the layout
+    fig.update_layout(
+        title=f'Houses and Batteries with Manhattan-style Cables in District {district_number}',
+        xaxis=dict(range=[0, 50], autorange=False),
+        yaxis=dict(range=[0, 50], autorange=False),
+        showlegend=False
+    )
+
+    fig.show()
