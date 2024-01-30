@@ -3,6 +3,7 @@ from code.algorithm.dijckstra import dijckstra as dijckstra
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
+from code.helpers.visualize import visualize_live
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from tqdm import tqdm
@@ -279,7 +280,10 @@ class HillClimber:
         self.current_cost = self.calculate_total_cost()
         costs = [self.current_cost]  # Initialize list to store costs
 
-        for _ in tqdm(range(self.iterations), desc="Optimizing"):
+        #plot/animate the initial state of the district
+        visualize_live(self.district)
+
+        for iteration in tqdm(range(self.iterations), desc="Optimizing"):
             saved_state = self.save_state()
             self.modify_house_order()
             new_cost = self.calculate_total_cost()
@@ -293,6 +297,14 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
+
+            #plot every nth iteration
+            if iteration % 100 == 0:
+                visualize_live(self.district)
+
+        #return the final (optimal or max iterations) state of the hillclimber algorithm 
+        visualize_live(district)
+        
         return costs  # Return the list of costs
 
 
