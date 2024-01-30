@@ -11,7 +11,7 @@ class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries
     """
-    def __init__(self, district, depth=1, iterations=100):
+    def __init__(self, district, depth=10, iterations=100):
         self.district = district
         self.depth = depth
         self.iterations = iterations
@@ -45,18 +45,20 @@ class HillClimber:
                 removed_houses.append(house)
 
                 # Remve the house from the battery
-                district.remove_connected_house(house, connected_battery)
+                self.district.remove_connected_house(house, connected_battery)
+
 
             # Reconnect all the houses that are not connected
             self.connect_houses_to_batteries(removed_houses)
 
+    
             total_houses = 0
             for battery in district.batteries:
                 total_houses += len(battery.connected_houses)
-            print(total_houses)
             if total_houses != 150:
-                print("ERROR: NOT ALL HOUSES CONNECTED")
-                exit()
+                # retry
+                saved_state = self.save_state()
+                self.restore_state(saved_state)
 
     def find_nearest_object_x(self, house):
         """
@@ -91,7 +93,7 @@ class HillClimber:
         return sorted_objects
 
 
-    def connect_houses_to_batteries(self, house):
+    def connect_houses_to_batteries(self, houses):
         """
         This method connects houses to batteries. It does this by finding the nearest battery or cable to a house. If
         this object is a battery, it checks if the battery has the capacity to connect the house. If this object is a
@@ -100,7 +102,7 @@ class HillClimber:
         """
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
-        random_houses = self.district.houses
+        random_houses = houses
 
         # Loop over all houses
         for house in random_houses:
@@ -156,18 +158,11 @@ class HillClimber:
                             continue
                     else:
                         while True:
-                            
-                            # If no battery has the capacity, remove the house with the longest x or y route and try again
-                            if random.choice([True, False]):
-
-                                # Remove the house with the longest x route
-                                house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
-
-
-                                # remove the house from the battery
-                                self.district.remove_connected_house(house, connected_battery)
-
-                                break
+                            for alternative_battery in self.district.batteries:
+                                if alternative_battery != connected_battery and alternative_battery.can_connect(house):
+                                    self.place_cables(house, alternative_battery)
+                                    alternative_battery.connect_house(house)
+                                    break
                             else:  
                                 # Remove the house with the longest y route
                                 house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
@@ -285,19 +280,17 @@ class HillClimber:
             # Calculate the new cost 
             new_cost = self.calculate_total_cost()
 
-            # Print the new cost
-            print(f'Current cost: {self.current_cost}')
-            print(f'New cost: {new_cost}')
+            # # Print the new cost
+            # print(f'Current cost: {self.current_cost}')
+            # print(f'New cost: {new_cost}')
 
             # Check if the new cost is better than the current cost
             if new_cost < self.current_cost:
                 self.current_cost = new_cost
-                self.saved_state = self.district    # Update best state
+                self.saved_state = self.district  # Update best state
                 print(f'New best cost: {self.current_cost}')
-
-            # If the new cost is not better, revert to the previous state
             else:
-                self.restore_state(saved_state)  # Revert to previous state
+                self.restore_state(saved_state) # Revert to previous state
 
         return self.current_cost
 
