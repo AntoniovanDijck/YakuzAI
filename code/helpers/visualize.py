@@ -108,7 +108,7 @@ def visualize(district, district_number):
 def visualize_live(district, district_number):
     """
     This function visualizes the houses, batteries, and cables in an interactive Plotly plot. This is meant for 
-    the 
+    the hillclimber
     """
     experiment_instance = district
 
