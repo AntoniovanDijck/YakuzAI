@@ -3,13 +3,14 @@ from code.algorithm.dijckstra import dijckstra as dijckstra
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
+from code.algorithm.nearest_battery import nearest_battery
 
 
 class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries
     """
-    def __init__(self, district, depth=1, iterations=100):
+    def __init__(self, district, depth=1, iterations=5):
         self.district = district
         self.depth = depth
         self.iterations = iterations
@@ -27,19 +28,25 @@ class HillClimber:
 
     def modify_house_order(self):
         removed_houses = []
+
+        # Remove a random house from a random battery
         for _ in range(self.depth):
+
+            # select a random battery
             connected_battery = random.choice(self.district.batteries)
+
+            # If the battery has a house connected
             if connected_battery.connected_houses:
+
+                # Select a random house from the battery and add it to the removed houses list
                 house = random.choice(connected_battery.connected_houses)
                 removed_houses.append(house)
-                # print(removed_houses[0].route)
 
-                self.district.remove_connected_house(house, connected_battery)
-                # print(removed_houses[0].route)
+                # Remve the house from the battery
+                district.remove_connected_house(house, connected_battery)
 
-        # Reconnect all the houses that are not connected
+            # Reconnect all the houses that are not connected
             dijckstra_instance.connect_houses_to_batteries(removed_houses)
-            # print(removed_houses[0].route)
 
 
     def hill_climb(self):

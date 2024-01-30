@@ -12,11 +12,16 @@ class nearest_battery:
         return abs(battery.x - house.x) + abs(battery.y - house.y)
 
 
-    def connect_houses_to_batteries(self):
+    def connect_houses_to_batteries(self, house = False):
 
-        # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
-        random_houses = self.district.houses
-        random.shuffle(random_houses)
+
+        if house == False:
+            # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
+            random_houses = self.district.houses
+            random.shuffle(random_houses)
+        
+        else:
+            random_houses = house
 
         # Precompute distances
         for house in random_houses:
