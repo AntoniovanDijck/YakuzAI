@@ -101,36 +101,39 @@ def experiment(houses_file, batteries_file, iterations=100):
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
+    # Get the district name from the file name
+    districtname = houses_file.split('/')[2].split('_')[1]
+
     # Run simulations and save results for each algorithm
     print("1/6: Running RandomAlgorithm Simulation")
     sim_rand = sim_rand_instance.simulate()
-    csv_filename_rand = os.path.join(save_directory, 'random_algorithm_lowest_cost_order.csv')
+    csv_filename_rand = os.path.join(save_directory, f'District {districtname} random_algorithm_lowest_cost_order.csv')
     sim_rand_instance.save_lowest_cost_house_order_to_csv(csv_filename_rand)
 
     print("2/6: Running nearest_battery Simulation")
     sim_battery = sim_battery_instance.simulate()
-    csv_filename_battery = os.path.join(save_directory, 'nearest_battery_lowest_cost_order.csv')
+    csv_filename_battery = os.path.join(save_directory, f'District {districtname} nearest_battery_lowest_cost_order.csv')
     sim_battery_instance.save_lowest_cost_house_order_to_csv(csv_filename_battery)
 
     # Repeat for other algorithms
     print("3/6: Running nearest_object_x Simulation")
     sim_object_x = sim_object_x_instance.simulate()
-    csv_filename_object_x = os.path.join(save_directory, 'nearest_object_x_lowest_cost_order.csv')
+    csv_filename_object_x = os.path.join(save_directory, f'District {districtname} nearest_object_x_lowest_cost_order.csv')
     sim_object_x_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_x)
 
     print("4/6: Running nearest_object_y Simulation")
     sim_object_y = sim_object_y_instance.simulate()
-    csv_filename_object_y = os.path.join(save_directory, 'nearest_object_y_lowest_cost_order.csv')
+    csv_filename_object_y = os.path.join(save_directory, f'District {districtname} nearest_object_y_lowest_cost_order.csv')
     sim_object_y_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_y)
 
     print("5/6: Running nearest_object_rand Simulation")
     sim_obj_rand = sim_obj_rand_instance.simulate()
-    csv_filename_obj_rand = os.path.join(save_directory, 'nearest_object_rand_lowest_cost_order.csv')
+    csv_filename_obj_rand = os.path.join(save_directory, f'District {districtname} nearest_object_rand_lowest_cost_order.csv')
     sim_obj_rand_instance.save_lowest_cost_house_order_to_csv(csv_filename_obj_rand)
 
     print("6/6: Running dijckstra Simulation")
     sim_dijckstra = sim_dijckstra_instance.simulate()
-    csv_filename_dijckstra = os.path.join(save_directory, 'dijckstra_lowest_cost_order.csv')
+    csv_filename_dijckstra = os.path.join(save_directory, f'District {districtname} dijckstra_lowest_cost_order.csv')
     sim_dijckstra_instance.save_lowest_cost_house_order_to_csv(csv_filename_dijckstra)
 
     # Convert the sets of costs to lists
@@ -181,9 +184,10 @@ def experiment(houses_file, batteries_file, iterations=100):
     plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
 
     # Save the figure with a higher resolution
-    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
+    districtname = houses_file.split('/')[2].split('_')[1]
+    plt.savefig(os.path.join(save_directory, f"District {districtname} simulation_histogram.png"), dpi=300)
 
-    plt.show()  # If you want to display the plot as well
+    # plt.show()  # If you want to display the plot as well
 
 
 
@@ -205,18 +209,18 @@ def experiment_dijck(houses_file, batteries_file, iterations=100):
         os.makedirs(save_directory)
 
     # Run simulations and save results for each algorithm
-    print("1/6: Running RandomAlgorithm Simulation")
+    print("1/3: Running Dijckstra")
     dijckstra = dijckstra_instance.simulate()
     csv_filename_rand = os.path.join(save_directory, 'dijckstra_lowest_cost_order.csv')
     dijckstra_instance.save_lowest_cost_house_order_to_csv(csv_filename_rand)
 
-    print("2/6: Running nearest_battery Simulation")
+    print("2/3: Running dijckstra_sum")
     dijckstra_sum = dijckstra_sum_instance.simulate()
     csv_filename_battery = os.path.join(save_directory, 'dijckstra_sum_lowest_cost_order.csv')
     dijckstra_sum_instance.save_lowest_cost_house_order_to_csv(csv_filename_battery)
 
     # Repeat for other algorithms
-    print("3/6: Running nearest_object_x Simulation")
+    print("3/3: dijckstra_max")
     dijckstra_max = dijckstra_max_instance.simulate()
     csv_filename_object_x = os.path.join(save_directory, 'dijckstra_max_lowest_cost_order.csv')
     dijckstra_max_instance.save_lowest_cost_house_order_to_csv(csv_filename_object_x)
@@ -266,7 +270,8 @@ def experiment_dijck(houses_file, batteries_file, iterations=100):
     # Increase font size for legend and place it outside the plot area
     plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
 
-    # Save the figure with a higher resolution
-    plt.savefig(os.path.join(save_directory, "simulation_histogram.png"), dpi=300)
+    # Save the figure with a higher resolution per district
+    districtname = houses_file.split('/')[2].split('_')[1]
+    plt.savefig(os.path.join(save_directory, f"district {districtname} simulation_histogram.png"), dpi=300)
 
     plt.show()  # If you want to display the plot as well
