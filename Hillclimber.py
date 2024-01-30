@@ -3,7 +3,6 @@ from code.algorithm.dijckstra import dijckstra_max as dijckstra
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
-from simulation_results import dijckstra_lowest_cost_order
 
 
 class HillClimber:
@@ -66,7 +65,7 @@ class HillClimber:
 
 
 ## RUN HILLCLIMBER ###
-houses_file = 'simulation_results/dijckstra_lowest_cost_order.csv'
+houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
 batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 
 
