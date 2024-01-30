@@ -2,6 +2,8 @@ import random
 from code.algorithm.dijckstra import dijckstra_max as dijckstra
 from code.classes.district import District
 import copy
+from code.helpers.visualize import visualize
+from simulation_results import dijckstra_lowest_cost_order
 
 
 class HillClimber:
@@ -76,13 +78,13 @@ hillclimber = HillClimber(dijckstra_instance)
 hillclimber.hill_climb()
 
 
-# print("DIJCKSTRA BEST RESULTS")
-# houses_file = hillclimber.hill_climb(houses_file)
+print("DIJCKSTRA BEST RESULTS")
+houses_file = hillclimber.hill_climb(houses_file)
 
-# district = District(houses_file, batteries_file)
+district = District(houses_file, batteries_file)
 
-# # Apply the Greedy algorithm to connect houses to batteries
-# dijckstra = dijckstra(district)
-# dijckstra.connect_houses_to_batteries()
+# Apply the Greedy algorithm to connect houses to batteries
+dijckstra = dijckstra(district)
+dijckstra.connect_houses_to_batteries()
 
-# visualize(district, 1)
+visualize(district, 1)

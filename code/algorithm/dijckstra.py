@@ -226,7 +226,7 @@ class dijckstra:
 
 class dijckstra_sum:
     """"
-    This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
+    This version differs from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
     to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is
     connected to a battery. If this battery has the capacity. This algorithm will connect the house to the cable instead.
     """
