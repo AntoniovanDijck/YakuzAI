@@ -25,8 +25,8 @@ def visualize(district, district_number):
 
     # Draw thicker grey lines for every 10th line
     for i in range(0, 51, 10):
-        ax.axvline(x=i, color='grey', linestyle='-', linewidth=2.5, alpha=0.25, zorder=0)
-        ax.axhline(y=i, color='grey', linestyle='-', linewidth=2.5, alpha=0.25, zorder=0)
+        ax.axvline(x=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
+        ax.axhline(y=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
 
     # Set labels for every 10th line
     ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
