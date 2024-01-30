@@ -280,9 +280,9 @@ class HillClimber:
             # Calculate the new cost 
             new_cost = self.calculate_total_cost()
 
-            # # Print the new cost
-            # print(f'Current cost: {self.current_cost}')
-            # print(f'New cost: {new_cost}')
+            # Print the new cost
+            print(f'Current cost: {self.current_cost}')
+            print(f'New cost: {new_cost}')
 
             # Check if the new cost is better than the current cost
             if new_cost < self.current_cost:
