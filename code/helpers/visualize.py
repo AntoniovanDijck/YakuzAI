@@ -105,7 +105,7 @@ def visualize(district, district_number):
     # plt.show()
 
 
-def visualize_live(district, district_number):
+def visualize_live(district):
     """
     This function visualizes the houses, batteries, and cables in an interactive Plotly plot. This is meant for 
     the hillclimber
@@ -158,7 +158,7 @@ def visualize_live(district, district_number):
 
     # set up the layout
     fig.update_layout(
-        title=f'Houses and Batteries with Manhattan-style Cables in District {district_number}',
+        title=f'Houses and Batteries with Manhattan-style Cables in District',
         xaxis=dict(range=[0, 50], autorange=False),
         yaxis=dict(range=[0, 50], autorange=False),
         showlegend=False
