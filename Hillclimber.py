@@ -11,7 +11,7 @@ class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries
     """
-    def __init__(self, district, depth=10, iterations=100):
+    def __init__(self, district, depth=2, iterations=1000):
         self.district = district
         self.depth = depth
         self.iterations = iterations
