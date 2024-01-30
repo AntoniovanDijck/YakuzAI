@@ -9,13 +9,13 @@ class HillClimber:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries
     """
-    def __init__(self, district, depth=2, iterations=10000):
+    def __init__(self, district, depth=1, iterations=1000):
         self.district = district
         self.depth = depth
         self.iterations = iterations
 
     def calculate_total_cost(self):
-        return district.calculate_totals()
+        return self.district.calculate_totals()
 
     def save_state(self):
         # Create a deep copy of the district's current state
@@ -37,27 +37,29 @@ class HillClimber:
         # Reconnect all the houses that are not connected
         dijckstra_instance.connect_houses_to_batteries(removed_houses)
 
+
+
     def hill_climb(self):
-        best_cost = self.calculate_total_cost()
-        best_state = self.save_state()
+        self.current_cost = self.calculate_total_cost()
+        self.best_state = self.save_state()
+        print(f'Initial cost: {self.current_cost}')
 
         for _ in range(self.iterations):
             saved_state = self.save_state()
             self.modify_house_order()  # Modify the order of house connections
             new_cost = self.calculate_total_cost()
-            # print(f'New cost: {new_cost}')
-            # print(f'Best cost: {best_cost}')
+            print(f'Current cost: {self.current_cost}')
+            print(f'New cost: {new_cost}')
 
-            if new_cost < best_cost:
-                best_cost = new_cost
-                best_state = saved_state  # Update best state
-                print(f'New best cost: {best_cost}')
+            if new_cost < self.current_cost:
+                self.current_cost = new_cost
+                self.saved_state = self.best_state # Update best state
+                print(f'New best cost: {self.current_cost}')
             else:
                 self.restore_state(saved_state)  # Revert to previous state
 
-        # After finishing, restore the best state found
-        self.restore_state(best_state)
-        return best_cost
+ 
+        return self.current_cost
 
 
 
