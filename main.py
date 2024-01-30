@@ -25,8 +25,8 @@ def main():
     districts_houses = ['data/Huizen&Batterijen/district_1/district-1_houses.csv', 'data/Huizen&Batterijen/district_2/district-2_houses.csv', 'data/Huizen&Batterijen/district_3/district-3_houses.csv']
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
     
-    #Iterations for animation
-    iterations = 10
+    #Iterations for simulate    
+    iterations = 100
 
     # for each district
     for i in range(0, 3):
