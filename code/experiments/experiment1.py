@@ -10,24 +10,27 @@ from code.algorithm.nearest_object_y import nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand
 
 
-def experiment(houses_file, batteries_file, iterations=100,algorithms=[RandomAlgorithm, nearest_battery, nearest_object_x, nearest_object_y, nearest_object_rand, dijckstra]):
+def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algorithms=[dijckstra]):
     """
     the experiment function runs the simulation for each algorithm and saves the results in a csv file and plots a histogram of the resultings costs
     the input is the filepaths of the houses and batteries, the amount of iterations and the algorithms to be tested
     """
-    i = 1
+    count = 1
 
     save_directory = "data/simulation_results"
+
     data_to_plot = []
+
+    # If the directory does not exist, create it
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
-    # Create instances for each algorith
+    # Create instances for each algorithm
     for i in range(len(algorithms)):
 
         alg = algorithms[i]
 
-        print(f"{i}/{len(algorithms)}: Running {alg.__name__} Simulation")
+        print(f"{count}/{len(algorithms)}: Running {alg.__name__} Simulation")
         
         # Create instances for each algorithm
         algorithm_instance = Simulate_Algorithm(alg, iterations, houses_file, batteries_file)
@@ -38,12 +41,11 @@ def experiment(houses_file, batteries_file, iterations=100,algorithms=[RandomAlg
         print("")
 
         algorithm_instance.save_lowest_cost_house_order_to_csv(csv_filename)
-        i += 1
+        count += 1
 
         # Convert the sets of costs to lists
         sim_alg_list = list(sim_alg)
         data_to_plot.append(sim_alg_list)
-
 
     # Find the global minimum and maximum to set the bins
     min_value = min(map(min, data_to_plot))
@@ -62,8 +64,8 @@ def experiment(houses_file, batteries_file, iterations=100,algorithms=[RandomAlg
     colors = plt.cm.tab10(np.linspace(0, 1, 10))
 
     # Plot each algorithm's histogram
-    labels = [str(alg) for alg in algorithms]
-    
+    labels = [str(alg.__name__) for alg in algorithms]
+
     for i, (data, label) in enumerate(zip(data_to_plot, labels)):
         plt.hist(data, bins=bins, alpha=0.5, color=colors[i], label=label)
 

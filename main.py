@@ -15,7 +15,7 @@ from code.helpers.visualize import visualize
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.dijckstra import dijckstra
 from code.experiments.experiment2 import experiment2
-from code.experiments.experiment1 import experiment
+from code.experiments.experiment1 import find_lowest_cost_experiment
 
 
 #Creators: Team YakuzAI
@@ -33,7 +33,7 @@ def main():
         print(f'District {i+1}')
 
         # set up experiment To test all algorithms
-        experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra, nearest_battery])    
+        find_lowest_cost_experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])    
 
 
         #experiment2(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])
