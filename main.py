@@ -10,7 +10,6 @@ import code.classes.battery
 from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_object_rand import nearest_object_rand
-from code.algorithm.nearest_object_x import nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y
 from code.helpers.visualize import visualize
 from simulate import experiment
@@ -21,7 +20,6 @@ from code.experiments.experiment1 import experiment
 
 
 #Creators: Team YakuzAI
-
 def main():
 
     ### Drawing cables for all districts
