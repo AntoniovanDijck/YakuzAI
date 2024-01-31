@@ -131,6 +131,14 @@ class nearest_object_rand:
                                 self.district.remove_connected_house(house, connected_battery)
 
                                 break
+            # FAILCHECK: Check if all houses are connected
+            total_houses = 0
+            for battery in self.district.batteries:
+                total_houses += len(battery.connected_houses)
+                if total_houses != 150:
+                    continue
+                else:
+                        break
 
 
 

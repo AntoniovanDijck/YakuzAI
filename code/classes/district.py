@@ -178,6 +178,8 @@ class District:
 
         # Reset the house route
         house.route = []
+
+
     
     def calculate_totals(self):
         """

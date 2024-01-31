@@ -72,6 +72,16 @@ class RandomAlgorithm:
 
                     break
                 
+            # FAILCHECK: Check if all houses are connected
+            total_houses = 0
+            for battery in self.district.batteries:
+                total_houses += len(battery.connected_houses)
+                if total_houses != 150:
+                    continue
+                else:
+                        break
+
+                
     def place_cables(self, house, battery):
 
         # Place cable along x-axis
