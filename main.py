@@ -23,7 +23,7 @@ def main():
     """
     
     """
-    
+
     # Drawing cables for all districts
     districts_houses = ['data/Huizen&Batterijen/district_1/district-1_houses.csv', 'data/Huizen&Batterijen/district_2/district-2_houses.csv', 'data/Huizen&Batterijen/district_3/district-3_houses.csv']
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
@@ -38,7 +38,7 @@ def main():
         print(f'District {i+1}')
 
         # set up experiment To test all algorithms
-        find_lowest_cost_experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])    
+        find_lowest_cost_experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra, nearest_battery])    
 
 
         #experiment2(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])
