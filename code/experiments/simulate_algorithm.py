@@ -2,7 +2,7 @@
 from code.classes.district import District
 from code.algorithm.random_alg import RandomAlgorithm as RandomAlgorithm
 from code.algorithm.nearest_battery import nearest_battery as nearest_battery
-from code.algorithm.nearest_object_x import nearest_object_x as nearest_object_x
+from code.algorithm.nearest_object import nearest_object_x as nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand
 from Hillclimber import HillClimber
@@ -32,7 +32,7 @@ class Simulate_Algorithm:
         """
         Simulates the algorithm x number of times, optimized for efficiency and shows progress using tqdm.
         """
-        self.costs = []] # Using a set for unique total costs
+        self.costs = [] # Using a set for unique total costs
         is_initial_cost_set = self.lowest_costs != 0
         self.lowest_district = None
 
