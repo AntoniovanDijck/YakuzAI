@@ -95,11 +95,6 @@ class nearest_object_y:
                             # Place cables and connect to the battery
                             self.place_cables(house, object)
 
-                            # To keep track of the cables that are used to connect houses to batteries, the overlapping
-                            # cables need to be tracked as well
-                            # TODO: Fix this --> uncomment the following line and check simulation for weird grid
-                            # self.extend_route_to_battery(house, object, connected_battery)
-
                             # Connect house to the battery
                             connected_battery.connect_house(house)
 
