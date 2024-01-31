@@ -29,12 +29,14 @@ class HillClimber:
 
     # Save a copy of the district's current state in case it needs to be restored
     def save_state(self):
-        return copy.deepcopy(self.district)
+        saved_state = copy.deepcopy(self.district)
+        saved_cables = copy.deepcopy(self.district.cables)
+        return (saved_state, saved_cables)
 
     # Restore the district's state to the saved state
-    def restore_state(self, saved_state):
+    def restore_state(self, saved_state, saved_cables):
         self.district = saved_state
-
+        self.district.cables = saved_cables
 
     def modify_house_order(self):
         """
@@ -64,12 +66,11 @@ class HillClimber:
             self.connect_houses_to_batteries(removed_houses)
 
             # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
-            total_houses = 0
-            for battery in district.batteries:
-                total_houses += len(battery.connected_houses)
+            total_houses = sum(len(battery.connected_houses) for battery in self.district.batteries)
             if total_houses != 150:
-                saved_state = self.save_state()
-                self.restore_state(saved_state)
+                saved_state, saved_cables = self.save_state() 
+                self.restore_state(saved_state, saved_cables)
+                
 
 
     def find_nearest_object_x(self, house):
@@ -283,7 +284,7 @@ class HillClimber:
         saved_districts = []
         
         for iteration in tqdm(range(self.iterations), desc="Optimizing"):
-            saved_state = self.save_state()
+            saved_state, saved_cables = self.save_state()
             self.modify_house_order()
             new_cost = self.calculate_total_cost()
 
@@ -292,7 +293,7 @@ class HillClimber:
                 self.saved_state = self.district
                 # print(f"New cost: {self.current_cost}")
             else:
-                self.restore_state(saved_state)
+                self.restore_state(saved_state, saved_cables)
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
@@ -301,7 +302,7 @@ class HillClimber:
                 visualize(saved_state, iteration, True)
                 print(costs[-1])
 
-        return costs, saved_districts# Return the list of costs
+        return costs, saved_state# Return the list of costs
 
 
 
@@ -312,7 +313,7 @@ dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
 hillclimber = HillClimber(district, 4, 2)
 costs, saved_districts = hillclimber.hill_climb()
-print(saved_districts)
+print(saved_districts.houses)
 print(costs)
 
 
