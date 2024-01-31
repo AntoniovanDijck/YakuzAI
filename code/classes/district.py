@@ -219,7 +219,6 @@ class District:
         return total_cost
     
     def check_50(self): 
-        """"""
         output_data = []
 
         for battery in self.batteries:
@@ -229,14 +228,13 @@ class District:
                 "houses": [] 
             }
 
-
             for house in battery.connected_houses:
-                #generate cables for each house
-                cables = house.route
+                cable_data = [{"x": x, "y": y} for x, y in house.route]
 
-                cable_data = cables
                 house_data = {
-                    "location": f"{house.x}, {house.y}", "output": house.maxoutput, "cables": cable_data
+                    "location": f"{house.x}, {house.y}",
+                    "output": house.maxoutput,
+                    "cables": cable_data
                 }
 
                 battery_data['houses'].append(house_data)
@@ -244,7 +242,7 @@ class District:
             output_data.append(battery_data)
 
         cost_own = self.calculate_totals()
-        output_data.insert(0, {"district":1, "cost-own": cost_own})
+        output_data.insert(0, {"district": 1, "cost-own": cost_own})
 
         return output_data
     

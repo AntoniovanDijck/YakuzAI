@@ -47,6 +47,8 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
         sim_alg_list = list(sim_alg)
         data_to_plot.append(sim_alg_list)
 
+
+
     # Find the global minimum and maximum to set the bins
     min_value = min(map(min, data_to_plot))
     max_value = max(map(max, data_to_plot))
@@ -83,5 +85,7 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
     # Increase font size for legend and place it outside the plot area
     plt.legend(fontsize=12, loc='upper right', bbox_to_anchor=(1.1, 1))
 
-
-    plt.show()  # If you want to display the plot as well
+    # Show the plot
+    plt.show()  
+    
+    return algorithm_instance.get_lowest_district()
