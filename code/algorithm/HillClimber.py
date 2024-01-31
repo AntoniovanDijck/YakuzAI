@@ -282,7 +282,7 @@ class HillClimber:
         costs = [self.current_cost]  # Initialize list to store costs
         saved_districts = []
         
-        for iteration in tqdm(range(self.iterations), desc="Optimizing"):
+        for iteration in tqdm(range(self.iterations), desc="Climbing the hill: "):
             saved_state = self.save_state()
             self.modify_house_order()
             new_cost = self.calculate_total_cost()
