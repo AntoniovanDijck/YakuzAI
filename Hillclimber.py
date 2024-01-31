@@ -352,15 +352,15 @@ class HillClimber:
 
 
 
-## RUNNING 1 DEPTH ##
-houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
-batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-district = District(houses_file, batteries_file)
-dijckstra_instance = dijckstra(district)
-dijckstra_instance.connect_houses_to_batteries()
-hillclimber = HillClimber(district, 3, 10000)
-costs, district_states = hillclimber.hill_climb()
+# ## RUNNING 1 DEPTH ##
+# houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
+# batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
+# district = District(houses_file, batteries_file)
+# dijckstra_instance = dijckstra(district)
+# dijckstra_instance.connect_houses_to_batteries()
+# hillclimber = HillClimber(district, 3, 10000)
+# costs, district_states = hillclimber.hill_climb()
 
-visualize(district_states,1)
+# visualize(district_states,1)
 
 

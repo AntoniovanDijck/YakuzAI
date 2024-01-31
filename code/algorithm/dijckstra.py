@@ -87,50 +87,44 @@ class dijckstra:
                     connected_battery = object.connected_battery
 
                     # Check if the connected_battery is a battery class to prevent errors
-                    if isinstance(connected_battery, Battery):
+                    if isinstance(connected_battery, Battery) and connected_battery.can_connect(house):
 
-                        # Place cables and connect to the cable, which routes to the battery
-                        if connected_battery.can_connect(house):
 
-                            # Place cables and connect to the battery
-                            self.place_cables(house, object)
+                        # Place cables and connect to the battery
+                        self.place_cables(house, object)
 
-                            # To keep track of the cables that are used to connect houses to batteries, the overlapping
-                            # cables need to be tracked as well
-                            # TODO: Fix this --> uncomment the following line and check simulation for weird grid
-                            # self.extend_route_to_battery(house, object, connected_battery)
 
-                            # Connect house to the battery
-                            connected_battery.connect_house(house)
+                        # Connect house to the battery
+                        connected_battery.connect_house(house)
 
-                            # Break out of the loop as the house is connected
-                            break
+                        # Break out of the loop as the house is connected
+                        break
 
-                        else:
-                            continue
                     else:
-                        while True:
-                            
-                            # If no battery has the capacity, remove the house with the longest x or y route and try again
-                            if random.choice([True, False]):
+                        continue
+                else:
+                    while True:
+                        
+                        # If no battery has the capacity, remove the house with the longest x or y route and try again
+                        if random.choice([True, False]):
 
-                                # Remove the house with the longest x route
-                                house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
-
-
-                                # remove the house from the battery
-                                self.district.remove_connected_house(house, connected_battery)
-
-                                break
-                            else:  
-                                # Remove the house with the longest y route
-                                house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
+                            # Remove the house with the longest x route
+                            house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
 
 
-                                # remove the house from the battery
-                                self.district.remove_connected_house(house, connected_battery)
+                            # remove the house from the battery
+                            self.district.remove_connected_house(house, connected_battery)
 
-                                break
+                            break
+                        else:  
+                            # Remove the house with the longest y route
+                            house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
+
+
+                            # remove the house from the battery
+                            self.district.remove_connected_house(house, connected_battery)
+
+                            break
 
 
 
