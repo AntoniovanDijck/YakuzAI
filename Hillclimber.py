@@ -313,8 +313,6 @@ dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
 hillclimber = HillClimber(district, 4, 2)
 costs, saved_districts = hillclimber.hill_climb()
-print(saved_districts.houses)
-print(costs)
 
 
 
