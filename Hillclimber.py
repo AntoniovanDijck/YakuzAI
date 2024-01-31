@@ -297,7 +297,7 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
-            if iteration % 250 == 0:
+            if iteration % 1000 == 0:
                 plt.cla()
                 visualize(saved_state, iteration, True)
                 print(costs[-1])

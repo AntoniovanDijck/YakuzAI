@@ -29,7 +29,7 @@ def main():
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
     
     # Iterations for simulate    
-    iterations = 150
+    iterations = 1000
 
     # For each district
     for i in range(0, 1):
