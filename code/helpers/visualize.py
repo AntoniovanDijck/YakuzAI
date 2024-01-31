@@ -23,12 +23,12 @@ def visualize(district, district_number, route=False):
     ax.set_yticks(np.arange(0, 51, 1))
 
     # Draw grid with grey lines
-    ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder=0)
+    ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey' )
 
     # Draw thicker grey lines for every 10th line
     for i in range(0, 51, 10):
-        ax.axvline(x=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
-        ax.axhline(y=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
+        ax.axvline(x=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25)
+        ax.axhline(y=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25)
 
     # Set labels for every 10th line
     ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
@@ -96,7 +96,7 @@ def visualize(district, district_number, route=False):
             for cable_id, cable in experiment_instance.cables.items():
                 if cable.connected_battery == experiment_instance.batteries[i]:
                     plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
-                    linewidth=3.5, color=battery_colors[i], zorder=0)
+                    linewidth=3.5, color=battery_colors[i], )
 
     if route:
         for i, battery in enumerate(experiment_instance.batteries):
