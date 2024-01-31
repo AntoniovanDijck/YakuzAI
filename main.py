@@ -15,7 +15,7 @@ from code.helpers.visualize import visualize
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.dijckstra import dijckstra
 from code.experiments.experiment2 import experiment2
-from code.experiments.experiment1 import find_lowest_cost_experiment
+from code.experiments.find_lowest_cost_experiment import find_lowest_cost_experiment
 
 
 #Creators: Team YakuzAI
