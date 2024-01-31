@@ -54,7 +54,7 @@ class dijckstra:
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = self.district.houses
-        # random.shuffle(random_houses)
+        random.shuffle(random_houses)
 
         # Loop over all houses
         for house in random_houses:
@@ -97,8 +97,7 @@ class dijckstra:
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
-                            # TODO: Fix this --> uncomment the following line and check simulation for weird grid
-                            # self.extend_route_to_battery(house, object, connected_battery)
+                            self.extend_route_to_battery(house, object, connected_battery)
 
                             # Connect house to the battery
                             connected_battery.connect_house(house)
@@ -110,27 +109,22 @@ class dijckstra:
                             continue
                     else:
                         while True:
-                            
-                            # If no battery has the capacity, remove the house with the longest x or y route and try again
-                            if random.choice([True, False]):
+                            # Remove the house with the longest x route
+                            house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
 
-                                # Remove the house with the longest x route
-                                house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
+                            # remove the house from the battery
+                            self.district.remove_connected_house(house, connected_battery)
 
-
-                                # remove the house from the battery
-                                self.district.remove_connected_house(house, connected_battery)
-
-                                break
-                            else:  
-                                # Remove the house with the longest y route
-                                house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
-
-
-                                # remove the house from the battery
-                                self.district.remove_connected_house(house, connected_battery)
-
-                                break
+                            break
+                        
+            # FAILCHECK: Check if all houses are connected
+            total_houses = 0
+            for battery in self.district.batteries:
+                total_houses += len(battery.connected_houses)
+                if total_houses != 150:
+                    continue
+                else:
+                        break
 
 
 

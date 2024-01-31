@@ -61,10 +61,10 @@ class simulate_algorithm:
 
                 is_initial_cost_set = True
 
-        districtname = self.houses_file.split('/')[2].split('_')[1]
+        # districtname = self.houses_file.split('/')[2].split('_')[1]
 
-        visualize(self.lowest_district,int(districtname))
-        visualize_live(self.lowest_district, int(districtname))
+        # visualize(self.lowest_district,int(districtname))
+
         print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 
 
@@ -156,6 +156,9 @@ def experiment(houses_file, batteries_file, iterations=100):
 
     # Combine the lists into a list of lists for the histogram
     data_to_plot = [sim_rand_list, sim_battery_list, sim_object_x_list, sim_object_y_list, sim_obj_rand_list, sim_dijckstra_list]
+
+
+
 
     # Find the global minimum and maximum to set the bins
     min_value = min(map(min, data_to_plot))
