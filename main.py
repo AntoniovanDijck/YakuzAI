@@ -34,7 +34,7 @@ def main():
         print(f'District {i+1}')
 
         # set up experiment To test all algorithms
-        experiment(districts_houses[i], districts_batteries[i], iterations)    
+        experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])    
     
         
         

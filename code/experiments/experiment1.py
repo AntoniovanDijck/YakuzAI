@@ -25,9 +25,9 @@ def experiment(houses_file, batteries_file, iterations=100,algorithms=[RandomAlg
     # Create instances for each algorith
     for i in range(len(algorithms)):
 
-        print(f"{i}/{len(algorithms)}: Running {alg.__name__} Simulation")
-        
         alg = algorithms[i]
+
+        print(f"{i}/{len(algorithms)}: Running {alg.__name__} Simulation")
         
         # Create instances for each algorithm
         algorithm_instance = Simulate_Algorithm(alg, iterations, houses_file, batteries_file)
