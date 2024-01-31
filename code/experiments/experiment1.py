@@ -62,7 +62,8 @@ def experiment(houses_file, batteries_file, iterations=100,algorithms=[RandomAlg
     colors = plt.cm.tab10(np.linspace(0, 1, 10))
 
     # Plot each algorithm's histogram
-    labels = ["Random", "Nearest Battery", "Nearest Object X", "Nearest Object Y", "Nearest Object Rand", "Dijckstra"]
+    labels = [str(alg) for alg in algorithms]
+    
     for i, (data, label) in enumerate(zip(data_to_plot, labels)):
         plt.hist(data, bins=bins, alpha=0.5, color=colors[i], label=label)
 

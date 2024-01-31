@@ -29,13 +29,14 @@ def main():
     iterations = 100
 
     # for each district
-    for i in range(0, 1):
+    for i in range(0, 3):
         print(f'District {i+1}')
 
         # set up experiment To test all algorithms
-        experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])    
-    
-        experiment2(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])
+        experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra, nearest_battery])    
+
+
+        #experiment2(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra])
         
         # check experiment
         # output_data = experiment.check_50()
