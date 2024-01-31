@@ -1,5 +1,6 @@
 import random
 from code.algorithm.dijckstra import dijckstra as dijckstra
+from code.algorithm.nearest_battery import nearest_battery as NB
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
@@ -21,7 +22,8 @@ class HillClimber:
         self.district = district
         self.depth = depth
         self.iterations = iterations
-        
+
+
     # Calculate the total cost of a district using the calculate_totals method from the district class
     def calculate_total_cost(self):
         return self.district.calculate_totals()
@@ -279,7 +281,8 @@ class HillClimber:
     def hill_climb(self):
         self.current_cost = self.calculate_total_cost()
         costs = [self.current_cost]  # Initialize list to store costs
-
+        saved_districts = []
+        
         for iteration in tqdm(range(self.iterations), desc="Optimizing"):
             saved_state = self.save_state()
             self.modify_house_order()
@@ -294,8 +297,10 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
+            if iteration % 100 == 0:
+                visualize(district, iteration)
 
-        return costs, saved_state# Return the list of costs
+        return costs, saved_districts# Return the list of costs
 
 
 
@@ -353,14 +358,13 @@ class HillClimber:
 
 
 ## RUNNING 1 DEPTH ##
-houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
+houses_file = "simulation_results/District 3 dijckstra_lowest_cost_order.csv"
 batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
-hillclimber = HillClimber(district, 3, 10000)
-costs, district_states = hillclimber.hill_climb()
+hillclimber = HillClimber(district, 4, 200)
+costs, saved_districts = hillclimber.hill_climb()
 
-visualize(district_states,1)
 
 

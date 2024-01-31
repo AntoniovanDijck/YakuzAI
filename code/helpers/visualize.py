@@ -5,8 +5,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-import plotly.graph_objects as go
 from matplotlib.animation import FuncAnimation
+import os
 
 def visualize(district, district_number):
     """
@@ -102,8 +102,14 @@ def visualize(district, district_number):
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
     plt.title('Houses and Batteries with Manhattan-style Cables')
-    # plt.savefig(f"data/output_data/plots/district{district_number}.png")
-    plt.show()
+    #check for directory and create if not
+    output_dir = "data/output_data/plots"
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        
+    plt.savefig(f"data/output_data/plots/district{district_number}.png")
+    # plt.show()
 
 
 def visualize_live(district_states):
