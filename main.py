@@ -20,16 +20,21 @@ from code.experiments.experiment1 import find_lowest_cost_experiment
 
 #Creators: Team YakuzAI
 def main():
-
-    ### Drawing cables for all districts
+    """
+    
+    """
+    
+    # Drawing cables for all districts
     districts_houses = ['data/Huizen&Batterijen/district_1/district-1_houses.csv', 'data/Huizen&Batterijen/district_2/district-2_houses.csv', 'data/Huizen&Batterijen/district_3/district-3_houses.csv']
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
     
-    #Iterations for simulate    
+    # Iterations for simulate    
     iterations = 100
 
-    # for each district
+    # For each district
     for i in range(0, 3):
+
+        # Print district number for clarity
         print(f'District {i+1}')
 
         # set up experiment To test all algorithms
