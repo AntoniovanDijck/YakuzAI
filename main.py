@@ -12,7 +12,6 @@ from code.algorithm.random_alg import RandomAlgorithm
 from code.algorithm.nearest_object_rand import nearest_object_rand
 from code.algorithm.nearest_object_y import nearest_object_y
 from code.helpers.visualize import visualize
-from simulate import experiment
 from code.algorithm.nearest_battery import nearest_battery
 from code.algorithm.dijckstra import dijckstra
 from code.experiments.experiment2 import experiment2
