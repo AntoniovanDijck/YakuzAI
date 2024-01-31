@@ -108,7 +108,7 @@ class HillClimber:
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = houses
-        print(houses)
+        #print(houses)
 
         # Loop over all houses
         for house in random_houses:

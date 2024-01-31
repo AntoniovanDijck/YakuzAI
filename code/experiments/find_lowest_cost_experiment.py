@@ -20,6 +20,8 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
     save_directory = "data/simulation_results"
 
     data_to_plot = []
+    lowest_district = None
+    lowest_cost = float('inf')
 
     # If the directory does not exist, create it
     if not os.path.exists(save_directory):
@@ -41,7 +43,10 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
         print("")
 
         algorithm_instance.save_lowest_cost_house_order_to_csv(csv_filename)
-        count += 1
+        
+        if algorithm_instance.lowest_costs < lowest_cost:
+            lowest_cost = algorithm_instance.lowest_costs
+            lowest_district = algorithm_instance.lowest_district
 
         # Convert the sets of costs to lists
         sim_alg_list = list(sim_alg)
@@ -88,4 +93,4 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
     # Show the plot
     plt.show()  
     
-    return algorithm_instance.get_lowest_district()
+    return lowest_district

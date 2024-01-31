@@ -40,7 +40,7 @@ def main():
         # set up experiment To test all algorithms
         lowest_district = find_lowest_cost_experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra, nearest_battery])    
 
-        hillclimber = HillClimber(lowest_district, 4, 100)
+        hillclimber = HillClimber(lowest_district, 4, iterations)
 
         costs, district_states = hillclimber.hill_climb()
 

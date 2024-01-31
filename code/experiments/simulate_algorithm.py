@@ -77,7 +77,10 @@ class Simulate_Algorithm:
         """Retrieve the district for the lowest cost."""
         return self.lowest_district
 
-
+    def get_lowest_cost(self):
+        """Retrieve the lowest cost."""
+        return self.lowest_costs
+    
     def save_lowest_cost_house_order_to_csv(self, file_name):
         """Saves the house order for the lowest cost to a CSV file."""
 
