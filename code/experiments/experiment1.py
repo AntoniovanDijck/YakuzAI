@@ -5,7 +5,7 @@ from code.algorithm.dijckstra import dijckstra
 from code.algorithm.random_alg import RandomAlgorithm
 from code.experiments.simulate_algorithm import Simulate_Algorithm
 from code.algorithm.nearest_battery import nearest_battery
-from code.algorithm.nearest_object_x import nearest_object_x
+from code.algorithm.nearest_object import nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand
 
@@ -25,15 +25,13 @@ def experiment(houses_file, batteries_file, iterations=100,algorithms=[RandomAlg
     # Create instances for each algorith
     for i in range(len(algorithms)):
 
+        print(f"{i}/{len(algorithms)}: Running {alg.__name__} Simulation")
+        
         alg = algorithms[i]
         
         # Create instances for each algorithm
         algorithm_instance = Simulate_Algorithm(alg, iterations, houses_file, batteries_file)
 
-        sim_alg = algorithm_instance.simulate()
-
-        # Print progress
-        print(f"{i}/{len(algorithms)}: Running {alg.__name__} Simulation")
         sim_alg = algorithm_instance.simulate()
 
         csv_filename = os.path.join(save_directory, f'{alg.__name__}_lowest_cost_order.csv')

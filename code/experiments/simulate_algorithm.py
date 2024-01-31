@@ -5,11 +5,10 @@ from code.algorithm.nearest_battery import nearest_battery as nearest_battery
 from code.algorithm.nearest_object import nearest_object_x as nearest_object_x
 from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand
-from Hillclimber import HillClimber
+from code.algorithm.HillClimber import HillClimber
 import matplotlib.pyplot as plt
 from code.algorithm.dijckstra import dijckstra
 from code.helpers.visualize import visualize
-from code.helpers.visualize import visualize_live
 import csv
 import numpy as np
 from tqdm import tqdm
