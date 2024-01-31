@@ -8,7 +8,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.animation import FuncAnimation
 import os
 
-def visualize(district, district_number):
+def visualize(district, district_number, route=False):
     """
     This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
     """
@@ -89,13 +89,24 @@ def visualize(district, district_number):
     total_cost = experiment_instance.calculate_totals()
 
     # Plot cables
-    for i in range(len(experiment_instance.batteries)):
+    if not route:
+        for i in range(len(experiment_instance.batteries)):
 
-        #loop over the cables in experiment and look for the colors by ID so it plots cable colors per battery
-        for cable_id, cable in experiment_instance.cables.items():
-            if cable.connected_battery == experiment_instance.batteries[i]:
-                plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
-                linewidth=3.5, color=battery_colors[i], zorder=0)
+            #loop over the cables in experiment and look for the colors by ID so it plots cable colors per battery
+            for cable_id, cable in experiment_instance.cables.items():
+                if cable.connected_battery == experiment_instance.batteries[i]:
+                    plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], 
+                    linewidth=3.5, color=battery_colors[i], zorder=0)
+
+    if route:
+        for i, battery in enumerate(experiment_instance.batteries):
+
+        # Loop through each house connected to this battery
+            for house in battery.connected_houses:
+            #draw cables
+                for cable_id in house.route:
+                    cable = district.cables[cable_id]
+                    plt.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], color=battery_colors[i], linewidth=2)
         
     # Add the total cost of the district to the plot
     plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
@@ -107,64 +118,6 @@ def visualize(district, district_number):
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-        
+
     plt.savefig(f"data/output_data/plots/district{district_number}.png")
     # plt.show()
-
-
-def visualize_live(district_states):
-    """
-    This function animates the algorithms like hillclimber
-    """
-
-    #initialize/plot the grid
-    fig, ax = plt.subplots()
-
-    #loading images from data
-    house_image = plt.imread("data/Huizen&Batterijen/Images/housy.png")
-    battery_image = plt.imread("data/Huizen&Batterijen/Images/battery.png")
-
-    #images for house in plot
-    def plot_house(x, y):
-        image = OffsetImage(house_image, zoom=0.03)
-        ab = AnnotationBbox(image, (x, y), frameon=False)
-        ax.add_artist(ab)
-
-    #images for battery in plot
-    def plot_battery(x, y):
-        image = OffsetImage(battery_image, zoom=0.01)
-        ab = AnnotationBbox(image, (x, y), frameon=False)
-        ax.add_artist(ab)
-
-
-    def update(frame):
-        ax.clear()
-        ax.set_xlim(0, 50)
-        ax.set_ylim(0, 50)
-
-        # Set up grid and labels
-        ax.grid(linestyle='-', linewidth='0.5', alpha=0.25, color='grey', zorder=0)
-        for i in range(0, 51, 10):
-            ax.axvline(x=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
-            ax.axhline(y=i, color='grey', linestyle='-', linewidth=1.5, alpha=0.25, zorder=0)
-        ax.set_xticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
-        ax.set_yticklabels([str(i) if i % 10 == 0 else '' for i in np.arange(0, 51, 1)])
-
-        district = district_states[frame]
-
-        # Plotting houses and batteries
-        for house in district.houses:
-            plot_house(house.x, house.y)
-
-        battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
-        for i, battery in enumerate(district.batteries):
-            plot_battery(battery.x, battery.y)
-            for house in battery.connected_houses:
-                for cable_id in house.route:
-                    cable = district.cables[cable_id]
-                    ax.plot([cable.start_x, cable.end_x], [cable.start_y, cable.end_y], color=battery_colors[i], linewidth=2)
-
-    ani = FuncAnimation(fig, update, frames=len(district_states), repeat=False, interval=1)
-
-    plt.show()
-    plt.show()
