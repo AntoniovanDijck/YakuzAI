@@ -32,7 +32,7 @@ class Simulate_Algorithm:
         """
         Simulates the algorithm x number of times, optimized for efficiency and shows progress using tqdm.
         """
-        self.costs = set() # Using a set for unique total costs
+        self.costs = []] # Using a set for unique total costs
         is_initial_cost_set = self.lowest_costs != 0
         self.lowest_district = None
 
@@ -47,7 +47,7 @@ class Simulate_Algorithm:
             total_costs = district.calculate_totals()
             #print(total_costs)
 
-            self.costs.add(total_costs)
+            self.costs.append(total_costs)
  
             if not is_initial_cost_set or total_costs < self.lowest_costs:
                 self.lowest_costs = total_costs
