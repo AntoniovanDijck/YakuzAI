@@ -4,10 +4,6 @@ from code.algorithm.nearest_battery import nearest_battery as NB
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
-<<<<<<< HEAD
-=======
-from code.helpers.visualize import visualize_route
->>>>>>> 72a1246a4834aebad9045bf4804d304d2ec24276
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from tqdm import tqdm
@@ -183,7 +179,7 @@ class HillClimber:
                                 break
                                 # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
             total_houses = 0
-            for battery in district.batteries:
+            for battery in self.district.batteries:
                 total_houses += len(battery.connected_houses)
             if total_houses != 150:
                 saved_state = self.save_state()
@@ -300,13 +296,9 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
-<<<<<<< HEAD
             if iteration % 250 == 0:
                 plt.cla()
                 visualize(saved_state, iteration, True)
-=======
-            if iteration % 100 == 0:
->>>>>>> 72a1246a4834aebad9045bf4804d304d2ec24276
                 print(costs[-1])
 
         return costs, saved_state# Return the list of costs
