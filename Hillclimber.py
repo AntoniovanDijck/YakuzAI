@@ -64,13 +64,6 @@ class HillClimber:
             # Reconnect all the houses that are not connected
             self.connect_houses_to_batteries(removed_houses)
 
-            # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
-            total_houses = 0
-            for battery in district.batteries:
-                total_houses += len(battery.connected_houses)
-            if total_houses != 150:
-                saved_state = self.save_state()
-                self.restore_state(saved_state)
 
 
     def find_nearest_object_x(self, house):
@@ -116,6 +109,7 @@ class HillClimber:
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = houses
+        print(houses)
 
         # Loop over all houses
         for house in random_houses:
@@ -158,8 +152,7 @@ class HillClimber:
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
-                            # TODO: Fix this --> uncomment the following line and check simulation for weird grid
-                            # self.extend_route_to_battery(house, object, connected_battery)
+                            self.extend_route_to_battery(house, object, connected_battery)
 
                             # Connect house to the battery
                             connected_battery.connect_house(house)
@@ -185,6 +178,13 @@ class HillClimber:
                                 self.district.remove_connected_house(house, connected_battery)
 
                                 break
+                                # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
+            total_houses = 0
+            for battery in district.batteries:
+                total_houses += len(battery.connected_houses)
+            if total_houses != 150:
+                saved_state = self.save_state()
+                self.restore_state(saved_state)
 
 
 
