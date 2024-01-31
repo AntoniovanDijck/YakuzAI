@@ -4,6 +4,10 @@ from code.algorithm.nearest_battery import nearest_battery as NB
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
+<<<<<<< HEAD
+=======
+from code.helpers.visualize import visualize_route
+>>>>>>> 72a1246a4834aebad9045bf4804d304d2ec24276
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from tqdm import tqdm
@@ -63,13 +67,6 @@ class HillClimber:
             # Reconnect all the houses that are not connected
             self.connect_houses_to_batteries(removed_houses)
 
-            # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
-            total_houses = 0
-            for battery in district.batteries:
-                total_houses += len(battery.connected_houses)
-            if total_houses != 150:
-                saved_state = self.save_state()
-                self.restore_state(saved_state)
 
 
     def find_nearest_object_x(self, house):
@@ -115,6 +112,7 @@ class HillClimber:
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
         random_houses = houses
+        print(houses)
 
         # Loop over all houses
         for house in random_houses:
@@ -157,8 +155,7 @@ class HillClimber:
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
-                            # TODO: Fix this --> uncomment the following line and check simulation for weird grid
-                            # self.extend_route_to_battery(house, object, connected_battery)
+                            self.extend_route_to_battery(house, object, connected_battery)
 
                             # Connect house to the battery
                             connected_battery.connect_house(house)
@@ -184,6 +181,13 @@ class HillClimber:
                                 self.district.remove_connected_house(house, connected_battery)
                                 house.route = []
                                 break
+                                # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
+            total_houses = 0
+            for battery in district.batteries:
+                total_houses += len(battery.connected_houses)
+            if total_houses != 150:
+                saved_state = self.save_state()
+                self.restore_state(saved_state)
 
 
 
@@ -296,12 +300,16 @@ class HillClimber:
 
             costs.append(self.current_cost)  # Store cost after each iteration
 
+<<<<<<< HEAD
             if iteration % 250 == 0:
                 plt.cla()
                 visualize(saved_state, iteration, True)
+=======
+            if iteration % 100 == 0:
+>>>>>>> 72a1246a4834aebad9045bf4804d304d2ec24276
                 print(costs[-1])
 
-        return costs, saved_districts# Return the list of costs
+        return costs, saved_state# Return the list of costs
 
 
 
@@ -364,8 +372,15 @@ batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
 district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
+<<<<<<< HEAD
 hillclimber = HillClimber(district, 4, 2000)
 costs, saved_districts = hillclimber.hill_climb()
+=======
+hillclimber = HillClimber(district, 4, 200)
+costs, saved_district = hillclimber.hill_climb()
+
+visualize_route(saved_district,994)
+>>>>>>> 72a1246a4834aebad9045bf4804d304d2ec24276
 
 
 

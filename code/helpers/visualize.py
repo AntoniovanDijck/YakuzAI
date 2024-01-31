@@ -120,4 +120,3 @@ def visualize(district, district_number, route=False):
         os.makedirs(output_dir)
 
     plt.savefig(f"data/output_data/plots/district{district_number}.png")
-    # plt.show()
