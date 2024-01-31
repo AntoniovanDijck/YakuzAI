@@ -4,7 +4,7 @@ from code.algorithm.nearest_battery import nearest_battery as NB
 from code.classes.district import District
 import copy
 from code.helpers.visualize import visualize
-from code.helpers.visualize import visualize_live
+from code.helpers.visualize import visualize_route
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from tqdm import tqdm
@@ -298,9 +298,9 @@ class HillClimber:
             costs.append(self.current_cost)  # Store cost after each iteration
 
             if iteration % 100 == 0:
-                visualize(district, iteration)
+                print(costs[-1])
 
-        return costs, saved_districts# Return the list of costs
+        return costs, saved_state# Return the list of costs
 
 
 
@@ -364,7 +364,9 @@ district = District(houses_file, batteries_file)
 dijckstra_instance = dijckstra(district)
 dijckstra_instance.connect_houses_to_batteries()
 hillclimber = HillClimber(district, 4, 200)
-costs, saved_districts = hillclimber.hill_climb()
+costs, saved_district = hillclimber.hill_climb()
+
+visualize_route(saved_district,994)
 
 
 
