@@ -9,7 +9,6 @@ from code.algorithm.HillClimber import HillClimber
 from code.helpers.visualize import visualize
 from code.algorithm.DijckstraAlgorithm import DijckstraAlgorithm as dijckstra
 from code.algorithm.RandomAlgorithm import RandomAlgorithm
-from code.experiments.Simulate_Algorithm import Simulate_Algorithm
 from code.algorithm.Greedy_Battery_Distance import Greedy_Battery_Distance as nearest_battery
 from code.algorithm.Greedy_Object_Distance import Greedy_Object_Distance as nearest_object_x
 from code.algorithm.Greedy_Object_Distance_Reversed import Greedy_Object_Distance_Reversed as nearest_object_y
