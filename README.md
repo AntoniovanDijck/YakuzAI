@@ -96,7 +96,7 @@ python main.py --iterations 200 --district 2 --algorithm all
 
 - The user can choose between the following algorithms: `RandomAlgorithm`, `Greedy_Object` and `Dijckstra`. The hill_climber will be run on the district with the lowest cost of the algorithms. 
 
-- Whenever you want to see another heuristic in action choose the algorithm `Greedy_Object_Distance_Randomized`, `Greedy_Object_Distance_Reversed` or `Greedy_Object_Distance_Random`.
+- Whenever you want to see another heuristic in action choose the algorithm `Greedy_Object_Distance_Randomized`, `Greedy_Object_Distance_Reversed`.
 
 - To compare all the algorithms with each other, choose for the algorithm `all`.
 
