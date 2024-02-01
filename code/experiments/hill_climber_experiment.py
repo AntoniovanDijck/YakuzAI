@@ -17,16 +17,26 @@ def hill_climber_experiment(lowest_district,iterations,district_int,depth=4):
     Runs the simulation for each algorithm, saves results in a CSV file, plots a histogram of the resulting costs,
     and saves the lowest cost district data in a JSON file.
     """
+
+    # Create a hill climber instance
     hillclimber = HillClimberTest(lowest_district, depth, iterations)
 
+    # Run the hill climber
     costs, district_states = hillclimber.hill_climb()
 
-    visualize(district_states,district_int+1)
+    # Visualize the final district
+    visualize(district_states,district_int+1,True)
 
+    # A dictionary to store all costs
     all_costs = {}
+
+    # The best depth for this district
     best_depth = None
+
+    # The lowest final cost for this district
     lowest_final_cost = float('inf')
     
+    # Store all costs for this district
     all_costs[district_int] = costs
 
     # Determine if this is the best depth

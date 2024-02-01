@@ -8,14 +8,12 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.animation import FuncAnimation
 import os
 
-def visualize(district, district_number, route=False):
+def visualize(district, district_number, route=False, algorithm=None):
     """
     This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
     """
     # Create an instance of the Experiment clas
     experiment_instance = district
-
-
 
     # Create a figure and 50x50 grid
     fig, ax = plt.subplots(figsize=(12, 12))
@@ -55,10 +53,12 @@ def visualize(district, district_number, route=False):
 
     # Store the colors of the batteries to later give the cables that color
     battery_colors = ['orange', 'green', 'red', 'blue', 'purple']
-    # Plot batteries
+    
+    # Plot batteries for each battery in the district
     for battery in experiment_instance.batteries:
+
+        # Plot battery
         plot_battery(battery_image, battery.x, battery.y)
-        
 
         # Calculate and annotate total output and total cables for each battery
         total_output = sum(house.maxoutput for house in battery.connected_houses)
@@ -112,11 +112,11 @@ def visualize(district, district_number, route=False):
     plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
-    plt.title('Houses and Batteries with Manhattan-style Cables')
+    plt.title(f'Houses and Batteries for district {district_number} using the {algorithm.__name__} ')
     #check for directory and create if not
     output_dir = "data/output_data/plots"
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    plt.savefig(f"data/output_data/plots/district{district_number}.png")
+    plt.savefig(f"data/output_data/plots/district_{district_number}_{algorithm.__name__}.png")
