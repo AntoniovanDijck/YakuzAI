@@ -15,33 +15,46 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
     the experiment function runs the simulation for each algorithm and saves the results in a csv file and plots a histogram of the resultings costs
     the input is the filepaths of the houses and batteries, the amount of iterations and the algorithms to be tested
     """
+
+    # Number of algorithms to test
     count = 1
 
-    save_directory = "data/simulation_results"
+    # Directory to save the csv files
+    save_directory = "data/output_data/algorithm_results"
 
+    # List to store the data for each algorithm
     data_to_plot = []
+
+    # Variables to store the lowest cost and district
     lowest_district = None
     lowest_cost = float('inf')
 
-    # If the directory does not exist, create it
+    # If the directory does not exist, create it first
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
     # Create instances for each algorithm
     for i in range(len(algorithms)):
 
+        # Instance of the algorithm
         alg = algorithms[i]
 
+        # Print the algorithm name and number
         print(f"{count}/{len(algorithms)}: Running {alg.__name__} Simulation")
         
         # Create instances for each algorithm
         algorithm_instance = Simulate_Algorithm(alg, iterations, houses_file, batteries_file)
-
+        
+        # Run the simulation
         sim_alg = algorithm_instance.simulate()
 
+        count += 1
+        
+        # CSV filename
         csv_filename = os.path.join(save_directory, f'{alg.__name__}_lowest_cost_order.csv')
         print("")
 
+        # Save the results to a CSV file
         algorithm_instance.save_lowest_cost_house_order_to_csv(csv_filename)
         
         if algorithm_instance.lowest_costs < lowest_cost:
@@ -51,8 +64,6 @@ def find_lowest_cost_experiment(houses_file, batteries_file, iterations=100,algo
         # Convert the sets of costs to lists
         sim_alg_list = list(sim_alg)
         data_to_plot.append(sim_alg_list)
-
-
 
     # Find the global minimum and maximum to set the bins
     min_value = min(map(min, data_to_plot))

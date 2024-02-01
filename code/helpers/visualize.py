@@ -8,7 +8,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.animation import FuncAnimation
 import os
 
-def visualize(district, district_number, route=False, algorithm=None):
+def visualize(district, district_number, route=False, algorithm_name="",iterations=0):
     """
     This file contains the code to plot the houses and batteries with the Manhattan-style cables used in the experiment class
     """
@@ -112,11 +112,12 @@ def visualize(district, district_number, route=False, algorithm=None):
     plt.annotate(f'Total cost: {total_cost}', (0, 0), textcoords="offset points", 
                 xytext=(10,10), ha='left', fontsize=12, color='black')
 
-    plt.title(f'Houses and Batteries for district {district_number} using the {algorithm.__name__} ')
+    plt.title(f'Houses and Batteries results for District {district_number} using the {algorithm_name} algorithm in {iterations} iterations.')
+    
     #check for directory and create if not
     output_dir = "data/output_data/plots"
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    plt.savefig(f"data/output_data/plots/district_{district_number}_{algorithm.__name__}.png")
+    plt.savefig(f"data/output_data/plots/district_{district_number}_{algorithm_name}_{iterations}.png")

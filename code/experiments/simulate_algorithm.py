@@ -57,8 +57,9 @@ class Simulate_Algorithm:
                 is_initial_cost_set = True
 
         districtname = self.houses_file.split('/')[2].split('_')[1]
+        algo_name = str(self.algorithm.__name__)
 
-        visualize(self.lowest_district,int(districtname))
+        visualize(self.lowest_district,int(districtname),algorithm_name=algo_name,iterations=self.iterations)
        
         print(f"Lowest costs: {self.lowest_costs} for algorithm {self.algorithm.__name__}")
 

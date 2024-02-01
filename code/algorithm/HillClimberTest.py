@@ -21,7 +21,6 @@ class HillClimberTest:
         self.depth = depth
         self.iterations = iterations
 
-
     # Calculate the total cost of a district using the calculate_totals method from the district class
     def calculate_total_cost(self):
         return self.district.calculate_totals()
@@ -295,10 +294,5 @@ class HillClimberTest:
                 self.restore_state(saved_state, saved_cables)
 
             costs.append(self.current_cost)  # Store cost after each iteration
-
-            if iteration % 1000 == 0:
-                plt.cla()
-                visualize(saved_state, iteration, True)
-                print(costs[-1])
 
         return costs, saved_state# Return the list of costs

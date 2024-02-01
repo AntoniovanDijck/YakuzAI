@@ -25,7 +25,7 @@ def hill_climber_experiment(lowest_district,iterations,district_int,depth=4):
     costs, district_states = hillclimber.hill_climb()
 
     # Visualize the final district
-    visualize(district_states,district_int+1,True)
+    visualize(district_states,district_int+1,True,HillClimber.__name__,iterations=iterations)
 
     # A dictionary to store all costs
     all_costs = {}
