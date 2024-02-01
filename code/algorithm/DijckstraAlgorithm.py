@@ -1,9 +1,13 @@
+# Dijckstra.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from code.classes.house import House
 import random
 
-class dijckstra:
+class DijckstraAlgorithm:
     """"
     This version differs from version 2 as this algorithm looks for the nearest cable of battery. Cables that are connected
     to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is

@@ -1,4 +1,4 @@
-# Smart_grid.py
+# visualize.py
 # Antonio, Mec, Vincent
 # YakuzAI
 

@@ -1,75 +1,16 @@
-import copy
-from tqdm import tqdm
-import random
-import numpy as np
-import matplotlib.pyplot as plt
 from code.classes.cable import Cable
 from code.classes.battery import Battery
-from code.classes.district import District
-from code.helpers.visualize import visualize
-from code.algorithm.dijckstra import dijckstra 
-from code.algorithm.nearest_battery import nearest_battery as NB
+from code.classes.house import House
+import random
 
-class HillClimberTest:
+class Greedy_Object_Distance_Randomized:
+    """"
+    This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
+    to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is
+    connected to a battery. If this battery has the capacity. This algorithm will connect the house to the cable instead.
     """
-    Hillclimber algorithm to optimize the order of houses connected to batteries by removing depth amount of houses and reconnecting them.
-    """
-
-    # Setting the initial values for the depth and iterations
-    def __init__(self, district, depth = 4, iterations=100):
+    def __init__(self, district):
         self.district = district
-        self.depth = depth
-        self.iterations = iterations
-
-    # Calculate the total cost of a district using the calculate_totals method from the district class
-    def calculate_total_cost(self):
-        return self.district.calculate_totals()
-
-    # Save a copy of the district's current state in case it needs to be restored
-    def save_state(self):
-        saved_state = copy.deepcopy(self.district)
-        saved_cables = copy.deepcopy(self.district.cables)
-        return (saved_state, saved_cables)
-
-    # Restore the district's state to the saved state
-    def restore_state(self, saved_state, saved_cables):
-        self.district = saved_state
-        self.district.cables = saved_cables
-
-    def modify_house_order(self):
-        """
-        Remove depth amount of random houses from the district. Then reconnected using the logic from Dijckstsra's algorithm..
-        """
-        removed_houses = []
-
-        # Remove a random house from a random battery
-        for _ in range(self.depth):
-
-            # select a random battery
-            connected_battery = random.choice(self.district.batteries)
-            
-
-            # If the battery has a house connected
-            if connected_battery.connected_houses:
-
-                # Select a random house from the battery and add it to the removed houses list
-                house = random.choice(connected_battery.connected_houses)
-                removed_houses.append(house)
-
-                # Remve the house from the battery
-                self.district.remove_connected_house(house, connected_battery)
-
-
-            # Reconnect all the houses that are not connected
-            self.connect_houses_to_batteries(removed_houses)
-
-            # Check of there are more or less than 150 houses connected to batteries, if so, restore the state
-            total_houses = sum(len(battery.connected_houses) for battery in self.district.batteries)
-            if total_houses != 150:
-                saved_state, saved_cables = self.save_state() 
-                self.restore_state(saved_state, saved_cables)
-                
-
 
     def find_nearest_object_x(self, house):
         """
@@ -103,8 +44,7 @@ class HillClimberTest:
 
         return sorted_objects
 
-
-    def connect_houses_to_batteries(self, houses):
+    def connect_houses_to_batteries(self):
         """
         This method connects houses to batteries. It does this by finding the nearest battery or cable to a house. If
         this object is a battery, it checks if the battery has the capacity to connect the house. If this object is a
@@ -113,7 +53,8 @@ class HillClimberTest:
         """
 
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
-        random_houses = houses
+        random_houses = self.district.houses
+        random.shuffle(random_houses)
 
         # Loop over all houses
         for house in random_houses:
@@ -153,13 +94,7 @@ class HillClimberTest:
 
                             # Place cables and connect to the battery
                             self.place_cables(house, object)
-
-                            # To keep track of the cables that are used to connect houses to batteries, the overlapping
-                            # cables need to be tracked as well
-                            # TODO: Fix this --> uncomment the following line and check simulation for weird grid
-                            # self.extend_route_to_battery(house, object, connected_battery)
-
-
+                            
                             # Connect house to the battery
                             connected_battery.connect_house(house)
 
@@ -170,11 +105,18 @@ class HillClimberTest:
                             continue
                     else:
                         while True:
-                            for alternative_battery in self.district.batteries:
-                                if alternative_battery != connected_battery and alternative_battery.can_connect(house):
-                                    self.place_cables(house, alternative_battery)
-                                    alternative_battery.connect_house(house)
-                                    break
+                            
+                            # If no battery has the capacity, remove the house with the longest x or y route and try again
+                            if random.choice([True, False]):
+
+                                # Remove the house with the longest x route
+                                house = max(connected_battery.connected_houses, key=lambda x: len(x.route))
+
+
+                                # remove the house from the battery
+                                self.district.remove_connected_house(house, connected_battery)
+
+                                break
                             else:  
                                 # Remove the house with the longest y route
                                 house = max(connected_battery.connected_houses, key=lambda y: len(y.route))
@@ -182,7 +124,16 @@ class HillClimberTest:
 
                                 # remove the house from the battery
                                 self.district.remove_connected_house(house, connected_battery)
+
                                 break
+            # FAILCHECK: Check if all houses are connected
+            total_houses = 0
+            for battery in self.district.batteries:
+                total_houses += len(battery.connected_houses)
+                if total_houses != 150:
+                    continue
+                else:
+                        break
 
 
 
@@ -196,10 +147,9 @@ class HillClimberTest:
         if isinstance(object, Cable):
             object = object.connected_battery
 
-        x_distance = abs(house.x - object.x)
-        y_distance = abs(house.y - object.y)
+        random_choice = random.choice([True, False])
 
-        if x_distance > y_distance:
+        if random_choice:
             if house.x != object.x:
                 x_start, x_end = sorted([house.x, object.x])
 
@@ -240,59 +190,3 @@ class HillClimberTest:
             
 
 
-
-    def extend_route_to_battery(self, house, cable, battery):
-        """
-        Extends the route from the cable to the connected battery.
-        """
-
-        # Place cable along x-axis from cable end to battery
-        if cable.end_x != battery.x:
-
-            # Sort the x coordinates from the cable and the battery
-            x_start, x_end = sorted([cable.end_x, battery.x])
-
-            # Loop over the x coordinates
-            for x in range(x_start, x_end):
-
-                cable_id = f"{x},{cable.end_y},{x+1},{cable.end_y}"
-                self.district.place_cables(x, cable.end_y, x + 1, cable.end_y, battery)
-
-                # Keep track of the route of the house by adding the cable id to the route
-                house.route.append(cable_id)
-
-
-        # Place cable along y-axis from cable end to battery
-        if cable.end_y != battery.y:
-
-            # Sort the y coordinates from the cable and the battery
-            y_start, y_end = sorted([cable.end_y, battery.y])
-            for y in range(y_start, y_end):
-
-                # Create a new cable segment for each unit along the y-axis
-                cable_id = f"{battery.x},{y},{battery.x},{y+1}"
-                self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
-                # Keep track of the route of the house by adding the cable id to the route
-
-
-
-    def hill_climb(self):
-        self.current_cost = self.calculate_total_cost()
-        costs = [self.current_cost]  # Initialize list to store costs
-        saved_districts = []
-        
-        for iteration in tqdm(range(self.iterations), desc="Optimizing"):
-            saved_state, saved_cables = self.save_state()
-            self.modify_house_order()
-            new_cost = self.calculate_total_cost()
-
-            if new_cost < self.current_cost:
-                self.current_cost = new_cost
-                self.saved_state = self.district
-                # print(f"New cost: {self.current_cost}")
-            else:
-                self.restore_state(saved_state, saved_cables)
-
-            costs.append(self.current_cost)  # Store cost after each iteration
-
-        return costs, saved_state# Return the list of costs

@@ -1,4 +1,4 @@
-# Smart_grid.py
+# load_battery_data.py
 # Antonio, Mec, Vincent
 # YakuzAI
 

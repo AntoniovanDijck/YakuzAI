@@ -1,15 +1,17 @@
-import random
-from code.algorithm.dijckstra import dijckstra as dijckstra
-from code.algorithm.nearest_battery import nearest_battery as NB
-from code.classes.district import District
+# Hillclimber.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 import copy
-from code.helpers.visualize import visualize
-from code.classes.cable import Cable
-from code.classes.battery import Battery
+import random
+import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-import numpy as np
-
+from code.classes.cable import Cable
+from code.classes.battery import Battery
+from code.helpers.visualize import visualize
+from code.algorithm.DijckstraAlgorithm import DijckstraAlgorithm as dijckstra
+from code.algorithm.Greedy_Battery_Distance import Greedy_Battery_Distance as NB
 
 class HillClimber:
     """
@@ -25,14 +27,23 @@ class HillClimber:
 
     # Calculate the total cost of a district using the calculate_totals method from the district class
     def calculate_total_cost(self):
+        '''
+        This method calculates the total cost of the district.
+        '''
         return self.district.calculate_totals()
 
     # Save a copy of the district's current state in case it needs to be restored
     def save_state(self):
+        """
+        This method saves the state of the district.
+        """
         return copy.deepcopy(self.district)
 
     # Restore the district's state to the saved state
     def restore_state(self, saved_state):
+        """
+        This method restores the state of the district.
+        """
         self.district = saved_state
 
 
@@ -40,6 +51,7 @@ class HillClimber:
         """
         Remove depth amount of random houses from the district. Then reconnected using the logic from Dijckstsra's algorithm..
         """
+
         removed_houses = []
 
         # Remove a random house from a random battery
@@ -62,7 +74,6 @@ class HillClimber:
 
             # Reconnect all the houses that are not connected
             self.connect_houses_to_batteries(removed_houses)
-
 
 
     def find_nearest_object_x(self, house):
@@ -151,7 +162,7 @@ class HillClimber:
 
                             # To keep track of the cables that are used to connect houses to batteries, the overlapping
                             # cables need to be tracked as well
-                            self.extend_route_to_battery(house, object, connected_battery)
+                            #self.extend_route_to_battery(house, object, connected_battery)
 
                             # Connect house to the battery
                             connected_battery.connect_house(house)
@@ -278,96 +289,44 @@ class HillClimber:
 
 
     def hill_climb(self):
+        # Initialize the current cost
         self.current_cost = self.calculate_total_cost()
-        costs = [self.current_cost]  # Initialize list to store costs
+
+        # set the current state to the district
+        costs = [self.current_cost]  
+
+        # Set the saved state to the district
         saved_districts = []
         
+        # Loop over the iterations
         for iteration in tqdm(range(self.iterations), desc="Climbing the hill: "):
+
+            # Save the state of the district
             saved_state = self.save_state()
+
+            # Modify the house order
             self.modify_house_order()
+
+            # Connect the houses to the batteries
             new_cost = self.calculate_total_cost()
 
+            # Check if the new cost is lower than the current cost
             if new_cost < self.current_cost:
+
+                # If the new cost is lower, set the current cost to the new cost
                 self.current_cost = new_cost
+
+                # Save the state of the district
                 self.saved_state = self.district
-                # print(f"New cost: {self.current_cost}")
+        
             else:
+
+                # Restore the state of the district
                 self.restore_state(saved_state)
 
-            costs.append(self.current_cost)  # Store cost after each iteration
+            # Append the current cost to the list of costs
+            costs.append(self.current_cost) 
 
-            if iteration % 250 == 0:
-                plt.cla()
-                visualize(saved_state, iteration, True)
-                plt.pause(0.0001)
-
-        return costs, saved_state# Return the list of costs
-
-
-
-
-## DEPTH TEST ALGORITHM ##
-# all_costs = {}
-# best_depth = None
-# lowest_final_cost = float('inf')
-
-# for i in range(1,6):
-#     houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
-#     batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-
-
-#     district = District(houses_file, batteries_file)
-#     dijckstra_instance = dijckstra(district)
-#     dijckstra_instance.connect_houses_to_batteries()
-
-#     hillclimber = HillClimber(district, i, 100)
-#     costs = hillclimber.hill_climb()
-#     all_costs[i] = costs
-
-#     # Determine if this is the best depth
-#     if costs[-1] < lowest_final_cost:
-#         lowest_final_cost = costs[-1]
-#         best_depth = i
-
-# # Set plot with a black background
-# plt.figure(figsize=(10, 6), facecolor='black')
-# ax = plt.axes()
-# ax.set_facecolor('black')
-
-# # Plot all costs, highlight the best one in red
-# for depth, costs in all_costs.items():
-#     plt.plot(costs, color='red' if depth == best_depth else 'lime', linestyle='-', linewidth=2 if depth == best_depth else 1, label=f'Depth {depth}' if depth == best_depth else None)
-
-# plt.xlabel('Iterations', fontsize=14, fontweight='bold', color='white')
-# plt.ylabel('Total Cost', fontsize=14, fontweight='bold', color='white')
-# plt.title('Hill Climber Optimization Progress', fontsize=16, fontweight='bold', color='white')
-# plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7, color='gray')
-# plt.xticks(fontsize=12, color='white')
-# plt.yticks(fontsize=12, color='white')
-
-# plt.gca().invert_yaxis()
-
-# # Add legend to show the best depth
-# plt.legend(fontsize=12, facecolor='black', edgecolor='black', labelcolor='white')
-# plt.tight_layout()
-
-# plt.show()
-
-
-
-
-
-
-# ## RUNNING 1 DEPTH ##
-# houses_file = "simulation_results/District 1 dijckstra_lowest_cost_order.csv"
-# batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-# district = District(houses_file, batteries_file)
-# dijckstra_instance = dijckstra(district)
-# dijckstra_instance.connect_houses_to_batteries()
-# hillclimber = HillClimber(district, 4, 200)
-# costs, saved_district = hillclimber.hill_climb()
-
-# visualize_route(saved_district,994)
-
-
+        # Return the costs and the saved state
+        return costs, saved_state
 

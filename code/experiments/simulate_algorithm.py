@@ -1,17 +1,18 @@
-#imports
-from code.classes.district import District
-from code.algorithm.random_alg import RandomAlgorithm as RandomAlgorithm
-from code.algorithm.nearest_battery import nearest_battery as nearest_battery
-from code.algorithm.nearest_object import nearest_object_x as nearest_object_x
-from code.algorithm.nearest_object_y import nearest_object_y as nearest_object_y
-from code.algorithm.nearest_object_rand import nearest_object_rand as nearest_object_rand
-from code.algorithm.HillClimber import HillClimber
-import matplotlib.pyplot as plt
-from code.algorithm.dijckstra import dijckstra
-from code.helpers.visualize import visualize
+# Simulate_Algorithm.py
+# Antonio, Mec, Vincent
+# YakuzAI
+
 import csv
 import numpy as np
 from tqdm import tqdm
+from code.classes.district import District
+from code.helpers.visualize import visualize
+from code.algorithm.RandomAlgorithm import RandomAlgorithm as RandomAlgorithm
+from code.algorithm.Greedy_Battery_Distance import Greedy_Battery_Distance as nearest_battery
+from code.algorithm.Greedy_Object_Distance import Greedy_Object_Distance as nearest_object_x
+from code.algorithm.Greedy_Object_Distance_Reversed import Greedy_Object_Distance_Reversed as nearest_object_y
+from code.algorithm.Greedy_Object_Distance_Randomized import Greedy_Object_Distance_Randomized as nearest_object_rand
+from code.algorithm.DijckstraAlgorithm import DijckstraAlgorithm as dijckstra
 
 class Simulate_Algorithm:
     """

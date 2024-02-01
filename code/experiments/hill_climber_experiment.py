@@ -1,16 +1,19 @@
+# Hill_climber_experiment.py
+# Antonio, Vincent, Mec
+# YakuzAI
+
 import os
 import numpy as np  
 import matplotlib.pyplot as plt
-from code.algorithm.dijckstra import dijckstra
-from code.algorithm.random_alg import RandomAlgorithm
-from code.experiments.simulate_algorithm import Simulate_Algorithm
-from code.algorithm.nearest_battery import nearest_battery
-from code.algorithm.nearest_object import nearest_object_x
-from code.algorithm.nearest_object_y import nearest_object_y
-from code.algorithm.nearest_object_rand import nearest_object_rand
 from code.algorithm.HillClimber import HillClimber
 from code.helpers.visualize import visualize
-from code.algorithm.HillClimberTest import HillClimberTest
+from code.algorithm.DijckstraAlgorithm import DijckstraAlgorithm as dijckstra
+from code.algorithm.RandomAlgorithm import RandomAlgorithm
+from code.experiments.Simulate_Algorithm import Simulate_Algorithm
+from code.algorithm.Greedy_Battery_Distance import Greedy_Battery_Distance as nearest_battery
+from code.algorithm.Greedy_Object_Distance import Greedy_Object_Distance as nearest_object_x
+from code.algorithm.Greedy_Object_Distance_Reversed import Greedy_Object_Distance_Reversed as nearest_object_y
+from code.algorithm.Greedy_Object_Distance_Randomized import Greedy_Object_Distance_Randomized as nearest_object_rand
 
 def hill_climber_experiment(lowest_district,iterations,district_int,depth=4):
     """
@@ -19,7 +22,7 @@ def hill_climber_experiment(lowest_district,iterations,district_int,depth=4):
     """
 
     # Create a hill climber instance
-    hillclimber = HillClimberTest(lowest_district, depth, iterations)
+    hillclimber = HillClimber(lowest_district, depth, iterations)
 
     # Run the hill climber
     costs, district_states = hillclimber.hill_climb()

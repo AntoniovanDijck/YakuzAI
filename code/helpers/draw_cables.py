@@ -1,4 +1,4 @@
-# Smart_grid.py
+# draw_cables.py
 # Antonio, Mec, Vincent
 # YakuzAI
 

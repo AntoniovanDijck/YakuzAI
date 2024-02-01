@@ -1,15 +1,20 @@
+# Greedy_Object_Distance.py
+# Antonio, Vincent, Mec
+# YakuzAI
+
 from code.classes.cable import Cable
 from code.classes.battery import Battery
 from code.classes.house import House
 import random
 
-class nearest_object_y:
+class Greedy_Object_Distance:
     """"
-    This versio differce from version 2 as this algorithm looks for the nearest cable of battery. Cable that are connected
+    This version differences  the random algorithm as this algorithm looks for the nearest cable of battery. Cable that are connected
     to a battery now contain the battery object in the connected_battery attribute. This is used to check if a cable is
     connected to a battery. If this battery has the capacity. This algorithm will connect the house to the cable instead.
     """
-    def __init__(self, district):
+    def __init__(self, district, shuffle=True):
+        self.shuffle = shuffle
         self.district = district
 
     def find_nearest_object_x(self, house):
@@ -51,10 +56,12 @@ class nearest_object_y:
         cable, it checks if the battery connected to the cable has the capacity to connect the house. If the battery
         has the capacity.
         """
-
+        if self.shuffle:
         # Shuffle the houses to prevent the algorithm from always connecting the same houses to the same batteries
-        random_houses = self.district.houses
-        random.shuffle(random_houses)
+            random_houses = self.district.houses
+            random.shuffle(random_houses)
+        else:
+            random_houses = self.district.houses
 
         # Loop over all houses
         for house in random_houses:
@@ -114,15 +121,6 @@ class nearest_object_y:
 
                             break
 
-                              # FAILCHECK: Check if all houses are connected
-            total_houses = 0
-            for battery in self.district.batteries:
-                total_houses += len(battery.connected_houses)
-                if total_houses != 150:
-                    continue
-                else:
-                        break
-
 
     def place_cables(self, house, object):
         """
@@ -152,39 +150,3 @@ class nearest_object_y:
                     cable_id = f"{house.x},{y},{house.x},{y+1}"
                     self.district.place_cables(house.x, y, house.x, y + 1, object)
                     house.route.append(cable_id)
-
-
-
-    def extend_route_to_battery(self, house, cable, battery):
-        """
-        Extends the route from the cable to the connected battery.
-        """
-
-        # Place cable along x-axis from cable end to battery
-        if cable.end_x != battery.x:
-
-            # Sort the x coordinates from the cable and the battery
-            x_start, x_end = sorted([cable.end_x, battery.x])
-
-            # Loop over the x coordinates
-            for x in range(x_start, x_end):
-
-                cable_id = f"{x},{cable.end_y},{x+1},{cable.end_y}"
-                self.district.place_cables(x, cable.end_y, x + 1, cable.end_y, battery)
-
-                # Keep track of the route of the house by adding the cable id to the route
-                house.route.append(cable_id)
-
-
-        # Place cable along y-axis from cable end to battery
-        if cable.end_y != battery.y:
-
-            # Sort the y coordinates from the cable and the battery
-            y_start, y_end = sorted([cable.end_y, battery.y])
-            for y in range(y_start, y_end):
-
-                # Create a new cable segment for each unit along the y-axis
-                cable_id = f"{battery.x},{y},{battery.x},{y+1}"
-                self.district.place_cables(battery.x, y, battery.x, y + 1, battery)
-                # Keep track of the route of the house by adding the cable id to the route
-
