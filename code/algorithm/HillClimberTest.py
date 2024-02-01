@@ -1,23 +1,22 @@
-import random
-from code.algorithm.dijckstra import dijckstra as dijckstra
-from code.algorithm.nearest_battery import nearest_battery as NB
-from code.classes.district import District
 import copy
-from code.helpers.visualize import visualize
+from tqdm import tqdm
+import random
+import numpy as np
+import matplotlib.pyplot as plt
 from code.classes.cable import Cable
 from code.classes.battery import Battery
-from tqdm import tqdm
-import matplotlib.pyplot as plt
-import numpy as np
+from code.classes.district import District
+from code.helpers.visualize import visualize
+from code.algorithm.dijckstra import dijckstra 
+from code.algorithm.nearest_battery import nearest_battery as NB
 
-
-class HillClimber:
+class HillClimberTest:
     """
     Hillclimber algorithm to optimize the order of houses connected to batteries by removing depth amount of houses and reconnecting them.
     """
 
     # Setting the initial values for the depth and iterations
-    def __init__(self, district, depth = 3, iterations=100):
+    def __init__(self, district, depth = 4, iterations=100):
         self.district = district
         self.depth = depth
         self.iterations = iterations
@@ -303,16 +302,3 @@ class HillClimber:
                 print(costs[-1])
 
         return costs, saved_state# Return the list of costs
-
-
-
-houses_file = "data/simulation_results/dijckstra_lowest_cost_order.csv"
-batteries_file = 'data/Huizen&Batterijen/district_1/district-1_batteries.csv'
-district = District(houses_file, batteries_file)
-dijckstra_instance = dijckstra(district)
-dijckstra_instance.connect_houses_to_batteries()
-hillclimber = HillClimber(district, 4, 2)
-costs, saved_districts = hillclimber.hill_climb()
-
-
-

@@ -67,8 +67,6 @@ class Simulate_Algorithm:
 
         return self.costs
 
-
-
     def get_lowest_cost_house_order(self):
         """Retrieve the house order for the lowest cost."""
         return self.lowest_cost_house_order

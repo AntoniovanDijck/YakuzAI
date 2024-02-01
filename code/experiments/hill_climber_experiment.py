@@ -10,13 +10,14 @@ from code.algorithm.nearest_object_y import nearest_object_y
 from code.algorithm.nearest_object_rand import nearest_object_rand
 from code.algorithm.HillClimber import HillClimber
 from code.helpers.visualize import visualize
+from code.algorithm.HillClimberTest import HillClimberTest
 
-def hill_climber_experiment(lowest_district,iterations,district_int):
+def hill_climber_experiment(lowest_district,iterations,district_int,depth=4):
     """
     Runs the simulation for each algorithm, saves results in a CSV file, plots a histogram of the resulting costs,
     and saves the lowest cost district data in a JSON file.
     """
-    hillclimber = HillClimber(lowest_district, 4, iterations)
+    hillclimber = HillClimberTest(lowest_district, depth, iterations)
 
     costs, district_states = hillclimber.hill_climb()
 

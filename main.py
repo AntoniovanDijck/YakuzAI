@@ -30,7 +30,7 @@ def main():
     districts_batteries = ['data/Huizen&Batterijen/district_1/district-1_batteries.csv', 'data/Huizen&Batterijen/district_2/district-2_batteries.csv', 'data/Huizen&Batterijen/district_3/district-3_batteries.csv']
     
     # Iterations for simulate    
-    iterations = 100
+    iterations = 1000
 
     # For each district
     for i in range(0, 1):
@@ -41,7 +41,7 @@ def main():
         # set up experiment To test all algorithms
         lowest_district = find_lowest_cost_experiment(districts_houses[i], districts_batteries[i], iterations, algorithms=[dijckstra, nearest_battery])    
 
-        hill_climber_experiment(lowest_district, iterations, i)
+        hill_climber_experiment(lowest_district, iterations, i, depth=4)
        
 
 if __name__ == "__main__":

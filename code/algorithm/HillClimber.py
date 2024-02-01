@@ -17,7 +17,7 @@ class HillClimber:
     """
 
     # Setting the initial values for the depth and iterations
-    def __init__(self, district, depth = 3, iterations=100):
+    def __init__(self, district, depth = 4, iterations=100):
         self.district = district
         self.depth = depth
         self.iterations = iterations
@@ -299,7 +299,7 @@ class HillClimber:
             if iteration % 250 == 0:
                 plt.cla()
                 visualize(saved_state, iteration, True)
-                print(costs[-1])
+                plt.pause(0.0001)
 
         return costs, saved_state# Return the list of costs
 
